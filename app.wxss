@@ -335,6 +335,12 @@ page {
   overflow: hidden;
 }
 
+.sc-ripple-clip {
+  position: absolute;
+  pointer-events: none;
+  overflow: hidden;
+}
+
 .sc-ripple {
   position: absolute;
   border-radius: 100%;
