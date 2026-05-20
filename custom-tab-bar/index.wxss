@@ -1,0 +1,74 @@
+@import "../utils/icons.wxss";
+
+.tab-shell {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 700;
+  pointer-events: none;
+  --md1-shadow-bottombar: 0 -3rpx 4rpx -2rpx rgba(0, 0, 0, 0.16), 0 -6rpx 9rpx 0 rgba(0, 0, 0, 0.10), 0 -2rpx 12rpx 0 rgba(0, 0, 0, 0.08);
+}
+
+.tabbar {
+  min-height: 112rpx;
+  padding: 8rpx 12rpx calc(10rpx + env(safe-area-inset-bottom));
+  background: #1D2023;
+  border-top: 1px solid rgba(255, 255, 255, 0.10);
+  box-shadow: var(--md1-shadow-bottombar);
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  pointer-events: auto;
+}
+
+.tab-shell.theme-light .tabbar {
+  background: #FFFFFF;
+  border-top-color: rgba(0, 0, 0, 0.08);
+}
+
+.tab-shell.subtitle-current .tabbar {
+  box-shadow: none;
+}
+
+.tab-item {
+  flex: 1;
+  min-width: 0;
+  height: 88rpx;
+  border-radius: 8rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #B6BEC4;
+  gap: 2rpx;
+}
+
+.tab-shell.theme-light .tab-item {
+  color: #495156;
+}
+
+.tab-item.active {
+  color: #038387;
+  background: transparent;
+}
+
+.tab-item.active .tab-icon,
+.tab-item.active .tab-label {
+  color: #038387;
+}
+
+.tab-item:active {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.tab-icon {
+  font-size: 44rpx;
+  line-height: 1;
+}
+
+.tab-label {
+  font-size: 24rpx;
+  line-height: 1.2;
+  white-space: nowrap;
+}

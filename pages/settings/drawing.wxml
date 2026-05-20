@@ -1,0 +1,67 @@
+<import src="../../templates/shell.wxml" />
+
+<view class="page {{themeClass}} nav-{{navMode}}">
+  <view class="nav-bar" style="padding-top:{{statusBarH}}px;">
+    <view class="nav-row">
+      <view class="nav-actions">
+        <view class="icon-btn-sm nav-menu" wx:if="{{navMode === 'drawer'}}" bindtap="onOpenDrawer">
+          <text class="material-icons">menu</text>
+        </view>
+        <view class="icon-btn-sm" bindtap="onSave">
+          <text class="material-icons">save</text>
+        </view>
+      </view>
+      <view class="nav-title">画板</view>
+    </view>
+  </view>
+  <canvas class="canvas-wrap" canvas-id="drawCanvas" id="drawCanvas"
+          disable-scroll="{{true}}"
+          bindtouchstart="onTouchStart" bindtouchmove="onTouchMove" bindtouchend="onTouchEnd" />
+  <view class="draw-toolbar card {{toolbarCollapsed ? 'mini' : ''}}">
+    <view wx:if="{{!toolbarCollapsed}}">
+      <view class="dt-row">
+        <view class="dt-tools">
+          <view class="tool-toggle {{tool === 'pen' ? 'sel' : ''}}" data-tool="pen" bindtap="onSelectTool">
+            <text class="material-icons">edit</text>
+          </view>
+          <view class="tool-toggle {{tool === 'eraser' ? 'sel' : ''}}" data-tool="eraser" bindtap="onSelectTool">
+            <text class="material-icons">ink_eraser</text>
+          </view>
+          <view class="tool-toggle" bindtap="onClear">
+            <text class="material-icons">delete_sweep</text>
+          </view>
+        </view>
+        <scroll-view class="dt-colors" scroll-x="true" enable-flex>
+          <view class="color-dot {{c === color ? 'sel' : ''}}"
+                wx:for="{{colorPalette}}" wx:key="*this" wx:for-item="c"
+                style="background:{{c}};" data-color="{{c}}" bindtap="onPickColor"></view>
+        </scroll-view>
+      </view>
+      <view class="dt-row">
+        <slider class="flex-1" min="2" max="48" value="{{brushSize}}"
+                bindchange="onBrushSizeChange" activeColor="#038387" block-color="#038387" block-size="20" />
+        <view class="dt-actions">
+          <view class="tool-toggle" bindtap="onUndo">
+            <text class="material-icons">undo</text>
+          </view>
+          <view class="tool-toggle" bindtap="onRedo">
+            <text class="material-icons">redo</text>
+          </view>
+          <view class="tool-toggle" bindtap="onSave">
+            <text class="material-icons">save</text>
+          </view>
+          <view class="tool-toggle" bindtap="onToggleToolbar">
+            <text class="material-icons">expand_more</text>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="dt-mini-row" wx:if="{{toolbarCollapsed}}">
+      <view class="tool-toggle" bindtap="onToggleToolbar">
+        <text class="material-icons">expand_less</text>
+      </view>
+    </view>
+  </view>
+</view>
+
+<template is="appDrawer" data="{{drawerOpen: drawerOpen, navItems: navItems, currentPath: currentPath, themeClass: themeClass, logoGlyph: logoGlyph, statusBarH: statusBarH}}" />

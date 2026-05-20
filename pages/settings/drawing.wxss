@@ -1,0 +1,41 @@
+/* 画板 */
+.page { background:var(--md1-bg); display:flex; flex-direction:column; height:100vh; overflow:hidden; }
+.canvas-wrap { flex:1; width:100%; background:#262A2E; }
+.page.theme-light .canvas-wrap { background:#FCFDFE; }
+
+.nav-bar { position:relative; z-index:60; background:var(--md1-surface); flex-shrink:0; box-shadow:var(--md1-shadow-appbar); }
+.nav-row { position:relative; display:flex; align-items:center; justify-content:center; height:88rpx; padding:0 220rpx; box-sizing:border-box; }
+.nav-title { position:absolute; left:220rpx; right:220rpx; top:0; height:88rpx; display:flex; align-items:center; justify-content:center; text-align:center; font-size:36rpx; font-weight:600; color:var(--md1-text-primary); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; pointer-events:none; }
+.nav-actions { position:absolute; left:20rpx; top:8rpx; height:72rpx; display:flex; align-items:center; gap:4rpx; z-index:2; }
+.nav-menu { margin-right:0; }
+
+.draw-toolbar.card {
+  background:var(--md1-surface-raised); border-radius:var(--md1-radius);
+  margin:0 32rpx 20rpx; padding:16rpx 20rpx; flex-shrink:0;
+  box-shadow:var(--md1-shadow-card);
+}
+.page.nav-bottom .draw-toolbar.card { margin-bottom:calc(128rpx + env(safe-area-inset-bottom)); }
+.draw-toolbar.mini { width:104rpx; margin-left:auto; margin-right:auto; padding:8rpx; box-sizing:border-box; }
+
+.dt-row { display:flex; align-items:center; gap:20rpx; margin-bottom:12rpx; }
+.dt-row:last-child { margin-bottom:0; }
+.dt-tools { display:flex; gap:16rpx; flex-shrink:0; }
+.dt-actions { display:flex; gap:16rpx; flex-shrink:0; }
+
+/* 36dp = 72rpx tool toggles */
+.tool-toggle {
+  width:72rpx; height:72rpx; border-radius:50%; display:flex; align-items:center; justify-content:center;
+  color:var(--md1-text-primary); font-size:40rpx; flex-shrink:0;
+}
+.tool-toggle:active { background:rgba(255,255,255,0.08); }
+.tool-toggle.sel { background:rgba(3,131,135,0.16); color:var(--md1-primary); }
+
+/* 22dp = 44rpx color dots */
+.dt-colors { white-space:nowrap; flex:1; min-width:0; height:56rpx; display:flex; }
+.color-dot {
+  display:inline-flex; width:44rpx; height:44rpx; border-radius:50%;
+  border:3rpx solid var(--md1-text-hint); flex-shrink:0; margin-right:16rpx;
+}
+.color-dot.sel { border-color:var(--md1-primary); }
+
+.dt-mini-row { display:flex; align-items:center; justify-content:center; height:72rpx; }

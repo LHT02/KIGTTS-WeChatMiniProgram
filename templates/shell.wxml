@@ -1,0 +1,17 @@
+<template name="appDrawer">
+  <view class="drawer-mask {{themeClass}}" wx:if="{{drawerOpen}}" bindtap="onCloseDrawer">
+    <view class="drawer-panel" style="padding-top:{{statusBarH}}px;" catchtap="noop">
+      <view class="drawer-brand">
+        <text class="kigtts-logo-mark drawer-logo-mark">{{logoGlyph}}</text>
+      </view>
+      <view class="drawer-list">
+        <view class="drawer-item {{currentPath === item.path ? 'active' : ''}}"
+              wx:for="{{navItems}}" wx:key="path"
+              data-path="{{item.path}}" bindtap="onDrawerNavTap">
+          <text class="material-icons drawer-icon">{{item.icon}}</text>
+          <text class="drawer-label">{{item.label}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</template>

@@ -1,0 +1,10 @@
+<view class="tab-shell {{themeClass}} {{selectedPath === 'pages/subtitle/index' ? 'subtitle-current' : ''}}" wx:if="{{navMode !== 'drawer' && !keyboardHidden}}">
+  <view class="tabbar">
+    <view class="tab-item {{selectedPath === item.path ? 'active' : ''}}"
+          wx:for="{{list}}" wx:key="path"
+          data-path="{{item.path}}" bindtap="onTap">
+      <text class="material-icons tab-icon">{{item.icon}}</text>
+      <text class="tab-label">{{item.text}}</text>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,102 @@
+.drawer-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 800;
+  background: rgba(0, 0, 0, 0.52);
+  animation: fadeIn 0.14s cubic-bezier(0.4, 0, 0.2, 1);
+  --md1-surface: #1D2023;
+  --md1-surface-menu: #303335;
+  --md1-text-primary: #E4E8EB;
+  --md1-text-secondary: #B6BEC4;
+  --md1-text-hint: #757F87;
+  --md1-divider: rgba(255, 255, 255, 0.10);
+  --md1-primary: #038387;
+  --md1-radius-sm: 8rpx;
+  --md1-shadow-drawer: 12rpx 0 20rpx -4rpx rgba(0, 0, 0, 0.20), 20rpx 0 28rpx 2rpx rgba(0, 0, 0, 0.14), 6rpx 0 36rpx 4rpx rgba(0, 0, 0, 0.12);
+}
+
+.drawer-mask.theme-light {
+  background: rgba(0, 0, 0, 0.35);
+  --md1-surface: #FFFFFF;
+  --md1-surface-menu: #FFFFFF;
+  --md1-text-primary: #111417;
+  --md1-text-secondary: #495156;
+  --md1-text-hint: #757F87;
+  --md1-divider: rgba(0, 0, 0, 0.08);
+}
+
+.drawer-panel {
+  width: 432rpx;
+  max-width: 82vw;
+  height: 100%;
+  box-sizing: border-box;
+  background: var(--md1-surface-menu);
+  box-shadow: var(--md1-shadow-drawer);
+  padding-top: env(safe-area-inset-top);
+  animation: drawerIn 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.drawer-brand {
+  height: 112rpx;
+  padding: 24rpx 40rpx 12rpx;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.drawer-logo-mark {
+  width: 256rpx;
+  height: 64rpx;
+  color: var(--md1-text-primary);
+  font-size: 64rpx;
+  overflow: hidden;
+}
+
+.drawer-list {
+  padding: 8rpx 0 16rpx;
+  border-top: 1px solid var(--md1-divider);
+}
+
+.drawer-item {
+  height: 104rpx;
+  border-radius: 0;
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+  padding: 0 32rpx;
+  color: var(--md1-text-secondary);
+  transition: background-color 0.18s cubic-bezier(0.4, 0, 0.2, 1), color 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.drawer-item.active {
+  background: rgba(3, 131, 135, 0.12);
+  color: var(--md1-primary);
+}
+
+.drawer-item:active {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.drawer-icon {
+  font-size: 44rpx;
+  width: 48rpx;
+  text-align: center;
+}
+
+.drawer-label {
+  font-size: 28rpx;
+  font-weight: 400;
+}
+
+.nav-menu {
+  margin-right: 0;
+}
+
+@keyframes drawerIn {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}

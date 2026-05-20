@@ -1,0 +1,5 @@
+<view class="launch-page page {{themeClass}} {{leaving ? 'leaving' : ''}}">
+  <view class="launch-brand">
+    <image class="launch-logo" src="{{logoSrc}}" mode="aspectFit" />
+  </view>
+</view>

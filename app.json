@@ -1,0 +1,60 @@
+{
+  "pages": [
+    "pages/launch/index",
+    "pages/subtitle/index",
+    "pages/subtitle/editor",
+    "pages/card/index",
+    "pages/soundboard/index",
+    "pages/soundboard/editor",
+    "pages/settings/drawing",
+    "pages/settings/index"
+  ],
+  "entryPagePath": "pages/launch/index",
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#1D2023",
+    "navigationBarTitleText": "KIGTTS",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#121212",
+    "navigationStyle": "custom"
+  },
+  "requiredPrivateInfos": [],
+  "lazyCodeLoading": "requiredComponents",
+  "plugins": {
+    "WechatSI": {
+      "version": "0.3.6",
+      "provider": "wx069ba97219f66d99"
+    }
+  },
+  "tabBar": {
+    "custom": true,
+    "color": "#8A949B",
+    "selectedColor": "#038387",
+    "backgroundColor": "#1D2023",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/subtitle/index",
+        "text": "字幕"
+      },
+      {
+        "pagePath": "pages/card/index",
+        "text": "名片"
+      },
+      {
+        "pagePath": "pages/settings/drawing",
+        "text": "画板"
+      },
+      {
+        "pagePath": "pages/soundboard/index",
+        "text": "音效"
+      },
+      {
+        "pagePath": "pages/settings/index",
+        "text": "设置"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json",
+  "usingComponents": {}
+}

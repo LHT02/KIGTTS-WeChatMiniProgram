@@ -1,0 +1,19 @@
+@font-face {
+  font-family: 'KIGTTSLogo';
+  font-style: normal;
+  font-weight: 400;
+  src: url(data:font/woff2;base64,d09GMgABAAAAAAQsAAoAAAAAB2QAAAPjAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAABmAANAqICIZgATYCJAMICwYABCAFglwHMhsDBlFULk4gvjiwjXkFvgAppKbfNMjQjR7BkSzk5Hf07af3sjfJBJfZ0llU8pbMnpID8SU7PcF/V4Lc3f9KkghCaAUYUIJxi9u2+lVEm5jVSwZSpwMCFRdNXrvpEEZUDBX2UXG2ZnrK8qoq1Brf1CogUOeKKAl8lalwAGQrZB2xcY+D7ibWhCvwU4FugB4wMMewBJCMAzxHymudtg+iCBTQLls0FKVjImAp0vrubmMTAYJECvCjOoAuAPoAYwXrChFLS+yqmeM0ni/CPMYsN2t4TQbGspr/PBKbMw3H6PtHNDDu2cjKKoTAuHemqVFDsTQB43T5gUD6I0gwaqyG0AKzm8NAqISqI1C9QNgdDMEtM+TlpOPdhPbz/SuVzBSXEo1VlEUZa1iSoggwzm/Tclzpec9r17sQzebZFsY1w/Hwi72lB4QUpOgGfWds1/V1LKYlHeemRx0XZRtaL9RZtbJxXN3vN72edZw2doYaTBskMzenpVjUYRrjDjBD0STFsPwEhAkECQEpiZFBVThBICCzgoAB0QmQ5FUCoicIBcouQNXuHCiz9QWfhlVVJQ5MbQsYf/69+09uOxPMK6OiKisj5uF5EefMj/r4dB31GnR6kNfcQi4jg+cyMzg+I1NaMwbhHIqxI8//7KPL0KlaXacu3UJXrs3mui6o7tC5i7lk+WXvEHmIwwf7Oewz+m89N/cgO5+VB8v7zNI3HHyoLp6ZlT1jyWX1wIaM/EOHlhUXRY7ue+CA3q+xsUtl/4Y2/1hVbVT8/V1dBg188CHuTHuoo6UVyeyUFkwZNOmOZrtyQ9nePfjv//i+RJtF3nrlYO8k+x17+i3UKafq2UlHx5U7l28/2TBt2fKMDFU1hEydcuFuQtKkSXLfWZ1+KSeu+vq6OMVEbztu4zpwYEof4emzwZ1PrwaE6PRv/6ja7WcCRUX0lrN9fMQcH2/eQ/TILhKdOrioAC/x8fAmdtFB5hWplpUQkyTJEtMck9UxuDnYxMWYeFMMt7JftCkkgfdLMfmsPOqI5kDp12LqZmmYUtLd/M/q8lbTm9+x/biI5gi+Hx9R/1UcrbOZCHIg15r40MQmi4Q/PAYMAABvu9dJdMg+6N3z6YUAQKM0NGIbgkrQMZ8PiJNShmAJyEPFMNCxNM6o0QWGCIIkonAERLNmxYwRw4x+OMtaCBoqPQCxlQYQxVwlohm0M2PEcDZtGMtgtcrNNhrLCxRJ+YBbQp5CpIKzN3MbFOISapADvw7IlyubkVG5AgqJokwHyWB9tJClRG6p1BHpNVBPCpkoVJAQL30HrALLoLiGFEBJeveUBg0a+Dsf) format('woff2');
+  font-display: block;
+}
+
+.kigtts-logo-mark {
+  display: block;
+  font-family: 'KIGTTSLogo';
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1;
+  text-transform: none;
+  white-space: nowrap;
+  -webkit-font-smoothing: antialiased;
+}

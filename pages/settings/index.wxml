@@ -1,0 +1,132 @@
+<import src="../../templates/shell.wxml" />
+
+<view class="page {{themeClass}} nav-{{navMode}}">
+  <view class="nav-bar" style="padding-top:{{statusBarH}}px;">
+    <view class="nav-row">
+      <view class="nav-actions">
+        <view class="icon-btn-sm nav-menu" wx:if="{{navMode === 'drawer'}}" bindtap="onOpenDrawer">
+          <text class="material-icons">menu</text>
+        </view>
+      </view>
+      <view class="nav-title">设置</view>
+    </view>
+  </view>
+
+  <scroll-view class="settings-scroll" scroll-y="true" enhanced="true" show-scrollbar="false">
+    <view class="settings-scroll-inner">
+    <view class="about-card">
+      <image class="about-logo-img" src="{{logoSrc}}" mode="aspectFit" />
+      <view class="about-version">v1.0.0</view>
+      <view class="about-desc">Kigurumi 玩家 / 漫展现场交流辅助工具</view>
+      <view class="about-links">
+        <text class="about-link" bindtap="onOpenLicense">开源许可证</text>
+        <text class="about-divider"> · </text>
+        <text class="about-link" bindtap="onOpenPrivacy">隐私政策</text>
+      </view>
+    </view>
+
+    <view class="settings-card">
+      <view class="sc-title">系统与布局</view>
+      <view class="list-item" bindtap="onToggleTheme">
+        <text class="item-icon material-icons">palette</text>
+        <view class="item-body"><view class="item-title">主题模式</view><view class="item-support">{{settings.themeMode === 1 ? '浅色' : '深色'}}</view></view>
+        <text class="item-right material-icons sm">chevron_right</text>
+      </view>
+      <view class="list-item" bindtap="onToggleNavMode">
+        <text class="item-icon material-icons">bottom_navigation</text>
+        <view class="item-body"><view class="item-title">导航模式</view><view class="item-support">{{navMode === 'drawer' ? '抽屉菜单' : '底栏导航'}}</view></view>
+        <text class="item-right material-icons sm">chevron_right</text>
+      </view>
+    </view>
+
+    <view class="settings-card">
+      <view class="sc-title">字幕显示</view>
+      <view class="list-item">
+        <text class="item-icon material-icons">fit_screen</text>
+        <view class="item-body"><view class="item-title">便捷字幕字体大小自适应</view><view class="item-support">{{settings.subtitleAutoFit ? '开启' : '关闭'}}</view></view>
+        <view class="md1-switch {{settings.subtitleAutoFit ? 'checked' : ''}}" data-key="subtitleAutoFit" catchtap="onSwitchTap">
+          <view class="md1-switch-track"></view>
+          <view class="md1-switch-thumb"></view>
+        </view>
+      </view>
+      <view class="list-item">
+        <text class="item-icon material-icons">format_bold</text>
+        <view class="item-body"><view class="item-title">粗体字幕</view><view class="item-support">{{settings.subtitleBold ? '开启' : '关闭'}}</view></view>
+        <view class="md1-switch {{settings.subtitleBold ? 'checked' : ''}}" data-key="subtitleBold" catchtap="onSwitchTap">
+          <view class="md1-switch-track"></view>
+          <view class="md1-switch-thumb"></view>
+        </view>
+      </view>
+      <view class="list-item">
+        <text class="item-icon material-icons">format_align_center</text>
+        <view class="item-body"><view class="item-title">居中显示</view><view class="item-support">{{settings.subtitleCenter ? '开启' : '关闭'}}</view></view>
+        <view class="md1-switch {{settings.subtitleCenter ? 'checked' : ''}}" data-key="subtitleCenter" catchtap="onSwitchTap">
+          <view class="md1-switch-track"></view>
+          <view class="md1-switch-thumb"></view>
+        </view>
+      </view>
+      <view class="list-item">
+        <text class="item-icon material-icons">swap_vert</text>
+        <view class="item-body"><view class="item-title">字幕旋转 180°</view><view class="item-support">{{settings.subtitleRotated180 ? '开启' : '关闭'}}</view></view>
+        <view class="md1-switch {{settings.subtitleRotated180 ? 'checked' : ''}}" data-key="subtitleRotated180" catchtap="onSwitchTap">
+          <view class="md1-switch-track"></view>
+          <view class="md1-switch-thumb"></view>
+        </view>
+      </view>
+    </view>
+
+    <view class="settings-card">
+      <view class="sc-title">语音播报</view>
+      <view class="list-item">
+        <text class="item-icon material-icons">record_voice_over</text>
+        <view class="item-body"><view class="item-title">微信同声传译 TTS</view><view class="item-support">{{settings.ttsEnabled ? '开启' : '关闭'}}</view></view>
+        <view class="md1-switch {{settings.ttsEnabled ? 'checked' : ''}}" data-key="ttsEnabled" catchtap="onSwitchTap">
+          <view class="md1-switch-track"></view>
+          <view class="md1-switch-thumb"></view>
+        </view>
+      </view>
+      <view class="list-item">
+        <text class="item-icon material-icons">volume_up</text>
+        <view class="item-body"><view class="item-title">发送后朗读</view><view class="item-support">{{settings.subtitlePlayOnSend ? '开启' : '关闭'}}</view></view>
+        <view class="md1-switch {{settings.subtitlePlayOnSend ? 'checked' : ''}}" data-key="subtitlePlayOnSend" catchtap="onSwitchTap">
+          <view class="md1-switch-track"></view>
+          <view class="md1-switch-thumb"></view>
+        </view>
+      </view>
+    </view>
+
+    <view class="settings-card">
+      <view class="sc-title">数据管理</view>
+      <view class="list-item" bindtap="onExportAll">
+        <text class="item-icon material-icons">ios_share</text>
+        <view class="item-body"><view class="item-title">导出所有预设</view><view class="item-support">导出字幕和音效预设到剪贴板</view></view>
+        <text class="item-right material-icons sm">chevron_right</text>
+      </view>
+      <view class="list-item" bindtap="onShowImportEditor">
+        <text class="item-icon material-icons">folder_open</text>
+        <view class="item-body"><view class="item-title">导入预设</view><view class="item-support">粘贴导出的 JSON 预设文本</view></view>
+        <text class="item-right material-icons sm">chevron_right</text>
+      </view>
+      <view class="list-item" bindtap="onClearAll">
+        <text class="item-icon material-icons" style="color: var(--md1-error);">delete_sweep</text>
+        <view class="item-body"><view class="item-title" style="color: var(--md1-error);">清除所有数据</view><view class="item-support">恢复出厂设置，此操作不可撤销</view></view>
+        <text class="item-right material-icons sm" style="color: var(--md1-error);">chevron_right</text>
+      </view>
+    </view>
+
+    <view class="settings-bottom-spacer"></view>
+    </view>
+  </scroll-view>
+</view>
+
+<view class="sheet-mask {{themeClass}}" wx:if="{{showImportEditor}}" bindtap="onCloseImportEditor">
+  <view class="sheet-panel" catchtap="noop">
+    <view class="sheet-header"><text class="sheet-title">导入预设</text><text class="material-icons lg" bindtap="onCloseImportEditor" style="padding:8rpx;">close</text></view>
+    <view class="sheet-body">
+      <view class="import-field"><label>粘贴导出的 JSON 数据</label><textarea class="import-textarea" value="{{importData}}" bindinput="onImportDataInput" placeholder='{"subtitle":{...},"soundboard":{...}}' maxlength="-1" /></view>
+    </view>
+    <view class="sheet-footer"><view class="btn-text-sm" bindtap="onCloseImportEditor">取消</view><view class="btn-filled-sm" bindtap="onDoImport">导入</view></view>
+  </view>
+</view>
+
+<template is="appDrawer" data="{{drawerOpen: drawerOpen, navItems: navItems, currentPath: currentPath, themeClass: themeClass, logoGlyph: logoGlyph, statusBarH: statusBarH}}" />
