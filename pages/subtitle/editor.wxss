@@ -30,7 +30,7 @@
   width:100%; box-sizing:border-box;
   border-radius:var(--md1-radius); background:var(--md1-surface-raised);
   box-shadow:none;
-  transition:background-color 0.16s cubic-bezier(0.4,0,0.2,1), box-shadow 0.16s cubic-bezier(0.4,0,0.2,1), transform 0.16s cubic-bezier(0.4,0,0.2,1);
+  transition:box-shadow 0.16s cubic-bezier(0.4,0,0.2,1), transform 0.16s cubic-bezier(0.4,0,0.2,1);
 }
 .item-row:active { background:var(--md1-surface-raised); }
 .item-row.selected { background:rgba(3,131,135,0.14); }
@@ -41,7 +41,6 @@
   border:4rpx solid var(--md1-text-secondary);
   box-sizing:border-box; display:flex; align-items:center; justify-content:center;
   background:transparent; color:#fff;
-  transition:background-color 0.12s cubic-bezier(0.4,0,0.2,1), border-color 0.12s cubic-bezier(0.4,0,0.2,1);
 }
 .native-checkbox.checked { background:var(--md1-primary); border-color:var(--md1-primary); }
 .native-checkbox-mark { font-size:30rpx; line-height:1; font-weight:700; color:#fff; }

@@ -1,13 +1,13 @@
 <import src="../../templates/shell.wxml" />
 
-<view class="page {{themeClass}} nav-{{navMode}}">
+<view class="page route-tab {{themeClass}} nav-{{navMode}}">
   <view class="nav-bar" style="padding-top:{{statusBarH}}px;">
     <view class="nav-row">
       <view class="nav-actions">
-        <view class="icon-btn-sm nav-menu" wx:if="{{navMode === 'drawer'}}" bindtap="onOpenDrawer">
+        <view class="icon-btn-sm nav-menu" wx:if="{{navMode === 'drawer'}}" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onOpenDrawer">
           <text class="material-icons">menu</text>
         </view>
-        <view class="icon-btn-sm" bindtap="onToggleLayout">
+        <view class="icon-btn-sm" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onToggleLayout">
           <text class="material-icons">{{config.layoutMode === 'grid' ? 'view_list' : 'grid_view'}}</text>
         </view>
       </view>
@@ -19,7 +19,7 @@
     <block wx:for="{{currentGroup.items}}" wx:key="id" wx:for-item="item" wx:for-index="idx">
       <!-- List mode -->
       <view class="sound-card slist {{playingId === item.id ? 'playing' : ''}}" wx:if="{{layoutCols === 1}}"
-            data-item="{{item}}" data-index="{{idx}}" bindtap="onTogglePlayback">
+            data-item="{{item}}" data-index="{{idx}}" data-ripple="1" data-ripple-size="72" bindtouchstart="onRippleTouchStart" bindtap="onTogglePlayback">
         <view class="slist-row">
           <view class="slist-info">
             <view class="slist-name">{{item.title || '未命名音效'}}</view>
@@ -35,7 +35,7 @@
       <!-- Grid mode -->
       <view class="grid-cell" wx:if="{{layoutCols > 1}}" style="width: {{100 / layoutCols}}%;">
         <view class="sound-card sgrid {{playingId === item.id ? 'playing' : ''}}"
-              data-item="{{item}}" data-index="{{idx}}" bindtap="onTogglePlayback">
+              data-item="{{item}}" data-index="{{idx}}" data-ripple="1" data-ripple-size="72" bindtouchstart="onRippleTouchStart" bindtap="onTogglePlayback">
           <view class="sgrid-top">
             <view class="sgrid-info">
               <view class="sgrid-name">{{item.title || '未命名音效'}}</view>
@@ -51,7 +51,7 @@
       </view>
     </block>
 
-    <view class="sound-card slist" wx:if="{{layoutCols === 1 && currentGroup.items.length === 0}}" bindtap="onAddItem">
+    <view class="sound-card slist" wx:if="{{layoutCols === 1 && currentGroup.items.length === 0}}" data-ripple="1" data-ripple-size="72" bindtouchstart="onRippleTouchStart" bindtap="onAddItem">
       <view class="slist-empty">当前分组暂无音效，请进入编辑页添加</view>
     </view>
     </view>
@@ -60,12 +60,12 @@
   <view class="group-tabs-card">
     <scroll-view class="chip-scroll" scroll-x="true" enable-flex>
       <view class="group-chip {{config.selectedGroupId === item.id ? 'active' : ''}}"
-            wx:for="{{config.groups}}" wx:key="id" data-gid="{{item.id}}" bindtap="onGroupTap">
+            wx:for="{{config.groups}}" wx:key="id" data-gid="{{item.id}}" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onGroupTap">
         <text class="material-icons" style="font-size:40rpx;">{{item.icon || 'music_note'}}</text>
         <text>{{item.title}}</text>
       </view>
     </scroll-view>
-    <view class="group-edit-segment" bindtap="onOpenEditor">
+    <view class="group-edit-segment" data-ripple="1" data-ripple-color="rgb(255,255,255)" bindtouchstart="onRippleTouchStart" bindtap="onOpenEditor">
       <text class="material-icons" style="font-size:44rpx; color:#fff;">edit</text>
     </view>
   </view>
@@ -91,13 +91,13 @@
         <label>音频文件</label>
         <view class="flex-row" style="gap:12rpx;">
           <text class="flex-1 text-ellipsis" style="color:var(--md1-text-hint);">{{editingFilePath || '未选择'}}</text>
-          <view class="btn-outlined-sm" bindtap="onChooseAudioFile">选择</view>
+          <view class="btn-outlined-sm" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onChooseAudioFile">选择</view>
         </view>
       </view>
     </view>
     <view class="sheet-footer">
-      <view class="btn-text-sm" bindtap="onCloseEditor">取消</view>
-      <view class="btn-filled-sm" bindtap="onSaveItem">保存</view>
+      <view class="btn-text-sm" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onCloseEditor">取消</view>
+      <view class="btn-filled-sm" data-ripple="1" data-ripple-color="rgb(255,255,255)" bindtouchstart="onRippleTouchStart" bindtap="onSaveItem">保存</view>
     </view>
   </view>
 </view>
@@ -119,15 +119,19 @@
         <label>图标</label>
         <scroll-view class="icon-picker" scroll-x="true">
           <view class="icon-chip {{item === editingGroupIcon ? 'active' : ''}}" wx:for="{{groupIcons}}" wx:key="*this"
-                data-icon="{{item}}" bindtap="onPickGroupIcon">
+                data-icon="{{item}}" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onPickGroupIcon">
             <text class="material-icons sm">{{item}}</text>
           </view>
         </scroll-view>
       </view>
     </view>
     <view class="sheet-footer">
-      <view class="btn-text-sm" bindtap="onCloseGroupEditor">取消</view>
-      <view class="btn-filled-sm" bindtap="onSaveGroup">保存</view>
+      <view class="btn-text-sm" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onCloseGroupEditor">取消</view>
+      <view class="btn-filled-sm" data-ripple="1" data-ripple-color="rgb(255,255,255)" bindtouchstart="onRippleTouchStart" bindtap="onSaveGroup">保存</view>
     </view>
   </view>
+</view>
+
+<view class="ripple-host" wx:if="{{rippleList.length}}">
+  <view class="sc-ripple" wx:for="{{rippleList}}" wx:key="id" data-id="{{item.id}}" style="{{item.style}}" bindanimationend="onRippleAnimationEnd"></view>
 </view>

@@ -1,9 +1,11 @@
 var storage = require('../utils/storage')
 var nav = require('../utils/nav')
 var theme = require('../utils/theme')
+var ripple = require('../utils/ripple')
 
 Component({
   data: {
+    rippleList: [],
     selectedPath: '',
     navMode: theme.navMode(),
     themeClass: theme.themeClass(),
@@ -45,6 +47,9 @@ Component({
       var next = !!hidden
       if (this.data.keyboardHidden === next) return
       this.setData({ keyboardHidden: next })
-    }
+    },
+
+    onRippleTouchStart: ripple.methods.onRippleTouchStart,
+    onRippleAnimationEnd: ripple.methods.onRippleAnimationEnd
   }
 })

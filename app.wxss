@@ -41,6 +41,8 @@ page {
 
 /* 每个页面的根容器持有主题变量，通过 themeClass 切换 */
 .page {
+  animation: mdTabEnter 0.20s cubic-bezier(0.2,0,0,1);
+  transform-origin: center center;
   --md1-bg: #121416;
   --md1-surface: #1D2023;
   --md1-surface-raised: #262A2E;
@@ -83,6 +85,9 @@ page {
   --color-text-muted: var(--md1-text-hint);
   --color-danger: var(--md1-error);
 }
+
+.page.route-push { animation-name: mdPushEnter; animation-duration: 0.22s; }
+.page.route-launch { animation: none; }
 
 /* 浅色主题 — 对齐 Android KgtLightColors */
 .theme-light {
@@ -314,85 +319,60 @@ page {
 .btn-micro, .card-edit-btn, .link-icon-btn, .icon-chip,
 .quick-list-item, .sheet-list-item, .sound-card,
 .slist-play, .sgrid-play, .preview-close-btn,
-.nav-back, .tool-toggle, .item-row, .icon-cell, .color-dot {
-  position: relative;
-  overflow: hidden;
+.nav-back, .tool-toggle, .item-row, .icon-cell, .color-dot,
+.md1-switch, .icon-row, .add-card-placeholder {
   -webkit-tap-highlight-color: transparent;
 }
 
-.btn-filled::after, .btn-outlined::after, .btn-text::after,
-.btn-filled-sm::after, .btn-outlined-sm::after, .btn-text-sm::after,
-.icon-btn::after, .icon-btn-sm::after,
-.md-chip::after, .group-chip::after, .quick-chip::after, .list-item::after,
-.send-btn::after, .group-edit-segment::after, .card-toolbar-toggle::after,
-.btn-micro::after, .card-edit-btn::after, .link-icon-btn::after, .icon-chip::after,
-.quick-list-item::after, .sheet-list-item::after, .sound-card::after,
-.slist-play::after, .sgrid-play::after, .preview-close-btn::after,
-.nav-back::after, .tool-toggle::after, .item-row::after, .icon-cell::after, .color-dot::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 24rpx;
-  height: 24rpx;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.30);
-  opacity: 0;
+.ripple-host {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1200;
   pointer-events: none;
-  transform: translate(-50%, -50%) scale(0.1);
+  overflow: hidden;
+}
+
+.sc-ripple {
+  position: absolute;
+  border-radius: 100%;
+  opacity: 0.3;
+  transform: scale(0.1);
   transform-origin: center center;
-}
-
-.theme-light .btn-filled::after, .theme-light .btn-outlined::after, .theme-light .btn-text::after,
-.theme-light .btn-filled-sm::after, .theme-light .btn-outlined-sm::after, .theme-light .btn-text-sm::after,
-.theme-light .icon-btn::after, .theme-light .icon-btn-sm::after,
-.theme-light .md-chip::after, .theme-light .group-chip::after, .theme-light .quick-chip::after, .theme-light .list-item::after,
-.theme-light .send-btn::after, .theme-light .group-edit-segment::after, .theme-light .card-toolbar-toggle::after,
-.theme-light .btn-micro::after, .theme-light .card-edit-btn::after, .theme-light .link-icon-btn::after, .theme-light .icon-chip::after,
-.theme-light .quick-list-item::after, .theme-light .sheet-list-item::after, .theme-light .sound-card::after,
-.theme-light .slist-play::after, .theme-light .sgrid-play::after, .theme-light .preview-close-btn::after,
-.theme-light .nav-back::after, .theme-light .tool-toggle::after, .theme-light .item-row::after, .theme-light .icon-cell::after, .theme-light .color-dot::after {
-  background: rgba(0,0,0,0.18);
-}
-
-.btn-filled::after, .btn-filled-sm::after,
-.group-edit-segment::after,
-.send-btn.enabled::after {
-  background: rgba(255,255,255,0.34);
-}
-
-.btn-filled:active::after, .btn-outlined:active::after, .btn-text:active::after,
-.btn-filled-sm:active::after, .btn-outlined-sm:active::after, .btn-text-sm:active::after,
-.icon-btn:active::after, .icon-btn-sm:active::after,
-.md-chip:active::after, .group-chip:active::after, .quick-chip:active::after, .list-item:active::after,
-.send-btn:active::after, .group-edit-segment:active::after, .card-toolbar-toggle:active::after,
-.btn-micro:active::after, .card-edit-btn:active::after, .link-icon-btn:active::after, .icon-chip:active::after,
-.quick-list-item:active::after, .sheet-list-item:active::after, .sound-card:active::after,
-.slist-play:active::after, .sgrid-play:active::after, .preview-close-btn:active::after,
-.nav-back:active::after, .tool-toggle:active::after, .item-row:active::after, .icon-cell:active::after, .color-dot:active::after {
   animation: scRipple 0.6s ease-out;
   animation-fill-mode: forwards;
 }
 
 /* ═══════ Transitions ═══════ */
 
-.btn-filled, .btn-outlined, .btn-text,
-.btn-filled-sm, .btn-outlined-sm, .btn-text-sm,
-.icon-btn, .icon-btn-sm, .md-chip, .group-chip,
-.sound-card, .quick-chip, .list-item, .log-row, .kigtts-logo-mark,
-.name-card, .subtitle-card, .sheet-panel, .preview-dialog,
-.sheet-mask, .dialog-mask, .card-toolbar, .input-bar, .page {
+.theme-animated,
+.theme-animated .btn-filled, .theme-animated .btn-outlined, .theme-animated .btn-text,
+.theme-animated .btn-filled-sm, .theme-animated .btn-outlined-sm, .theme-animated .btn-text-sm,
+.theme-animated .icon-btn, .theme-animated .icon-btn-sm, .theme-animated .md-chip, .theme-animated .group-chip,
+.theme-animated .sound-card, .theme-animated .quick-chip, .theme-animated .list-item, .theme-animated .log-row, .theme-animated .kigtts-logo-mark,
+.theme-animated .name-card, .theme-animated .subtitle-card, .theme-animated .sheet-panel, .theme-animated .preview-dialog,
+.theme-animated.sheet-mask, .theme-animated.dialog-mask, .theme-animated .card-toolbar, .theme-animated .input-bar {
   transition: background-color 0.18s cubic-bezier(0.4,0,0.2,1), color 0.18s cubic-bezier(0.4,0,0.2,1), box-shadow 0.18s cubic-bezier(0.4,0,0.2,1), border-color 0.18s cubic-bezier(0.4,0,0.2,1), opacity 0.18s cubic-bezier(0.4,0,0.2,1);
 }
 .sheet-mask, .dialog-mask, .preview-mask { animation: fadeIn 0.14s cubic-bezier(0.4,0,0.2,1); }
 .sheet-panel { animation: slideUp 0.18s cubic-bezier(0.4,0,0.2,1); }
 .dot { transition: all 0.16s cubic-bezier(0.4,0,0.2,1); }
-page { animation: pageIn 0.14s cubic-bezier(0.4,0,0.2,1); }
 
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-@keyframes pageIn { from { opacity: 0.6; } to { opacity: 1; } }
+@keyframes mdTabEnter {
+  from { opacity: 0; transform: scale(0.985); }
+  60% { opacity: 1; }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes mdPushEnter {
+  from { opacity: 0; transform: translateX(36rpx); }
+  70% { opacity: 1; }
+  to { opacity: 1; transform: translateX(0); }
+}
 @keyframes scRipple {
-  from { transform: translate(-50%, -50%) scale(0.1); opacity: 0.30; }
-  to { transform: translate(-50%, -50%) scale(28); opacity: 0; }
+  from { transform: scale(0.1); opacity: 0.3; }
+  to { transform: scale(2.5); opacity: 0; }
 }

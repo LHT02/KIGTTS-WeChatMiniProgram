@@ -1,8 +1,8 @@
-<view class="page {{themeClass}}">
+<view class="page route-push {{themeClass}}">
   <view class="nav-bar" style="padding-top:{{statusBarH}}px;">
     <view class="nav-row">
       <view class="nav-actions">
-        <view class="nav-back" bindtap="onNavBack">
+        <view class="nav-back" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onNavBack">
           <text class="material-icons">arrow_back</text>
         </view>
       </view>
@@ -20,7 +20,7 @@
     </view>
     <view class="form-field">
       <label>图标</label>
-      <view class="icon-row" bindtap="onOpenIconPicker">
+      <view class="icon-row" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onOpenIconPicker">
         <view class="cur-icon">
           <text class="material-icons" style="font-size:44rpx;">{{icon}}</text>
         </view>
@@ -28,23 +28,23 @@
       </view>
     </view>
     <view class="flex-row" style="justify-content:flex-end; margin-top:16rpx;">
-      <view class="btn-filled-sm" bindtap="onSaveGroup">保存分组</view>
+      <view class="btn-filled-sm" data-ripple="1" data-ripple-color="rgb(255,255,255)" bindtouchstart="onRippleTouchStart" bindtap="onSaveGroup">保存分组</view>
     </view>
   </view>
 
   <view class="card">
     <view class="section-header">
       <view class="section-title">快捷文本</view>
-      <view wx:if="{{!batchMode}}" class="btn-text-sm" bindtap="onAddItem">＋ 新增</view>
+      <view wx:if="{{!batchMode}}" class="btn-text-sm" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onAddItem">＋ 新增</view>
       <view wx:else class="batch-actions">
-        <view class="btn-text-sm" wx:if="{{batchCount > 0 && configGroups.length > 1 && groupId}}" bindtap="onBatchMove">移动到</view>
-        <view class="btn-text-sm" wx:if="{{batchCount > 0}}" bindtap="onBatchDelete">删除所选</view>
-        <view class="btn-text-sm danger" bindtap="onExitBatch">关闭</view>
+        <view class="btn-text-sm" wx:if="{{batchCount > 0 && configGroups.length > 1 && groupId}}" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onBatchMove">移动到</view>
+        <view class="btn-text-sm" wx:if="{{batchCount > 0}}" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onBatchDelete">删除所选</view>
+        <view class="btn-text-sm danger" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onExitBatch">关闭</view>
       </view>
     </view>
     <view class="item-row {{batchMode ? 'batch-row' : ''}} {{selectedItems[idx] ? 'selected' : ''}} {{draggingIndex === idx ? 'dragging' : ''}}"
           wx:for="{{items}}" wx:key="id" wx:for-index="idx"
-          data-index="{{idx}}" bindtap="onItemRowTap" bindlongpress="onItemLongPress">
+          data-index="{{idx}}" data-ripple="1" data-ripple-size="72" bindtouchstart="onRippleTouchStart" bindtap="onItemRowTap" bindlongpress="onItemLongPress">
       <view wx:if="{{batchMode}}" class="item-check" data-index="{{idx}}" catchtap="onToggleBatchItem">
         <view class="native-checkbox {{selectedItems[idx] ? 'checked' : ''}}">
           <text wx:if="{{selectedItems[idx]}}" class="native-checkbox-mark material-icons">check</text>
@@ -54,13 +54,13 @@
         <text>{{item.text}}</text>
       </view>
       <view class="item-actions" wx:if="{{!batchMode}}" catchlongpress="noop">
-        <view class="btn-micro" data-index="{{idx}}" catchtap="onItemTap">
+        <view class="btn-micro" data-index="{{idx}}" data-ripple="1" catchtouchstart="onRippleTouchStart" catchtap="onItemTap">
           <text class="material-icons">edit</text>
         </view>
         <view class="btn-micro drag-handle" data-index="{{idx}}" catchtouchstart="onItemDragStart" catchtouchmove="onItemDragMove" catchtouchend="onItemDragEnd" catchtouchcancel="onItemDragEnd" catchlongpress="noop">
           <text class="material-icons">drag_indicator</text>
         </view>
-        <view class="btn-micro {{items.length <= 1 ? 'disabled' : ''}}" data-index="{{idx}}" catchtap="onDeleteItem" style="color:var(--md1-error);">
+        <view class="btn-micro {{items.length <= 1 ? 'disabled' : ''}}" data-index="{{idx}}" data-ripple="1" catchtouchstart="onRippleTouchStart" catchtap="onDeleteItem" style="color:var(--md1-error);">
           <text class="material-icons">delete</text>
         </view>
       </view>
@@ -78,7 +78,7 @@
     </view>
     <view class="icon-grid">
       <view class="icon-cell {{item === icon ? 'active' : ''}}" wx:for="{{iconList}}" wx:key="*this"
-            data-icon="{{item}}" bindtap="onPickIcon">
+            data-icon="{{item}}" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onPickIcon">
         <text class="material-icons">{{item}}</text>
       </view>
     </view>
@@ -98,8 +98,12 @@
       </view>
     </view>
     <view class="sheet-footer">
-      <view class="btn-text-sm" bindtap="onCloseItemEditor">取消</view>
-      <view class="btn-filled-sm" bindtap="onSaveItem">保存</view>
+      <view class="btn-text-sm" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onCloseItemEditor">取消</view>
+      <view class="btn-filled-sm" data-ripple="1" data-ripple-color="rgb(255,255,255)" bindtouchstart="onRippleTouchStart" bindtap="onSaveItem">保存</view>
     </view>
   </view>
+</view>
+
+<view class="ripple-host" wx:if="{{rippleList.length}}">
+  <view class="sc-ripple" wx:for="{{rippleList}}" wx:key="id" data-id="{{item.id}}" style="{{item.style}}" bindanimationend="onRippleAnimationEnd"></view>
 </view>

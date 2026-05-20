@@ -1,8 +1,9 @@
 var storage = require('../../utils/storage')
 var nav = require('../../utils/nav')
 var theme = require('../../utils/theme')
+var ripple = require('../../utils/ripple')
 
-Page({
+Page(ripple.attach({
   data: {
     tool: 'pen', color: '#7DE8EA', brushSize: 4, eraserSize: 16,
     toolbarCollapsed: false,
@@ -143,4 +144,4 @@ Page({
   onCloseDrawer: function() { this.setData({ drawerOpen: false }) },
   onDrawerNavTap: function(e) { nav.go(e.currentTarget.dataset.path, this.data.currentPath) },
   noop: function() {}
-})
+}))

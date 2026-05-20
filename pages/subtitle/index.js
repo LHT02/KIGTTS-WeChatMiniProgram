@@ -4,9 +4,10 @@ var preset = require('../../utils/preset')
 var nav = require('../../utils/nav')
 var tts = require('../../utils/tts')
 var theme = require('../../utils/theme')
+var ripple = require('../../utils/ripple')
 var initialSettings = storage.getSettings()
 
-Page({
+Page(ripple.attach({
   data: {
     displayText: '',
     settings: initialSettings, config: {}, currentGroup: {},
@@ -578,4 +579,4 @@ Page({
   onDrawerNavTap: function(e) { nav.go(e.currentTarget.dataset.path, this.data.currentPath) },
 
   noop: function() {}
-})
+}))

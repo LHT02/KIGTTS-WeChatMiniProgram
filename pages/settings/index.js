@@ -3,10 +3,11 @@ var preset = require('../../utils/preset')
 var nav = require('../../utils/nav')
 var theme = require('../../utils/theme')
 var logoData = require('../../utils/logo-data')
+var ripple = require('../../utils/ripple')
 var initialSettings = storage.getSettings()
 var initialThemeClass = theme.themeClass(initialSettings)
 
-Page({
+Page(ripple.attach({
   data: {
     settings: initialSettings, showImportEditor: false, importData: '', themeClass: initialThemeClass,
     navMode: theme.navMode(initialSettings), statusBarH: 44,
@@ -154,4 +155,4 @@ Page({
   onCloseDrawer: function() { this.setData({ drawerOpen: false }) },
   onDrawerNavTap: function(e) { nav.go(e.currentTarget.dataset.path, this.data.currentPath) },
   noop: function() {}
-})
+}))

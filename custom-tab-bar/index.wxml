@@ -2,9 +2,12 @@
   <view class="tabbar">
     <view class="tab-item {{selectedPath === item.path ? 'active' : ''}}"
           wx:for="{{list}}" wx:key="path"
-          data-path="{{item.path}}" bindtap="onTap">
+          data-path="{{item.path}}" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onTap">
       <text class="material-icons tab-icon">{{item.icon}}</text>
       <text class="tab-label">{{item.text}}</text>
     </view>
+  </view>
+  <view class="ripple-host" wx:if="{{rippleList.length}}">
+    <view class="sc-ripple" wx:for="{{rippleList}}" wx:key="id" data-id="{{item.id}}" style="{{item.style}}" bindanimationend="onRippleAnimationEnd"></view>
   </view>
 </view>

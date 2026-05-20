@@ -1,7 +1,8 @@
 var storage = require('../../utils/storage')
 var theme = require('../../utils/theme')
+var ripple = require('../../utils/ripple')
 
-Page({
+Page(ripple.attach({
   data: {
     config: null, configGroups: [],
     groupId: 0, title: '', icon: 'sentiment_satisfied', items: [],
@@ -273,4 +274,4 @@ Page({
   onNavBack: function() { wx.navigateBack() },
 
   noop: function() {}
-})
+}))

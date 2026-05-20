@@ -1,16 +1,16 @@
 <import src="../../templates/shell.wxml" />
 
-<view class="page {{themeClass}} nav-{{navMode}} {{sortMode ? 'sort-open' : ''}}">
+<view class="page route-tab {{themeClass}} nav-{{navMode}} {{sortMode ? 'sort-open' : ''}}">
   <view class="nav-bar" style="padding-top:{{statusBarH}}px;">
     <view class="nav-row">
       <view class="nav-actions">
-        <view class="icon-btn-sm nav-menu" wx:if="{{navMode === 'drawer'}}" bindtap="onOpenDrawer">
+        <view class="icon-btn-sm nav-menu" wx:if="{{navMode === 'drawer'}}" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onOpenDrawer">
           <text class="material-icons">menu</text>
         </view>
-        <view class="icon-btn-sm" bindtap="onAddCard">
+        <view class="icon-btn-sm" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onAddCard">
           <text class="material-icons">add</text>
         </view>
-        <view class="icon-btn-sm" bindtap="onToggleSort">
+        <view class="icon-btn-sm" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onToggleSort">
           <text class="material-icons">sort</text>
         </view>
       </view>
@@ -21,9 +21,9 @@
   <swiper class="card-swiper" current="{{currentIndex}}" bindchange="onSwiperChange" indicator-dots="{{false}}" circular="{{false}}" previous-margin="28rpx" next-margin="28rpx">
     <swiper-item class="swiper-slide" wx:for="{{cards}}" wx:key="id">
       <view class="name-card {{item.imagePath ? 'has-bg' : ''}}" style="{{cardFrameStyle}} background: {{item.imagePath ? 'transparent' : item.themeColor}};"
-            data-index="{{index}}" bindtap="onCardTap" bindlongpress="onCardLongPress">
+            data-index="{{index}}" data-ripple="1" data-ripple-size="96" bindtouchstart="onRippleTouchStart" bindtap="onCardTap" bindlongpress="onCardLongPress">
         <image wx:if="{{item.imagePath}}" class="card-bg-img" src="{{item.imagePath}}" mode="aspectFill" />
-        <view class="card-edit-btn" data-index="{{index}}" catchtap="onCardEditTap">
+        <view class="card-edit-btn" data-index="{{index}}" data-ripple="1" catchtouchstart="onRippleTouchStart" catchtap="onCardEditTap">
           <text class="material-icons" style="font-size:44rpx; color:#fff;">edit</text>
         </view>
         <view class="card-header">
@@ -39,10 +39,10 @@
         <view class="card-center" wx:else></view>
         <view class="card-footer">
           <view class="card-link-row" wx:if="{{item.link}}">
-            <view class="link-icon-btn" data-link="{{item.link}}" catchtap="onOpenCardLink">
+            <view class="link-icon-btn" data-link="{{item.link}}" data-ripple="1" catchtouchstart="onRippleTouchStart" catchtap="onOpenCardLink">
               <text class="material-icons" style="font-size:52rpx; color:#fff;">open_in_new</text>
             </view>
-            <view class="link-icon-btn" data-link="{{item.link}}" catchtap="onShareCardLink">
+            <view class="link-icon-btn" data-link="{{item.link}}" data-ripple="1" catchtouchstart="onRippleTouchStart" catchtap="onShareCardLink">
               <text class="material-icons" style="font-size:52rpx; color:#fff;">share</text>
             </view>
             <text class="card-link">{{item.link}}</text>
@@ -56,7 +56,7 @@
       </view>
     </swiper-item>
     <swiper-item class="swiper-slide">
-      <view class="add-card-placeholder" style="{{cardFrameStyle}}" bindtap="onAddCard">
+      <view class="add-card-placeholder" style="{{cardFrameStyle}}" data-ripple="1" data-ripple-size="96" bindtouchstart="onRippleTouchStart" bindtap="onAddCard">
         <text class="material-icons" style="font-size:68rpx; color:var(--md1-text-hint);">add_circle</text>
         <text style="margin-top:16rpx;">点击以新建名片</text>
       </view>
@@ -70,13 +70,13 @@
   <view class="sort-bar" wx:if="{{sortMode && cards.length > 0}}">
     <view class="sort-bar-title">第 {{currentIndex + 1}} / {{cards.length}} 张</view>
     <view class="sort-bar-actions">
-      <view class="icon-btn-sm {{currentIndex === 0 ? 'disabled' : ''}}" bindtap="onMoveCardUp">
+      <view class="icon-btn-sm {{currentIndex === 0 ? 'disabled' : ''}}" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onMoveCardUp">
         <text class="material-icons">arrow_upward</text>
       </view>
-      <view class="icon-btn-sm {{currentIndex >= cards.length - 1 ? 'disabled' : ''}}" bindtap="onMoveCardDown">
+      <view class="icon-btn-sm {{currentIndex >= cards.length - 1 ? 'disabled' : ''}}" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onMoveCardDown">
         <text class="material-icons">arrow_downward</text>
       </view>
-      <view class="icon-btn-sm" bindtap="onToggleSort">
+      <view class="icon-btn-sm" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onToggleSort">
         <text class="material-icons">check</text>
       </view>
     </view>
@@ -108,8 +108,8 @@
     </view>
     <text class="card-watermark">{{previewCard.title}}</text>
     <view class="preview-actions">
-      <view class="btn-outlined-sm" style="border-color:rgba(255,255,255,0.4);color:#fff;" bindtap="onPreviewShareLink" wx:if="{{previewCard.link}}">复制链接</view>
-      <view class="btn-outlined-sm" style="border-color:rgba(255,255,255,0.4);color:#fff;" bindtap="onEditTap">编辑</view>
+      <view class="btn-outlined-sm" style="border-color:rgba(255,255,255,0.4);color:#fff;" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onPreviewShareLink" wx:if="{{previewCard.link}}">复制链接</view>
+      <view class="btn-outlined-sm" style="border-color:rgba(255,255,255,0.4);color:#fff;" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onEditTap">编辑</view>
     </view>
     <view class="preview-dismiss" bindtap="onClosePreview">点击空白关闭</view>
   </view>
@@ -160,10 +160,10 @@
           <text class="image-section-label">竖屏背景图</text>
           <view class="image-row">
             <text class="flex-1 text-ellipsis" style="color:var(--md1-text-hint);">{{imagePath || '未选择图片'}}</text>
-            <view class="icon-btn-sm" wx:if="{{imagePath}}" bindtap="onRemoveImage">
+            <view class="icon-btn-sm" wx:if="{{imagePath}}" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onRemoveImage">
               <text class="material-icons">close</text>
             </view>
-            <view class="icon-btn-sm" bindtap="onChooseImage">
+            <view class="icon-btn-sm" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onChooseImage">
               <text class="material-icons">folder_open</text>
             </view>
           </view>
@@ -173,8 +173,8 @@
       </view>
     </scroll-view>
     <view class="sheet-footer">
-      <view class="btn-text-sm" bindtap="onCloseEditor">取消</view>
-      <view class="btn-filled-sm" bindtap="onSaveCard">保存</view>
+      <view class="btn-text-sm" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onCloseEditor">取消</view>
+      <view class="btn-filled-sm" data-ripple="1" data-ripple-color="rgb(255,255,255)" bindtouchstart="onRippleTouchStart" bindtap="onSaveCard">保存</view>
     </view>
   </view>
 </view>
@@ -222,7 +222,7 @@
           <view class="md-text-field flex-1">
             <input value="{{hexInput}}" bindinput="onHexInputChange" placeholder="#RRGGBB" />
           </view>
-          <view class="btn-filled-sm" bindtap="onApplyHexColor">应用</view>
+          <view class="btn-filled-sm" data-ripple="1" data-ripple-color="rgb(255,255,255)" bindtouchstart="onRippleTouchStart" bindtap="onApplyHexColor">应用</view>
         </view>
       </view>
 
@@ -236,8 +236,12 @@
   <view class="dialog-box" catchtap="noop">
     <view class="dialog-text">确定要删除这张名片吗？此操作不可撤销。</view>
     <view class="dialog-footer">
-      <view class="btn-text-sm" bindtap="onCancelDelete">取消</view>
-      <view class="btn-text-sm" style="color:var(--md1-error);" bindtap="onConfirmDelete">删除</view>
+      <view class="btn-text-sm" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onCancelDelete">取消</view>
+      <view class="btn-text-sm" style="color:var(--md1-error);" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onConfirmDelete">删除</view>
     </view>
   </view>
+</view>
+
+<view class="ripple-host" wx:if="{{rippleList.length}}">
+  <view class="sc-ripple" wx:for="{{rippleList}}" wx:key="id" data-id="{{item.id}}" style="{{item.style}}" bindanimationend="onRippleAnimationEnd"></view>
 </view>

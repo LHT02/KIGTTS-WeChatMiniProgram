@@ -1,8 +1,9 @@
 var storage = require('../../utils/storage')
 var preset = require('../../utils/preset')
 var theme = require('../../utils/theme')
+var ripple = require('../../utils/ripple')
 
-Page({
+Page(ripple.attach({
   data: {
     config: null, groups: [], selectedGroupIdx: 0, selectedGroup: null,
     themeClass: theme.themeClass(),
@@ -373,4 +374,4 @@ Page({
   onNavBack: function() { wx.navigateBack() },
 
   noop: function() {}
-})
+}))

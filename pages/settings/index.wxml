@@ -1,10 +1,10 @@
 <import src="../../templates/shell.wxml" />
 
-<view class="page {{themeClass}} nav-{{navMode}}">
+<view class="page route-tab theme-animated {{themeClass}} nav-{{navMode}}">
   <view class="nav-bar" style="padding-top:{{statusBarH}}px;">
     <view class="nav-row">
       <view class="nav-actions">
-        <view class="icon-btn-sm nav-menu" wx:if="{{navMode === 'drawer'}}" bindtap="onOpenDrawer">
+        <view class="icon-btn-sm nav-menu" wx:if="{{navMode === 'drawer'}}" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onOpenDrawer">
           <text class="material-icons">menu</text>
         </view>
       </view>
@@ -27,12 +27,12 @@
 
     <view class="settings-card">
       <view class="sc-title">系统与布局</view>
-      <view class="list-item" bindtap="onToggleTheme">
+      <view class="list-item" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onToggleTheme">
         <text class="item-icon material-icons">palette</text>
         <view class="item-body"><view class="item-title">主题模式</view><view class="item-support">{{settings.themeMode === 1 ? '浅色' : '深色'}}</view></view>
         <text class="item-right material-icons sm">chevron_right</text>
       </view>
-      <view class="list-item" bindtap="onToggleNavMode">
+      <view class="list-item" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onToggleNavMode">
         <text class="item-icon material-icons">bottom_navigation</text>
         <view class="item-body"><view class="item-title">导航模式</view><view class="item-support">{{navMode === 'drawer' ? '抽屉菜单' : '底栏导航'}}</view></view>
         <text class="item-right material-icons sm">chevron_right</text>
@@ -44,7 +44,7 @@
       <view class="list-item">
         <text class="item-icon material-icons">fit_screen</text>
         <view class="item-body"><view class="item-title">便捷字幕字体大小自适应</view><view class="item-support">{{settings.subtitleAutoFit ? '开启' : '关闭'}}</view></view>
-        <view class="md1-switch {{settings.subtitleAutoFit ? 'checked' : ''}}" data-key="subtitleAutoFit" catchtap="onSwitchTap">
+        <view class="md1-switch {{settings.subtitleAutoFit ? 'checked' : ''}}" data-key="subtitleAutoFit" data-ripple="1" bindtouchstart="onRippleTouchStart" catchtap="onSwitchTap">
           <view class="md1-switch-track"></view>
           <view class="md1-switch-thumb"></view>
         </view>
@@ -52,7 +52,7 @@
       <view class="list-item">
         <text class="item-icon material-icons">format_bold</text>
         <view class="item-body"><view class="item-title">粗体字幕</view><view class="item-support">{{settings.subtitleBold ? '开启' : '关闭'}}</view></view>
-        <view class="md1-switch {{settings.subtitleBold ? 'checked' : ''}}" data-key="subtitleBold" catchtap="onSwitchTap">
+        <view class="md1-switch {{settings.subtitleBold ? 'checked' : ''}}" data-key="subtitleBold" data-ripple="1" bindtouchstart="onRippleTouchStart" catchtap="onSwitchTap">
           <view class="md1-switch-track"></view>
           <view class="md1-switch-thumb"></view>
         </view>
@@ -60,7 +60,7 @@
       <view class="list-item">
         <text class="item-icon material-icons">format_align_center</text>
         <view class="item-body"><view class="item-title">居中显示</view><view class="item-support">{{settings.subtitleCenter ? '开启' : '关闭'}}</view></view>
-        <view class="md1-switch {{settings.subtitleCenter ? 'checked' : ''}}" data-key="subtitleCenter" catchtap="onSwitchTap">
+        <view class="md1-switch {{settings.subtitleCenter ? 'checked' : ''}}" data-key="subtitleCenter" data-ripple="1" bindtouchstart="onRippleTouchStart" catchtap="onSwitchTap">
           <view class="md1-switch-track"></view>
           <view class="md1-switch-thumb"></view>
         </view>
@@ -68,7 +68,7 @@
       <view class="list-item">
         <text class="item-icon material-icons">swap_vert</text>
         <view class="item-body"><view class="item-title">字幕旋转 180°</view><view class="item-support">{{settings.subtitleRotated180 ? '开启' : '关闭'}}</view></view>
-        <view class="md1-switch {{settings.subtitleRotated180 ? 'checked' : ''}}" data-key="subtitleRotated180" catchtap="onSwitchTap">
+        <view class="md1-switch {{settings.subtitleRotated180 ? 'checked' : ''}}" data-key="subtitleRotated180" data-ripple="1" bindtouchstart="onRippleTouchStart" catchtap="onSwitchTap">
           <view class="md1-switch-track"></view>
           <view class="md1-switch-thumb"></view>
         </view>
@@ -80,7 +80,7 @@
       <view class="list-item">
         <text class="item-icon material-icons">record_voice_over</text>
         <view class="item-body"><view class="item-title">微信同声传译 TTS</view><view class="item-support">{{settings.ttsEnabled ? '开启' : '关闭'}}</view></view>
-        <view class="md1-switch {{settings.ttsEnabled ? 'checked' : ''}}" data-key="ttsEnabled" catchtap="onSwitchTap">
+        <view class="md1-switch {{settings.ttsEnabled ? 'checked' : ''}}" data-key="ttsEnabled" data-ripple="1" bindtouchstart="onRippleTouchStart" catchtap="onSwitchTap">
           <view class="md1-switch-track"></view>
           <view class="md1-switch-thumb"></view>
         </view>
@@ -88,7 +88,7 @@
       <view class="list-item">
         <text class="item-icon material-icons">volume_up</text>
         <view class="item-body"><view class="item-title">发送后朗读</view><view class="item-support">{{settings.subtitlePlayOnSend ? '开启' : '关闭'}}</view></view>
-        <view class="md1-switch {{settings.subtitlePlayOnSend ? 'checked' : ''}}" data-key="subtitlePlayOnSend" catchtap="onSwitchTap">
+        <view class="md1-switch {{settings.subtitlePlayOnSend ? 'checked' : ''}}" data-key="subtitlePlayOnSend" data-ripple="1" bindtouchstart="onRippleTouchStart" catchtap="onSwitchTap">
           <view class="md1-switch-track"></view>
           <view class="md1-switch-thumb"></view>
         </view>
@@ -97,17 +97,17 @@
 
     <view class="settings-card">
       <view class="sc-title">数据管理</view>
-      <view class="list-item" bindtap="onExportAll">
+      <view class="list-item" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onExportAll">
         <text class="item-icon material-icons">ios_share</text>
         <view class="item-body"><view class="item-title">导出所有预设</view><view class="item-support">导出字幕和音效预设到剪贴板</view></view>
         <text class="item-right material-icons sm">chevron_right</text>
       </view>
-      <view class="list-item" bindtap="onShowImportEditor">
+      <view class="list-item" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onShowImportEditor">
         <text class="item-icon material-icons">folder_open</text>
         <view class="item-body"><view class="item-title">导入预设</view><view class="item-support">粘贴导出的 JSON 预设文本</view></view>
         <text class="item-right material-icons sm">chevron_right</text>
       </view>
-      <view class="list-item" bindtap="onClearAll">
+      <view class="list-item" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onClearAll">
         <text class="item-icon material-icons" style="color: var(--md1-error);">delete_sweep</text>
         <view class="item-body"><view class="item-title" style="color: var(--md1-error);">清除所有数据</view><view class="item-support">恢复出厂设置，此操作不可撤销</view></view>
         <text class="item-right material-icons sm" style="color: var(--md1-error);">chevron_right</text>
@@ -119,14 +119,18 @@
   </scroll-view>
 </view>
 
-<view class="sheet-mask {{themeClass}}" wx:if="{{showImportEditor}}" bindtap="onCloseImportEditor">
+<view class="sheet-mask theme-animated {{themeClass}}" wx:if="{{showImportEditor}}" bindtap="onCloseImportEditor">
   <view class="sheet-panel" catchtap="noop">
     <view class="sheet-header"><text class="sheet-title">导入预设</text><text class="material-icons lg" bindtap="onCloseImportEditor" style="padding:8rpx;">close</text></view>
     <view class="sheet-body">
       <view class="import-field"><label>粘贴导出的 JSON 数据</label><textarea class="import-textarea" value="{{importData}}" bindinput="onImportDataInput" placeholder='{"subtitle":{...},"soundboard":{...}}' maxlength="-1" /></view>
     </view>
-    <view class="sheet-footer"><view class="btn-text-sm" bindtap="onCloseImportEditor">取消</view><view class="btn-filled-sm" bindtap="onDoImport">导入</view></view>
+    <view class="sheet-footer"><view class="btn-text-sm" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onCloseImportEditor">取消</view><view class="btn-filled-sm" data-ripple="1" data-ripple-color="rgb(255,255,255)" bindtouchstart="onRippleTouchStart" bindtap="onDoImport">导入</view></view>
   </view>
 </view>
 
 <template is="appDrawer" data="{{drawerOpen: drawerOpen, navItems: navItems, currentPath: currentPath, themeClass: themeClass, logoGlyph: logoGlyph, statusBarH: statusBarH}}" />
+
+<view class="ripple-host" wx:if="{{rippleList.length}}">
+  <view class="sc-ripple" wx:for="{{rippleList}}" wx:key="id" data-id="{{item.id}}" style="{{item.style}}" bindanimationend="onRippleAnimationEnd"></view>
+</view>

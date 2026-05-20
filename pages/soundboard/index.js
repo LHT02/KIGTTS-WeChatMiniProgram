@@ -2,8 +2,9 @@ var storage = require('../../utils/storage')
 var audio = require('../../utils/audio')
 var nav = require('../../utils/nav')
 var theme = require('../../utils/theme')
+var ripple = require('../../utils/ripple')
 
-Page({
+Page(ripple.attach({
   data: {
     config: { groups: [], selectedGroupId: 1, layoutMode: 'list' },
     currentGroup: { items: [] },
@@ -218,4 +219,4 @@ Page({
   onCloseDrawer: function() { this.setData({ drawerOpen: false }) },
   onDrawerNavTap: function(e) { nav.go(e.currentTarget.dataset.path, this.data.currentPath) },
   noop: function() {}
-})
+}))
