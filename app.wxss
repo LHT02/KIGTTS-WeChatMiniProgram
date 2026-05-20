@@ -166,14 +166,14 @@ page {
   background: transparent; color: var(--md1-text-primary);
   font-size: 48rpx; border: none;
 }
-.icon-btn:active { background: rgba(255,255,255,0.08); }
+.icon-btn:active { background: transparent; }
 .icon-btn-sm {
   width: 72rpx; height: 72rpx; border-radius: 50%;
   display: inline-flex; align-items: center; justify-content: center;
   background: transparent; color: var(--md1-text-primary);
   font-size: 48rpx; border: none;
 }
-.icon-btn-sm:active { background: rgba(255,255,255,0.08); }
+.icon-btn-sm:active { background: transparent; }
 .icon-btn-sm.sel { background: transparent; color: var(--md1-text-primary); }
 .icon-btn .material-icons, .icon-btn-sm .material-icons { font-family: 'Material Symbols Sharp'; line-height: 1; }
 .material-icons { font-size: 52rpx; font-weight: 500; }
@@ -304,6 +304,76 @@ page {
 .safe-bottom { padding-bottom: constant(safe-area-inset-bottom); padding-bottom: env(safe-area-inset-bottom); }
 .empty-state { padding: 160rpx 0; text-align: center; color: var(--md1-text-hint); font-size: 26rpx; }
 
+/* ═══════ sc-ui Inspired Ripple ═══════ */
+
+.btn-filled, .btn-outlined, .btn-text,
+.btn-filled-sm, .btn-outlined-sm, .btn-text-sm,
+.icon-btn, .icon-btn-sm,
+.md-chip, .group-chip, .quick-chip, .list-item,
+.send-btn, .group-edit-segment, .card-toolbar-toggle,
+.btn-micro, .card-edit-btn, .link-icon-btn, .icon-chip,
+.quick-list-item, .sheet-list-item, .sound-card,
+.slist-play, .sgrid-play, .preview-close-btn,
+.nav-back, .tool-toggle, .item-row, .icon-cell, .color-dot {
+  position: relative;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-filled::after, .btn-outlined::after, .btn-text::after,
+.btn-filled-sm::after, .btn-outlined-sm::after, .btn-text-sm::after,
+.icon-btn::after, .icon-btn-sm::after,
+.md-chip::after, .group-chip::after, .quick-chip::after, .list-item::after,
+.send-btn::after, .group-edit-segment::after, .card-toolbar-toggle::after,
+.btn-micro::after, .card-edit-btn::after, .link-icon-btn::after, .icon-chip::after,
+.quick-list-item::after, .sheet-list-item::after, .sound-card::after,
+.slist-play::after, .sgrid-play::after, .preview-close-btn::after,
+.nav-back::after, .tool-toggle::after, .item-row::after, .icon-cell::after, .color-dot::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 24rpx;
+  height: 24rpx;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.30);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(0.1);
+  transform-origin: center center;
+}
+
+.theme-light .btn-filled::after, .theme-light .btn-outlined::after, .theme-light .btn-text::after,
+.theme-light .btn-filled-sm::after, .theme-light .btn-outlined-sm::after, .theme-light .btn-text-sm::after,
+.theme-light .icon-btn::after, .theme-light .icon-btn-sm::after,
+.theme-light .md-chip::after, .theme-light .group-chip::after, .theme-light .quick-chip::after, .theme-light .list-item::after,
+.theme-light .send-btn::after, .theme-light .group-edit-segment::after, .theme-light .card-toolbar-toggle::after,
+.theme-light .btn-micro::after, .theme-light .card-edit-btn::after, .theme-light .link-icon-btn::after, .theme-light .icon-chip::after,
+.theme-light .quick-list-item::after, .theme-light .sheet-list-item::after, .theme-light .sound-card::after,
+.theme-light .slist-play::after, .theme-light .sgrid-play::after, .theme-light .preview-close-btn::after,
+.theme-light .nav-back::after, .theme-light .tool-toggle::after, .theme-light .item-row::after, .theme-light .icon-cell::after, .theme-light .color-dot::after {
+  background: rgba(0,0,0,0.18);
+}
+
+.btn-filled::after, .btn-filled-sm::after,
+.group-edit-segment::after,
+.send-btn.enabled::after {
+  background: rgba(255,255,255,0.34);
+}
+
+.btn-filled:active::after, .btn-outlined:active::after, .btn-text:active::after,
+.btn-filled-sm:active::after, .btn-outlined-sm:active::after, .btn-text-sm:active::after,
+.icon-btn:active::after, .icon-btn-sm:active::after,
+.md-chip:active::after, .group-chip:active::after, .quick-chip:active::after, .list-item:active::after,
+.send-btn:active::after, .group-edit-segment:active::after, .card-toolbar-toggle:active::after,
+.btn-micro:active::after, .card-edit-btn:active::after, .link-icon-btn:active::after, .icon-chip:active::after,
+.quick-list-item:active::after, .sheet-list-item:active::after, .sound-card:active::after,
+.slist-play:active::after, .sgrid-play:active::after, .preview-close-btn:active::after,
+.nav-back:active::after, .tool-toggle:active::after, .item-row:active::after, .icon-cell:active::after, .color-dot:active::after {
+  animation: scRipple 0.6s ease-out;
+  animation-fill-mode: forwards;
+}
+
 /* ═══════ Transitions ═══════ */
 
 .btn-filled, .btn-outlined, .btn-text,
@@ -322,3 +392,7 @@ page { animation: pageIn 0.14s cubic-bezier(0.4,0,0.2,1); }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
 @keyframes pageIn { from { opacity: 0.6; } to { opacity: 1; } }
+@keyframes scRipple {
+  from { transform: translate(-50%, -50%) scale(0.1); opacity: 0.30; }
+  to { transform: translate(-50%, -50%) scale(28); opacity: 0; }
+}

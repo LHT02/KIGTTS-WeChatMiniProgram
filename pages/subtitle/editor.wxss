@@ -2,7 +2,7 @@
 .nav-bar { position:relative; z-index:60; background:var(--md1-surface); flex-shrink:0; box-shadow:var(--md1-shadow-appbar); }
 .nav-row { position:relative; display:flex; align-items:center; justify-content:center; height:88rpx; padding:0 220rpx; box-sizing:border-box; }
 .nav-back { width:72rpx; height:72rpx; display:flex; align-items:center; justify-content:center; border-radius:50%; flex-shrink:0; }
-.nav-back:active { background:rgba(255,255,255,0.08); }
+.nav-back:active { background:transparent; }
 .nav-back .material-icons { font-size:44rpx; color:var(--md1-text-primary); }
 .nav-title { position:absolute; left:220rpx; right:220rpx; top:0; height:88rpx; display:flex; align-items:center; justify-content:center; text-align:center; font-size:36rpx; font-weight:600; color:var(--md1-text-primary); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; pointer-events:none; }
 .nav-actions { position:absolute; left:20rpx; top:8rpx; height:72rpx; display:flex; align-items:center; gap:4rpx; z-index:2; }
@@ -32,7 +32,7 @@
   box-shadow:none;
   transition:background-color 0.16s cubic-bezier(0.4,0,0.2,1), box-shadow 0.16s cubic-bezier(0.4,0,0.2,1), transform 0.16s cubic-bezier(0.4,0,0.2,1);
 }
-.item-row:active { background:var(--md1-surface-menu); }
+.item-row:active { background:var(--md1-surface-raised); }
 .item-row.selected { background:rgba(3,131,135,0.14); }
 .item-row.dragging { box-shadow:var(--md1-shadow-drag); transform:scale(1.01); }
 .item-check { width:56rpx; height:56rpx; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
@@ -49,7 +49,7 @@
 .item-actions { display:flex; gap:4rpx; flex-shrink:0; margin-left:4rpx; }
 .btn-micro { width:58rpx; height:58rpx; border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--md1-text-secondary); font-size:40rpx; }
 .btn-micro .material-icons { font-size:46rpx; color:currentColor; }
-.btn-micro:active { background:rgba(255,255,255,0.08); }
+.btn-micro:active { background:transparent; }
 .btn-micro.disabled { opacity:0.32; pointer-events:none; }
 .drag-handle { color:var(--md1-text-primary); }
 .empty-state.compact { padding:48rpx 0; }

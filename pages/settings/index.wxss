@@ -33,8 +33,8 @@
 .sc-title { font-size:24rpx; font-weight:700; color:var(--md1-primary); padding:0 0 8rpx; }
 
 .list-item { display:flex; align-items:center; justify-content:space-between; min-height:88rpx; padding:6rpx 4rpx; border-radius:var(--md1-radius); box-sizing:border-box; }
-.list-item:active { background:rgba(255,255,255,0.08); }
-.page.theme-light .list-item:active { background:rgba(0,0,0,0.06); }
+.list-item:active { background:transparent; }
+.page.theme-light .list-item:active { background:transparent; }
 .item-icon { width:56rpx; margin-right:20rpx; text-align:center; flex-shrink:0; color:var(--md1-text-secondary); font-size:44rpx; }
 .item-body { flex:1; min-width:0; }
 .item-title { font-size:30rpx; color:var(--md1-text-primary); line-height:1.25; }

@@ -27,7 +27,7 @@
   width:72rpx; height:72rpx; border-radius:50%; display:flex; align-items:center; justify-content:center;
   color:var(--md1-text-primary); font-size:40rpx; flex-shrink:0;
 }
-.tool-toggle:active { background:rgba(255,255,255,0.08); }
+.tool-toggle:active { background:transparent; }
 .tool-toggle.sel { background:rgba(3,131,135,0.16); color:var(--md1-primary); }
 
 /* 22dp = 44rpx color dots */
