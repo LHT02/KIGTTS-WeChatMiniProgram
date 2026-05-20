@@ -89,7 +89,7 @@
         <text class="material-icons sm">{{quickInputCollapsed ? 'subtitles_off' : 'subtitles'}}</text>
       </view>
       <view class="icon-btn-sm" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onSpeakCurrent">
-        <text class="material-icons sm">{{ttsBusy ? 'volume_up' : 'play_arrow'}}</text>
+        <text class="material-icons sm">play_arrow</text>
       </view>
     </view>
     <view class="input-row">
