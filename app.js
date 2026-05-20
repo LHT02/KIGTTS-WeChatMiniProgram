@@ -40,8 +40,8 @@ App({
 
   applyShellTheme: function(settings) {
     var light = ((settings || storage.getDefaultSettings()).themeMode || 0) === 1
-    var bg = light ? '#F1F3F5' : '#121416'
-    var bar = light ? '#FFFFFF' : '#1D2023'
+    var bg = light ? '#F1F3F5' : '#121212'
+    var bar = light ? '#FFFFFF' : '#1E1E1E'
     try {
       wx.setNavigationBarColor({ frontColor: light ? '#000000' : '#ffffff', backgroundColor: bar })
     } catch (e) {}

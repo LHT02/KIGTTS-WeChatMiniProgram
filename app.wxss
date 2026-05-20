@@ -5,21 +5,21 @@
 /* ═══════════════════════════════════════════════════════════════
    KIGTTS — 暗色主题 (默认)
    主色: #038387 · 圆角: 8rpx (4dp) · 参考 Android 端 UiTokens
-   色值对齐: android-app/MainActivity.kt KgtDarkColors
+   暗色表面使用 MD 暗色海拔灰阶，避免小程序渲染偏蓝
    ═══════════════════════════════════════════════════════════════ */
 
 page {
-  background: #121416;
-  color: #E4E8EB;
+  background: #121212;
+  color: #E6E6E6;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 28rpx; line-height: 1.45;
-  --md1-surface: #1D2023;
-  --md1-surface-raised: #262A2E;
-  --md1-surface-menu: #303335;
+  --md1-surface: #1E1E1E;
+  --md1-surface-raised: #242424;
+  --md1-surface-menu: #2C2C2C;
   --md1-primary: #038387;
-  --md1-text-primary: #E4E8EB;
-  --md1-text-secondary: #B6BEC4;
-  --md1-text-hint: #757F87;
+  --md1-text-primary: #E6E6E6;
+  --md1-text-secondary: #C2C2C2;
+  --md1-text-hint: #8C8C8C;
   --md1-error: #cf6679;
   --md1-radius-sm: 8rpx;
   --md1-radius-md: 8rpx;
@@ -43,10 +43,10 @@ page {
 .page {
   animation: mdTabEnter 0.20s cubic-bezier(0.2,0,0,1);
   transform-origin: center center;
-  --md1-bg: #121416;
-  --md1-surface: #1D2023;
-  --md1-surface-raised: #262A2E;
-  --md1-surface-menu: #303335;
+  --md1-bg: #121212;
+  --md1-surface: #1E1E1E;
+  --md1-surface-raised: #242424;
+  --md1-surface-menu: #2C2C2C;
   --md1-field: rgba(255,255,255,0.08);
   --md1-divider: rgba(255,255,255,0.10);
   --md1-shadow-card: 0 6rpx 2rpx -4rpx rgba(0,0,0,0.14), 0 4rpx 4rpx 0 rgba(0,0,0,0.098), 0 2rpx 10rpx 0 rgba(0,0,0,0.084);
@@ -64,10 +64,10 @@ page {
   --md1-primary-dark: #006b6f;
   --md1-on-primary: #ffffff;
 
-  --md1-text-primary: #E4E8EB;
-  --md1-text-secondary: #B6BEC4;
+  --md1-text-primary: #E6E6E6;
+  --md1-text-secondary: #C2C2C2;
   --md1-text-disabled: rgba(255,255,255,0.26);
-  --md1-text-hint: #757F87;
+  --md1-text-hint: #8C8C8C;
 
   --md1-error: #cf6679;
   --md1-radius-sm: 8rpx;
@@ -290,7 +290,7 @@ page {
 
 .dialog-mask { position:fixed; top:0;left:0;right:0;bottom:0; background:rgba(0,0,0,0.52); z-index:200; display:flex; align-items:center; justify-content:center; padding:56rpx; }
 .dialog-box {
-  background:var(--md1-surface-menu, #303335); border-radius:var(--md1-radius);
+  background:var(--md1-surface-menu, #2C2C2C); border-radius:var(--md1-radius);
   width:500rpx; max-width:100%; padding:40rpx;
   box-sizing:border-box;
   box-shadow:var(--md1-shadow-card);

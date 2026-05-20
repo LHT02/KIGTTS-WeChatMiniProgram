@@ -45,7 +45,7 @@ Page(ripple.attach({
     this.ctx = wx.createCanvasContext('drawCanvas', this)
   },
 
-  _boardBg: function() { return this.data.themeClass === 'theme-light' ? '#FCFDFE' : '#262A2E' },
+  _boardBg: function() { return this.data.themeClass === 'theme-light' ? '#FCFDFE' : '#242424' },
   _getCurrentSize: function() { return this._currentTool === 'eraser' ? this.data.eraserSize : this.data.brushSize },
 
   onTouchStart: function(e) {

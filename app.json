@@ -12,7 +12,7 @@
   "entryPagePath": "pages/launch/index",
   "window": {
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#1D2023",
+    "navigationBarBackgroundColor": "#1E1E1E",
     "navigationBarTitleText": "KIGTTS",
     "navigationBarTextStyle": "white",
     "backgroundColor": "#121212",
@@ -30,7 +30,7 @@
     "custom": true,
     "color": "#8A949B",
     "selectedColor": "#038387",
-    "backgroundColor": "#1D2023",
+    "backgroundColor": "#1E1E1E",
     "borderStyle": "black",
     "list": [
       {
