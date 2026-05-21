@@ -24,8 +24,8 @@ Page(ripple.attach({
   },
 
   onLoad: function(opt) {
-    var themeMode = storage.getSettings().themeMode || 0
-    this.setData({ themeClass: themeMode === 1 ? 'theme-light' : '', statusBarH: system.statusBarHeight() })
+    var settings = storage.getSettings()
+    this.setData({ themeClass: theme.themeClass(settings), statusBarH: system.statusBarHeight() })
     var gid = parseInt(opt.gid) || 0
     var config = storage.getSubtitleConfig()
     var groupsCopy = this._cloneGroups(config.groups || [])

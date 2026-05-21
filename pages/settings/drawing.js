@@ -27,10 +27,9 @@ Page(ripple.attach({
 
   onShow: function() {
     var settings = storage.getSettings()
-    var themeMode = settings.themeMode || 0
-    var isLight = themeMode === 1
+    var isLight = theme.isLight(settings)
     this.setData({
-      themeClass: isLight ? 'theme-light' : '',
+      themeClass: theme.themeClass(settings),
       statusBarH: system.statusBarHeight(),
       colorPalette: isLight ? this.data.lightColors : this.data.darkColors,
       color: isLight ? '#038387' : '#7DE8EA',

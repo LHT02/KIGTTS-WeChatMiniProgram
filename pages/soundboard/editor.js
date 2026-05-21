@@ -47,8 +47,8 @@ Page(ripple.attach({
   },
 
   onShow: function() {
-    var themeMode = storage.getSettings().themeMode || 0
-    this.setData({ themeClass: themeMode === 1 ? 'theme-light' : '', statusBarH: system.statusBarHeight() })
+    var settings = storage.getSettings()
+    this.setData({ themeClass: theme.themeClass(settings), statusBarH: system.statusBarHeight() })
     this._refresh()
   },
 

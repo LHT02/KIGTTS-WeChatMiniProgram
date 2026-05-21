@@ -97,11 +97,15 @@ Page(ripple.attach({
     this._scheduleTabMeasure()
   },
 
+  refreshThemeFromSystem: function() {
+    this._syncShell(true)
+  },
+
   _syncShell: function(syncChildren) {
     var settings = storage.getSettings()
     var that = this
     this.setData({
-      themeClass: (settings.themeMode || 0) === 1 ? 'theme-light' : '',
+      themeClass: theme.themeClass(settings),
       navMode: settings.navMode || 'bottom',
       statusBarH: system.statusBarHeight(),
       drawerOpen: (settings.navMode || 'bottom') === 'drawer' ? this.data.drawerOpen : false

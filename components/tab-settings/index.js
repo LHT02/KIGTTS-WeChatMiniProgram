@@ -8,30 +8,37 @@ var routeAnim = require('../../utils/route-anim')
 var system = require('../../utils/system')
 var initialSettings = storage.getSettings()
 var initialThemeClass = theme.themeClass(initialSettings)
+var THEME_OPTIONS = [
+  { value: 0, label: '跟随系统', support: '使用微信当前明暗模式', icon: 'brightness_auto' },
+  { value: 1, label: '浅色', support: '始终使用浅色界面', icon: 'light_mode' },
+  { value: 2, label: '深色', support: '始终使用深色界面', icon: 'dark_mode' }
+]
 
 var componentPage = require('../../utils/component-page')
 Component(componentPage.fromPage(ripple.attach({
   data: {
-    settings: initialSettings, showImportEditor: false, importData: '', themeClass: initialThemeClass,
+    settings: initialSettings, showImportEditor: false, showThemeSheet: false, importData: '', themeClass: initialThemeClass,
     navMode: theme.navMode(initialSettings), statusBarH: 44,
     routeEnterClass: '',
     drawerOpen: false, currentPath: 'pages/settings/index', navItems: nav.items,
     logoGlyph: nav.logoGlyph,
     switchAnimKey: '',
+    themeOptions: THEME_OPTIONS,
+    themeModeLabel: theme.themeModeLabel(initialSettings),
     logoSrc: logoData.getLogoSrc(initialThemeClass)
   },
   onLoad: function() { this.loadSettings() },
   onShow: function() {
     this.loadSettings()
-    var app = getApp()
     var settings = storage.getSettings()
-    var themeMode = settings.themeMode || 0
+    var themeClass = theme.themeClass(settings)
     this.setData({
-      themeClass: themeMode === 1 ? 'theme-light' : '',
+      themeClass: themeClass,
       statusBarH: system.statusBarHeight(),
       navMode: settings.navMode || 'bottom',
       drawerOpen: (settings.navMode || 'bottom') === 'drawer' ? this.data.drawerOpen : false,
-      logoSrc: logoData.getLogoSrc(themeMode === 1 ? 'theme-light' : '')
+      themeModeLabel: theme.themeModeLabel(settings),
+      logoSrc: logoData.getLogoSrc(themeClass)
     })
     nav.syncTabBar(this)
     routeAnim.enter(this)
@@ -45,14 +52,14 @@ Component(componentPage.fromPage(ripple.attach({
 
   loadSettings: function() {
     var settings = storage.getSettings()
-    var themeMode = settings.themeMode || 0
     var navMode = settings.navMode || 'bottom'
-    var themeClass = themeMode === 1 ? 'theme-light' : ''
+    var themeClass = theme.themeClass(settings)
     this.setData({
       settings: settings,
       themeClass: themeClass,
       navMode: navMode,
       drawerOpen: navMode === 'drawer' ? this.data.drawerOpen : false,
+      themeModeLabel: theme.themeModeLabel(settings),
       logoSrc: logoData.getLogoSrc(themeClass)
     })
     nav.syncTabBar(this)
@@ -100,7 +107,7 @@ Component(componentPage.fromPage(ripple.attach({
         if (r.confirm) {
           wx.clearStorageSync()
           getApp().globalData.settings = storage.getSettings()
-          getApp().globalData.themeClass = ''
+          getApp().globalData.themeClass = theme.themeClass(getApp().globalData.settings)
           if (getApp().applyShellTheme) getApp().applyShellTheme(getApp().globalData.settings)
           that.loadSettings()
           wx.showToast({ title: '所有数据已清除', icon: 'success' })
@@ -109,17 +116,24 @@ Component(componentPage.fromPage(ripple.attach({
     })
   },
 
-  onToggleTheme: function() {
-    var v = this.data.settings.themeMode === 1 ? 0 : 1
+  onOpenThemeSheet: function() {
+    this.setData({ showThemeSheet: true })
+  },
+
+  onCloseThemeSheet: function() {
+    this.setData({ showThemeSheet: false })
+  },
+
+  onThemeModeTap: function(e) {
+    var v = theme.normalizeThemeMode(e.currentTarget.dataset.mode)
     storage.updateSetting('themeMode', v)
     getApp().globalData.settings = storage.getSettings()
-    getApp().globalData.themeClass = v === 1 ? 'theme-light' : ''
+    getApp().globalData.themeClass = theme.themeClass(getApp().globalData.settings)
     if (getApp().applyShellTheme) getApp().applyShellTheme(getApp().globalData.settings)
+    this.setData({ showThemeSheet: false })
     this.loadSettings()
-    var isLight = v === 1
-    this.setData({ themeClass: isLight ? 'theme-light' : '' })
     nav.syncTabBar(this)
-    wx.showToast({ title: isLight ? '已切换为浅色模式' : '已切换为深色模式', icon: 'none' })
+    wx.showToast({ title: '已切换为' + theme.themeModeName(v), icon: 'none' })
   },
 
   onToggleNavMode: function() {
@@ -127,7 +141,7 @@ Component(componentPage.fromPage(ripple.attach({
     this.setData({ drawerOpen: false, navMode: next })
     storage.updateSetting('navMode', next)
     getApp().globalData.settings = storage.getSettings()
-    getApp().globalData.themeClass = (getApp().globalData.settings.themeMode || 0) === 1 ? 'theme-light' : ''
+    getApp().globalData.themeClass = theme.themeClass(getApp().globalData.settings)
     if (getApp().applyShellTheme) getApp().applyShellTheme(getApp().globalData.settings)
     this.loadSettings()
     nav.syncTabBar(this)
@@ -164,7 +178,7 @@ Component(componentPage.fromPage(ripple.attach({
     var v = e && e.detail && typeof e.detail.value === 'boolean' ? e.detail.value : !this.data.settings[key]
     storage.updateSetting(key, v)
     getApp().globalData.settings = storage.getSettings()
-    getApp().globalData.themeClass = (getApp().globalData.settings.themeMode || 0) === 1 ? 'theme-light' : ''
+    getApp().globalData.themeClass = theme.themeClass(getApp().globalData.settings)
     this.loadSettings()
   },
 

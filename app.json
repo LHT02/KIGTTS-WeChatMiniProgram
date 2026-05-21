@@ -11,6 +11,7 @@
     "pages/settings/index"
   ],
   "entryPagePath": "pages/launch/index",
+  "darkmode": true,
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#1E1E1E",

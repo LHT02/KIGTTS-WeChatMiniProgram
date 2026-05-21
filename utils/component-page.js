@@ -47,7 +47,7 @@ function fromPage(pageOptions) {
     }
   }
 
-  ;['onToggleTheme', 'onToggleNavMode'].forEach(function(name) {
+  ;['onThemeModeTap', 'onToggleNavMode'].forEach(function(name) {
     if (typeof methods[name] !== 'function') return
     var oldMethod = methods[name]
     methods[name] = function() {

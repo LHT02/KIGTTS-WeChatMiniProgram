@@ -27,9 +27,8 @@ Page(ripple.attach({
   onShow: function() {
     var that = this
     var settings = storage.getSettings()
-    var themeMode = settings.themeMode || 0
     this.setData({
-      themeClass: themeMode === 1 ? 'theme-light' : '',
+      themeClass: theme.themeClass(settings),
       statusBarH: system.statusBarHeight(),
       navMode: settings.navMode || 'bottom',
       drawerOpen: (settings.navMode || 'bottom') === 'drawer' ? this.data.drawerOpen : false

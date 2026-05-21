@@ -15,6 +15,24 @@ function windowInfo() {
   return legacySystemInfo()
 }
 
+function appBaseInfo() {
+  try {
+    if (typeof wx === 'undefined') return {}
+    if (wx.getAppBaseInfo) return wx.getAppBaseInfo()
+  } catch (e) {}
+  return legacySystemInfo()
+}
+
+function systemTheme() {
+  try {
+    var app = typeof getApp === 'function' ? getApp() : null
+    var cached = app && app.globalData ? app.globalData.systemTheme : ''
+    if (cached === 'light' || cached === 'dark') return cached
+  } catch (e) {}
+  var info = appBaseInfo()
+  return info.theme === 'light' ? 'light' : 'dark'
+}
+
 function windowWidth() {
   var info = windowInfo()
   return info.windowWidth || info.screenWidth || 375
@@ -54,6 +72,8 @@ function rpxToPx(rpx) {
 }
 
 module.exports = {
+  appBaseInfo: appBaseInfo,
+  systemTheme: systemTheme,
   windowInfo: windowInfo,
   windowWidth: windowWidth,
   windowHeight: windowHeight,

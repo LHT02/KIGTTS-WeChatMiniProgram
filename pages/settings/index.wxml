@@ -29,9 +29,9 @@
 
     <view class="settings-card">
       <view class="sc-title">系统与布局</view>
-      <view class="list-item" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onToggleTheme">
+      <view class="list-item" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onOpenThemeSheet">
         <text class="item-icon material-icons">palette</text>
-        <view class="item-body"><view class="item-title">主题模式</view><view class="item-support">{{settings.themeMode === 1 ? '浅色' : '深色'}}</view></view>
+        <view class="item-body"><view class="item-title">主题模式</view><view class="item-support">{{themeModeLabel}}</view></view>
         <text class="item-right material-icons sm">chevron_right</text>
       </view>
       <view class="list-item" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onToggleNavMode">
@@ -125,6 +125,29 @@
     <view class="settings-bottom-spacer"></view>
     </view>
   </scroll-view>
+  </view>
+</view>
+
+<view class="sheet-mask theme-animated {{themeClass}} nav-{{navMode}}" wx:if="{{showThemeSheet}}" bindtap="onCloseThemeSheet"
+      bindtouchmove="onRippleTouchMove" bindtouchend="onRippleTouchEnd" bindtouchcancel="onRippleTouchCancel">
+  <view class="sheet-panel theme-mode-sheet" catchtap="noop">
+    <view class="sheet-header">
+      <text class="sheet-title">主题模式</text>
+      <text class="material-icons lg" bindtap="onCloseThemeSheet" style="padding:8rpx;">close</text>
+    </view>
+    <view class="sheet-body theme-mode-list">
+      <view class="theme-mode-item {{settings.themeMode === item.value ? 'selected' : ''}}"
+            wx:for="{{themeOptions}}" wx:key="value"
+            data-mode="{{item.value}}" data-ripple="1"
+            capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onThemeModeTap">
+        <text class="material-icons theme-mode-icon">{{item.icon}}</text>
+        <view class="theme-mode-body">
+          <view class="theme-mode-title">{{item.label}}</view>
+          <view class="theme-mode-support">{{item.support}}</view>
+        </view>
+        <text class="material-icons theme-mode-check" wx:if="{{settings.themeMode === item.value}}">check</text>
+      </view>
+    </view>
   </view>
 </view>
 
