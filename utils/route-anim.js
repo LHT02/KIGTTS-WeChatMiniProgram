@@ -16,20 +16,29 @@ function clearExitTimer(page) {
   }
 }
 
-function applyClass(page, className, duration, done) {
+function armTimer(page, duration, done) {
+  if (!done) return
+  page._routeExitTimer = setTimeout(function() {
+    page._routeExitTimer = null
+    done()
+  }, duration)
+}
+
+function applyClass(page, className, duration, done, prepareClass) {
   if (!page || typeof page.setData !== 'function') {
     if (done) done()
     return null
   }
-  page.setData({ routeEnterClass: '' }, function() {
+  if (!prepareClass) {
+    page.setData({ routeEnterClass: className }, function() {
+      armTimer(page, duration, done)
+    })
+    return page._routeExitTimer
+  }
+  page.setData({ routeEnterClass: prepareClass }, function() {
     nextTick(function() {
       page.setData({ routeEnterClass: className })
-      if (done) {
-        page._routeExitTimer = setTimeout(function() {
-          page._routeExitTimer = null
-          done()
-        }, duration)
-      }
+      armTimer(page, duration, done)
     })
   })
   return page._routeExitTimer
@@ -41,7 +50,7 @@ function enter(page) {
   page._routeExitToken = (page._routeExitToken || 0) + 1
   var next = page._routeEnterFlip ? 'route-enter-b' : 'route-enter-a'
   page._routeEnterFlip = !page._routeEnterFlip
-  applyClass(page, next, ENTER_DURATION)
+  applyClass(page, next, ENTER_DURATION, null, 'route-prepare')
 }
 
 function exit(page, done) {

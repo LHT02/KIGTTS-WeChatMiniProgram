@@ -99,24 +99,28 @@ button,
   --color-danger: var(--md1-error);
 }
 
+.route-body {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  overflow: hidden;
+  transform-origin: center top;
+}
+.page.route-tab.route-prepare > .nav-bar .nav-row,
+.page.route-tab.route-prepare > .route-motion { opacity: 0; }
 .page.route-tab.route-exit-a,
 .page.route-tab.route-exit-b { pointer-events: none; }
-.page.route-tab.route-enter-a > view,
-.page.route-tab.route-enter-a > scroll-view,
-.page.route-tab.route-enter-a > swiper,
-.page.route-tab.route-enter-a > canvas { animation: mdTabFloatInA 0.18s cubic-bezier(0.2,0,0,1); }
-.page.route-tab.route-enter-b > view,
-.page.route-tab.route-enter-b > scroll-view,
-.page.route-tab.route-enter-b > swiper,
-.page.route-tab.route-enter-b > canvas { animation: mdTabFloatInB 0.18s cubic-bezier(0.2,0,0,1); }
-.page.route-tab.route-exit-a > view,
-.page.route-tab.route-exit-a > scroll-view,
-.page.route-tab.route-exit-a > swiper,
-.page.route-tab.route-exit-a > canvas { animation: mdTabFloatOutA 0.16s cubic-bezier(0.4,0,1,1) forwards; }
-.page.route-tab.route-exit-b > view,
-.page.route-tab.route-exit-b > scroll-view,
-.page.route-tab.route-exit-b > swiper,
-.page.route-tab.route-exit-b > canvas { animation: mdTabFloatOutB 0.16s cubic-bezier(0.4,0,1,1) forwards; }
+.page.route-tab.route-enter-a > .nav-bar .nav-row { animation: mdTabTopInA 0.14s cubic-bezier(0.2,0,0,1); }
+.page.route-tab.route-enter-b > .nav-bar .nav-row { animation: mdTabTopInB 0.14s cubic-bezier(0.2,0,0,1); }
+.page.route-tab.route-exit-a > .nav-bar .nav-row { animation: mdTabTopOutA 0.12s cubic-bezier(0.4,0,1,1) forwards; }
+.page.route-tab.route-exit-b > .nav-bar .nav-row { animation: mdTabTopOutB 0.12s cubic-bezier(0.4,0,1,1) forwards; }
+.page.route-tab.route-enter-a > .route-motion { animation: mdTabFloatInA 0.18s cubic-bezier(0.2,0,0,1); }
+.page.route-tab.route-enter-b > .route-motion { animation: mdTabFloatInB 0.18s cubic-bezier(0.2,0,0,1); }
+.page.route-tab.route-exit-a > .route-motion { animation: mdTabFloatOutA 0.16s cubic-bezier(0.4,0,1,1) forwards; }
+.page.route-tab.route-exit-b > .route-motion { animation: mdTabFloatOutB 0.16s cubic-bezier(0.4,0,1,1) forwards; }
 .page.route-push { animation: mdPushEnter 0.22s cubic-bezier(0.2,0,0,1); }
 .page.route-launch { animation: none; }
 
@@ -412,6 +416,22 @@ button,
 
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+@keyframes mdTabTopInA {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes mdTabTopInB {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes mdTabTopOutA {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+@keyframes mdTabTopOutB {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
 @keyframes mdTabFloatInA {
   from { opacity: 0; transform: translateY(18rpx); }
   to { opacity: 1; transform: translateY(0); }

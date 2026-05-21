@@ -15,6 +15,7 @@
       <view class="nav-title">{{navTitle}}</view>
     </view>
   </view>
+  <view class="route-body route-motion">
   <view class="subtitle-card">
     <scroll-view class="subtitle-text-wrap {{subtitleNeedsScroll ? 'scrollable' : ''}} {{textAnim ? 'subtitle-animating' : ''}}"
                  scroll-y="{{subtitleNeedsScroll}}" enhanced="true" show-scrollbar="false"
@@ -101,6 +102,7 @@
         <text class="material-icons">send</text>
       </view>
     </view>
+  </view>
   </view>
 </view>
 

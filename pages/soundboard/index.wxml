@@ -15,6 +15,7 @@
       <view class="nav-title">音效板</view>
     </view>
   </view>
+  <view class="route-body route-motion">
   <scroll-view class="sound-list" scroll-y="true" enable-flex bindscroll="onRippleScroll">
     <view class="sound-list-inner {{layoutCols > 1 ? 'grid' : ''}}">
     <block wx:for="{{currentGroup.items}}" wx:key="id" wx:for-item="item" wx:for-index="idx">
@@ -71,6 +72,7 @@
     </view>
   </view>
 
+  </view>
 </view>
 
 <view class="sheet-mask {{themeClass}} nav-{{navMode}}" wx:if="{{showEditor}}" bindtap="onCloseEditor"

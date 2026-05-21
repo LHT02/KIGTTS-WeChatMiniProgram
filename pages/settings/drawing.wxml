@@ -15,6 +15,7 @@
       <view class="nav-title">画板</view>
     </view>
   </view>
+  <view class="route-body route-motion">
   <canvas class="canvas-wrap" canvas-id="drawCanvas" id="drawCanvas"
           hidden="{{drawerOpen}}"
           disable-scroll="{{true}}"
@@ -63,6 +64,7 @@
         <text class="material-icons">expand_less</text>
       </view>
     </view>
+  </view>
   </view>
 </view>
 

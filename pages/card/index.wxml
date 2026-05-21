@@ -19,6 +19,7 @@
     </view>
   </view>
 
+  <view class="route-body route-motion">
   <swiper class="card-swiper" current="{{currentIndex}}" bindchange="onSwiperChange" indicator-dots="{{false}}" circular="{{false}}" previous-margin="28rpx" next-margin="28rpx">
     <swiper-item class="swiper-slide" wx:for="{{cards}}" wx:key="id">
       <view class="name-card {{item.imagePath ? 'has-bg' : ''}}" style="{{cardFrameStyle}} background: {{item.imagePath ? 'transparent' : item.themeColor}};"
@@ -81,6 +82,7 @@
         <text class="material-icons">check</text>
       </view>
     </view>
+  </view>
   </view>
 </view>
 

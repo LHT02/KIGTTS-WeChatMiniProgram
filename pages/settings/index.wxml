@@ -13,6 +13,7 @@
     </view>
   </view>
 
+  <view class="route-body route-motion">
   <scroll-view class="settings-scroll" scroll-y="true" enhanced="true" show-scrollbar="false" bindscroll="onRippleScroll">
     <view class="settings-scroll-inner">
     <view class="about-card">
@@ -124,6 +125,7 @@
     <view class="settings-bottom-spacer"></view>
     </view>
   </scroll-view>
+  </view>
 </view>
 
 <view class="sheet-mask theme-animated {{themeClass}} nav-{{navMode}}" wx:if="{{showImportEditor}}" bindtap="onCloseImportEditor"
