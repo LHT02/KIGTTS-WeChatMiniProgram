@@ -15,6 +15,7 @@ Page(ripple.attach({
     routeEnterClass: '',
     drawerOpen: false, currentPath: 'pages/settings/index', navItems: nav.items,
     logoGlyph: nav.logoGlyph,
+    switchAnimKey: '',
     logoSrc: logoData.getLogoSrc(initialThemeClass)
   },
   onLoad: function() { this.loadSettings() },
@@ -33,6 +34,12 @@ Page(ripple.attach({
     })
     nav.syncTabBar(this)
     routeAnim.enter(this)
+  },
+  onUnload: function() {
+    if (this._switchAnimTimer) {
+      clearTimeout(this._switchAnimTimer)
+      this._switchAnimTimer = null
+    }
   },
 
   loadSettings: function() {
@@ -136,6 +143,20 @@ Page(ripple.attach({
     var key = e && e.currentTarget && e.currentTarget.dataset ? e.currentTarget.dataset.key : ''
     if (!key) return
     this._toggleSetting(key)
+    if (this._switchAnimTimer) clearTimeout(this._switchAnimTimer)
+    var that = this
+    this.setData({ switchAnimKey: key })
+    this._switchAnimTimer = setTimeout(function() {
+      if (that.data.switchAnimKey === key) that.setData({ switchAnimKey: '' })
+    }, 360)
+  },
+
+  onSwitchAnimationEnd: function() {
+    if (this._switchAnimTimer) {
+      clearTimeout(this._switchAnimTimer)
+      this._switchAnimTimer = null
+    }
+    if (this.data.switchAnimKey) this.setData({ switchAnimKey: '' })
   },
 
   _toggleSetting: function(key, e) {

@@ -37,6 +37,10 @@ page {
   --md1-shadow-drag: 0 12rpx 20rpx -4rpx rgba(0,0,0,0.20), 0 20rpx 28rpx 2rpx rgba(0,0,0,0.14), 0 6rpx 36rpx 4rpx rgba(0,0,0,0.12);
   --md1-shadow-switch-thumb: 0 2rpx 2rpx 0 rgba(0,0,0,0.20), 0 2rpx 4rpx 0 rgba(0,0,0,0.14), 0 4rpx 2rpx -2rpx rgba(0,0,0,0.12);
   --md1-shadow-switch-thumb-pressed: 0 4rpx 4rpx 0 rgba(0,0,0,0.22), 0 2rpx 8rpx 0 rgba(0,0,0,0.16);
+  --md1-control-border: rgba(255,255,255,0.62);
+  --md1-control-ripple: #ffffff;
+  --md1-switch-track: rgba(255,255,255,0.38);
+  --md1-switch-thumb: #fafafa;
 }
 
 input,
@@ -72,6 +76,10 @@ button,
   --md1-shadow-drag: 0 12rpx 20rpx -4rpx rgba(0,0,0,0.20), 0 20rpx 28rpx 2rpx rgba(0,0,0,0.14), 0 6rpx 36rpx 4rpx rgba(0,0,0,0.12);
   --md1-shadow-switch-thumb: 0 2rpx 2rpx 0 rgba(0,0,0,0.20), 0 2rpx 4rpx 0 rgba(0,0,0,0.14), 0 4rpx 2rpx -2rpx rgba(0,0,0,0.12);
   --md1-shadow-switch-thumb-pressed: 0 4rpx 4rpx 0 rgba(0,0,0,0.22), 0 2rpx 8rpx 0 rgba(0,0,0,0.16);
+  --md1-control-border: rgba(255,255,255,0.62);
+  --md1-control-ripple: #ffffff;
+  --md1-switch-track: rgba(255,255,255,0.38);
+  --md1-switch-thumb: #fafafa;
 
   --md1-primary: #038387;
   --md1-primary-dark: #006b6f;
@@ -137,6 +145,10 @@ button,
   --md1-text-secondary: #495156;
   --md1-text-disabled: rgba(0,0,0,0.26);
   --md1-text-hint: #757F87;
+  --md1-control-border: rgba(0,0,0,0.54);
+  --md1-control-ripple: #000000;
+  --md1-switch-track: rgba(0,0,0,0.38);
+  --md1-switch-thumb: #fafafa;
 }
 
 .theme-light .sheet-panel { box-shadow: var(--md1-shadow-appbar-up); }
@@ -356,6 +368,109 @@ button,
 .text-ellipsis { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .safe-bottom { padding-bottom: constant(safe-area-inset-bottom); padding-bottom: env(safe-area-inset-bottom); }
 .empty-state { padding: 160rpx 0; text-align: center; color: var(--md1-text-hint); font-size: 26rpx; }
+
+/* ═══════ SCUI Aligned Selection Controls ═══════ */
+
+.scui-radio {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  height: 72rpx;
+  line-height: 72rpx;
+  color: var(--md1-text-primary);
+}
+
+.scui-radio.reverse { flex-direction: row-reverse; }
+
+.scui-radio-control {
+  position: relative;
+  box-sizing: border-box;
+  display: inline-block;
+  width: 40rpx;
+  height: 40rpx;
+  margin: 0 16rpx;
+}
+
+.scui-radio-border {
+  box-sizing: border-box;
+  width: 40rpx;
+  height: 40rpx;
+  border: 4rpx solid var(--md1-primary);
+  border-radius: 50%;
+  background: transparent;
+  opacity: 0.54;
+}
+
+.scui-radio-dot {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: 50%;
+  background: var(--md1-primary);
+  opacity: 0;
+  transform: scale(0);
+  transition: transform 120ms cubic-bezier(0.4,0,0.2,1), opacity 120ms cubic-bezier(0.4,0,0.2,1);
+}
+
+.scui-radio.checked .scui-radio-dot {
+  opacity: 1;
+  transform: scale(0.5);
+}
+
+.scui-radio.disabled {
+  opacity: 1;
+  pointer-events: none;
+}
+
+.scui-radio.disabled .scui-radio-border {
+  border-color: #b0b0b0;
+  opacity: 1;
+}
+
+.scui-radio.disabled .scui-radio-dot {
+  background: #b0b0b0;
+}
+
+.scui-radio-ripple {
+  position: absolute;
+  box-sizing: border-box;
+  border-radius: 50%;
+  width: 96rpx;
+  height: 96rpx;
+  left: 50%;
+  top: 50%;
+  transform: translate(-48rpx, -48rpx);
+  pointer-events: none;
+}
+
+.scui-radio-ripple-view {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: var(--md1-primary);
+  opacity: 0;
+  transform: scale(0.3);
+}
+
+.scui-radio.pressed .scui-radio-ripple-view,
+.scui-radio:active .scui-radio-ripple-view {
+  animation: scuiRadioRipple 300ms ease-out forwards;
+}
+
+.scui-radio-label {
+  font-size: 28rpx;
+  white-space: nowrap;
+}
+
+@keyframes scuiRadioRipple {
+  0% { transform: scale(0.3); opacity: 0; }
+  60% { transform: scale(1); opacity: 0.3; }
+  100% { transform: scale(1); opacity: 0; }
+}
 
 /* ═══════ sc-ui Inspired Ripple ═══════ */
 

@@ -85,7 +85,7 @@
             <view class="native-checkbox {{selectedItems[idx] ? 'checked' : ''}}">
               <view class="native-checkbox-ripple"></view>
               <view class="native-checkbox-bg"></view>
-              <text wx:if="{{selectedItems[idx]}}" class="native-checkbox-mark material-icons">check</text>
+              <view class="native-checkbox-mark"></view>
             </view>
           </view>
           <view class="item-body">
