@@ -96,6 +96,8 @@ Component({
       this.setData({ keyboardHidden: next })
     },
 
+    onRippleTap: ripple.methods.onRippleTap,
+    onRippleLongPress: ripple.methods.onRippleLongPress,
     onRippleTouchStart: ripple.methods.onRippleTouchStart,
     onRippleTouchMove: ripple.methods.onRippleTouchMove,
     onRippleTouchEnd: ripple.methods.onRippleTouchEnd,

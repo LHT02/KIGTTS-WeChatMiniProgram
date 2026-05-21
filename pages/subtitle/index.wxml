@@ -5,10 +5,10 @@
   <view class="nav-bar" style="padding-top:{{statusBarH}}px;" wx:if="{{!keyboardCompact}}">
     <view class="nav-row">
       <view class="nav-actions">
-        <view class="icon-btn-sm nav-menu" wx:if="{{navMode === 'drawer'}}" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onOpenDrawer">
+        <view class="icon-btn-sm nav-menu" wx:if="{{navMode === 'drawer'}}" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onOpenDrawer">
           <text class="material-icons">menu</text>
         </view>
-        <view class="icon-btn-sm" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onManageEditor">
+        <view class="icon-btn-sm" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onManageEditor">
           <text class="material-icons">edit</text>
         </view>
       </view>
@@ -27,19 +27,19 @@
 
     <view class="card-toolbar" catchtap="noop" wx:if="{{!keyboardCompact}}">
       <view class="card-toolbar-inner" wx:if="{{showActionButtons}}">
-        <view class="icon-btn-sm" data-ripple="1" bindtouchstart="onRippleTouchStart" catchtap="onToggleBold">
+        <view class="icon-btn-sm" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" catchtap="onToggleBold">
           <text class="material-icons sm">format_bold</text>
         </view>
-        <view class="icon-btn-sm" data-ripple="1" bindtouchstart="onRippleTouchStart" catchtap="onToggleCenter">
+        <view class="icon-btn-sm" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" catchtap="onToggleCenter">
           <text class="material-icons sm">{{settings.subtitleCenter ? 'format_align_center' : 'format_align_left'}}</text>
         </view>
-        <view class="icon-btn-sm" data-ripple="1" bindtouchstart="onRippleTouchStart" catchtap="onToggleRotated">
+        <view class="icon-btn-sm" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" catchtap="onToggleRotated">
           <text class="material-icons sm">swap_vert</text>
         </view>
-        <view class="icon-btn-sm" data-ripple="1" bindtouchstart="onRippleTouchStart" catchtap="onClearScreen">
+        <view class="icon-btn-sm" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" catchtap="onClearScreen">
           <text class="material-icons sm">cleaning_services</text>
         </view>
-        <view class="icon-btn-sm" data-ripple="1" bindtouchstart="onRippleTouchStart" catchtap="onShowHistory">
+        <view class="icon-btn-sm" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" catchtap="onShowHistory">
           <text class="material-icons sm">history</text>
         </view>
       </view>
@@ -48,7 +48,7 @@
         <slider class="flex-1" min="24" max="200" value="{{settings.subtitleFontSize || 72}}"
                 bindchanging="onFontSizeChanging" bindchange="onFontSizeChange" activeColor="#038387" block-color="#038387" block-size="20" />
       </view>
-      <view class="card-toolbar-toggle" data-ripple="1" bindtouchstart="onRippleTouchStart" catchtap="onTogglePanel">
+      <view class="card-toolbar-toggle" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" catchtap="onTogglePanel">
         <text class="material-icons sm">{{showActionButtons ? 'search' : 'more_horiz'}}</text>
       </view>
     </view>
@@ -59,10 +59,10 @@
     <view class="quick-chip"
           wx:for="{{currentGroup.items}}" wx:key="id"
           data-text="{{item.text}}" data-index="{{index}}"
-          data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onQuickTextTap" bindlongpress="onQuickTextLongPress">
+          data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onQuickTextTap" bindlongpress="onQuickTextLongPress">
       {{item.text}}
     </view>
-    <view class="quick-chip add" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onManageEditor">
+    <view class="quick-chip add" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onManageEditor">
       <text class="material-icons" style="font-size:52rpx; color:var(--md1-text-secondary);">add</text>
     </view>
     <view class="quick-spacer end"></view>
@@ -72,25 +72,25 @@
     <scroll-view class="group-scroll" scroll-x="true" enable-flex bindscroll="onRippleScroll">
       <view class="group-chip {{config.selectedGroupId === item.id ? 'active' : ''}}"
             wx:for="{{config.groups}}" wx:key="id"
-            data-gid="{{item.id}}" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onSelectGroup">
+            data-gid="{{item.id}}" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onSelectGroup">
         <text class="material-icons" style="font-size:40rpx;">{{item.icon || 'sentiment_satisfied'}}</text>
         <text>{{item.title}}</text>
       </view>
     </scroll-view>
-    <view class="group-edit-segment" data-ripple="1" data-ripple-color="rgb(255,255,255)" bindtouchstart="onRippleTouchStart" bindtap="onEditGroupMain">
+    <view class="group-edit-segment" data-ripple="1" data-ripple-color="rgb(255,255,255)" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onEditGroupMain">
       <text class="material-icons" style="font-size:44rpx; color:#fff;">edit</text>
     </view>
   </view>
 
   <view class="input-bar safe-bottom">
     <view class="input-actions-row">
-      <view class="icon-btn-sm" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onTogglePlayOnSend">
+      <view class="icon-btn-sm" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onTogglePlayOnSend">
         <text class="material-icons sm">{{settings.subtitlePlayOnSend ? 'volume_up' : 'volume_off'}}</text>
       </view>
-      <view class="icon-btn-sm" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onToggleQuickInput">
+      <view class="icon-btn-sm" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onToggleQuickInput">
         <text class="material-icons sm">{{quickInputCollapsed ? 'subtitles_off' : 'subtitles'}}</text>
       </view>
-      <view class="icon-btn-sm" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onSpeakCurrent">
+      <view class="icon-btn-sm" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onSpeakCurrent">
         <text class="material-icons sm">play_arrow</text>
       </view>
     </view>
@@ -98,7 +98,7 @@
       <view class="md-text-field flex-1">
         <input placeholder="请输入文本" placeholder-class="input-placeholder" value="{{inputText}}" bindinput="onInputChange" bindfocus="onInputFocus" bindblur="onInputBlur" bindkeyboardheightchange="onKeyboardHeightChange" bindconfirm="onInputConfirm" confirm-type="send" adjust-position="{{false}}" cursor-spacing="{{keyboardCompact ? 32 : (navMode === 'bottom' ? 160 : 32)}}" />
       </view>
-      <view class="send-btn {{inputText ? 'enabled' : 'disabled'}}" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onSendText">
+      <view class="send-btn {{inputText ? 'enabled' : 'disabled'}}" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onSendText">
         <text class="material-icons">send</text>
       </view>
     </view>
@@ -116,20 +116,20 @@
       <text class="material-icons lg" bindtap="onCloseQuickList" style="padding:8rpx;">close</text>
     </view>
     <scroll-view class="sheet-body quick-list-body" scroll-y="true" bindscroll="onRippleScroll">
-      <view class="quick-list-item" wx:for="{{currentGroup.items}}" wx:key="id" data-text="{{item.text}}" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onQuickListItemTap">
+      <view class="quick-list-item" wx:for="{{currentGroup.items}}" wx:key="id" data-text="{{item.text}}" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onQuickListItemTap">
         <text>{{item.text}}</text>
       </view>
       <view class="empty-state" wx:if="{{!currentGroup.items || currentGroup.items.length === 0}}">暂无快捷文本</view>
     </scroll-view>
     <view class="sheet-footer">
-      <view class="btn-text-sm" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onQuickListManage">管理</view>
+      <view class="btn-text-sm" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onQuickListManage">管理</view>
     </view>
   </view>
 </view>
 
 <view class="preview-mask {{themeClass}} nav-{{navMode}}" wx:if="{{showPreview}}" style="--status-bar-h:{{statusBarH}}px;" bindtap="onClosePreview"
       bindtouchmove="onRippleTouchMove" bindtouchend="onRippleTouchEnd" bindtouchcancel="onRippleTouchCancel">
-  <view class="preview-close-btn" data-ripple="1" bindtouchstart="onRippleTouchStart" catchtap="onClosePreview">
+  <view class="preview-close-btn" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" catchtap="onClosePreview">
     <text class="material-icons">close</text>
   </view>
   <view class="preview-card" catchtap="noop">
@@ -150,20 +150,20 @@
       <text class="material-icons lg" bindtap="onCloseHistory" style="padding:8rpx;">close</text>
     </view>
     <scroll-view class="sheet-body scrollable" scroll-y="true" bindscroll="onRippleScroll">
-      <view class="sheet-list-item" wx:for="{{history}}" wx:key="_idx" data-text="{{item.text}}" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onHistoryTap" bindlongpress="onHistoryLongPress">
+      <view class="sheet-list-item" wx:for="{{history}}" wx:key="_idx" data-text="{{item.text}}" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onHistoryTap" bindlongpress="onHistoryLongPress">
         <text class="text-ellipsis flex-1">{{item.text}}</text>
         <text class="time">{{item.timeStr}}</text>
       </view>
       <view class="empty-state" wx:if="{{history.length === 0}}">暂无历史记录</view>
     </scroll-view>
     <view class="sheet-footer" wx:if="{{history.length > 0}}">
-      <view class="btn-text-sm" style="color: var(--md1-error);" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onClearHistory">清空历史</view>
+      <view class="btn-text-sm" style="color: var(--md1-error);" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onClearHistory">清空历史</view>
     </view>
   </view>
 </view>
 
 <view class="ripple-host" wx:if="{{rippleList.length}}">
   <view class="sc-ripple-clip" wx:for="{{rippleList}}" wx:key="id" style="{{item.clipStyle}}">
-    <view class="sc-ripple" data-id="{{item.id}}" style="{{item.style}}" bindanimationend="onRippleAnimationEnd"></view>
+    <view class="sc-ripple {{item.hold ? 'sc-ripple-hold' : ''}}" data-id="{{item.id}}" style="{{item.style}}" bindanimationend="onRippleAnimationEnd"></view>
   </view>
 </view>

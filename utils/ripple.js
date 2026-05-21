@@ -3,27 +3,7 @@ function nextRippleId(page) {
   return 'ripple-' + page._rippleId
 }
 
-var HOLD_DELAY = 140
-var TOUCH_SLOP = 6
-var SCROLL_LOCK_MS = 180
-var VALIDATE_DELAY = 80
-var VALIDATE_DELAY_LATE = 220
-
-function touchPoint(e) {
-  var t = e && e.touches && e.touches[0]
-  if (!t && e && e.changedTouches) t = e.changedTouches[0]
-  if (!t && e && e.detail) t = e.detail
-  if (!t) return null
-  var x = t.clientX != null ? t.clientX : (t.pageX != null ? t.pageX : t.x)
-  var y = t.clientY != null ? t.clientY : (t.pageY != null ? t.pageY : t.y)
-  if (x == null || y == null) return null
-  return { x: x, y: y }
-}
-
-function rippleColor(page, dataset) {
-  if (dataset && dataset.rippleColor) return dataset.rippleColor
-  return page.data && page.data.themeClass === 'theme-light' ? 'rgb(0,0,0)' : 'rgb(255,255,255)'
-}
+var SCROLL_SUPPRESS_MS = 180
 
 var RIPPLE_SELECTOR = [
   '.btn-filled', '.btn-outlined', '.btn-text',
@@ -33,15 +13,33 @@ var RIPPLE_SELECTOR = [
   '.send-btn', '.group-edit-segment', '.card-toolbar-toggle',
   '.btn-micro', '.card-edit-btn', '.link-icon-btn', '.icon-chip',
   '.quick-list-item', '.sheet-list-item', '.sound-card',
-  '.preview-close-btn', '.nav-back', '.tool-toggle', '.item-row',
-  '.icon-cell', '.color-dot', '.md1-switch', '.icon-row',
-  '.add-card-placeholder', '.name-card', '.tab-item'
+  '.preview-close-btn',
+  '.nav-back', '.tool-toggle', '.item-row', '.icon-cell', '.color-dot',
+  '.md1-switch', '.icon-row', '.add-card-placeholder', '.name-card', '.tab-item'
 ].join(',')
 
-function queryRects(page, done) {
+function eventPoint(e) {
+  var p = e && e.detail
+  if (p && p.x != null && p.y != null) return { x: p.x, y: p.y }
+
+  var t = e && e.changedTouches && e.changedTouches[0]
+  if (!t && e && e.touches) t = e.touches[0]
+  if (!t) return null
+
+  var x = t.clientX != null ? t.clientX : (t.pageX != null ? t.pageX : t.x)
+  var y = t.clientY != null ? t.clientY : (t.pageY != null ? t.pageY : t.y)
+  if (x == null || y == null) return null
+  return { x: x, y: y }
+}
+
+function queryTargets(page, done) {
   try {
     var query = page.createSelectorQuery ? page.createSelectorQuery() : wx.createSelectorQuery().in(page)
-    query.selectAll(RIPPLE_SELECTOR).boundingClientRect(function(rects) {
+    query.selectAll(RIPPLE_SELECTOR).fields({
+      size: true,
+      rect: true,
+      computedStyle: ['backgroundColor']
+    }, function(rects) {
       done(rects || [])
     }).exec()
   } catch (e) {
@@ -49,12 +47,18 @@ function queryRects(page, done) {
   }
 }
 
+function rectRight(rect) {
+  return rect.right != null ? rect.right : rect.left + rect.width
+}
+
+function rectBottom(rect) {
+  return rect.bottom != null ? rect.bottom : rect.top + rect.height
+}
+
 function contains(rect, p) {
   if (!rect || !p) return false
-  var right = rect.right != null ? rect.right : rect.left + rect.width
-  var bottom = rect.bottom != null ? rect.bottom : rect.top + rect.height
-  return p.x >= rect.left && p.x <= right &&
-    p.y >= rect.top && p.y <= bottom
+  return p.x >= rect.left && p.x <= rectRight(rect) &&
+    p.y >= rect.top && p.y <= rectBottom(rect)
 }
 
 function pickRect(rects, p) {
@@ -77,10 +81,9 @@ function fallbackRect(p, size) {
   return {
     left: p.x - half,
     top: p.y - half,
-    right: p.x + half,
-    bottom: p.y + half,
     width: size,
-    height: size
+    height: size,
+    backgroundColor: ''
   }
 }
 
@@ -88,14 +91,34 @@ function clamp(n, min, max) {
   return Math.max(min, Math.min(max, n))
 }
 
-function rippleDiameter(rect, x, y, dataset) {
+function parseRgba(color) {
+  if (!color || color === 'transparent') return null
+  var match = /rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([.\d]+))?\)/.exec(color)
+  if (!match) return null
+  return {
+    r: parseInt(match[1], 10),
+    g: parseInt(match[2], 10),
+    b: parseInt(match[3], 10),
+    a: match[4] == null ? 1 : parseFloat(match[4])
+  }
+}
+
+function rgbIsLight(rgba) {
+  if (!rgba || rgba.a === 0) return null
+  return 0.299 * rgba.r + 0.578 * rgba.g + 0.114 * rgba.b >= 192 * rgba.a
+}
+
+function rippleColor(page, dataset, backgroundColor) {
+  if (dataset && dataset.rippleColor) return dataset.rippleColor
+  var isLight = rgbIsLight(parseRgba(backgroundColor))
+  if (isLight != null) return isLight ? 'rgb(0,0,0)' : 'rgb(255,255,255)'
+  return page.data && page.data.themeClass === 'theme-light' ? 'rgb(0,0,0)' : 'rgb(255,255,255)'
+}
+
+function rippleSize(rect, dataset) {
   var fixed = parseInt(dataset && dataset.rippleSize, 10)
   if (fixed) return fixed
-  var w = rect.width || 48
-  var h = rect.height || 48
-  var dx = Math.max(x, w - x)
-  var dy = Math.max(y, h - y)
-  return Math.ceil(Math.sqrt(dx * dx + dy * dy) * 2)
+  return Math.max(rect.width || 48, rect.height || 48)
 }
 
 function clipRadius(rect, dataset) {
@@ -106,212 +129,104 @@ function clipRadius(rect, dataset) {
   return '4px'
 }
 
-function addRipple(page, p, dataset, rect) {
+function suppressTap(page) {
+  if (!page) return
+  page._rippleSuppressTapUntil = Date.now() + SCROLL_SUPPRESS_MS
+}
+
+function tapSuppressed(page) {
+  return !!(page && page._rippleSuppressTapUntil && Date.now() < page._rippleSuppressTapUntil)
+}
+
+function addRipple(page, p, dataset, rect, hold) {
   rect = rect || fallbackRect(p, parseInt(dataset && dataset.rippleSize, 10) || 48)
-  var localX = clamp(p.x - rect.left, 0, rect.width || 0)
-  var localY = clamp(p.y - rect.top, 0, rect.height || 0)
-  var size = rippleDiameter(rect, localX, localY, dataset)
+  var width = rect.width || 48
+  var height = rect.height || 48
+  var localX = clamp(p.x - rect.left, 0, width)
+  var localY = clamp(p.y - rect.top, 0, height)
+  var size = rippleSize(rect, dataset)
   var half = size / 2
   var item = {
     id: nextRippleId(page),
-    centerX: rect.left + (rect.width || 0) / 2,
-    centerY: rect.top + (rect.height || 0) / 2,
-    rectW: rect.width || 0,
-    rectH: rect.height || 0,
+    hold: !!hold,
     clipStyle: [
       'left:' + rect.left + 'px',
       'top:' + rect.top + 'px',
-      'width:' + rect.width + 'px',
-      'height:' + rect.height + 'px',
+      'width:' + width + 'px',
+      'height:' + height + 'px',
       'border-radius:' + clipRadius(rect, dataset)
     ].join(';') + ';',
     style: [
-      'left:' + localX + 'px',
-      'top:' + localY + 'px',
+      'left:' + (localX - half) + 'px',
+      'top:' + (localY - half) + 'px',
       'width:' + size + 'px',
       'height:' + size + 'px',
-      'margin-left:-' + half + 'px',
-      'margin-top:-' + half + 'px',
-      'background-color:' + rippleColor(page, dataset)
+      'background-color:' + rippleColor(page, dataset, rect.backgroundColor)
     ].join(';') + ';'
   }
-  var list = (page.data && page.data.rippleList ? page.data.rippleList.slice(-5) : [])
+  var list = page.data && page.data.rippleList ? page.data.rippleList.slice(-5) : []
   list.push(item)
-  page.setData({ rippleList: list }, function() {
-    scheduleValidate(page)
+  page.setData({ rippleList: list })
+}
+
+function addRippleFromEvent(page, e, hold) {
+  if (tapSuppressed(page) && !hold) return
+  var dataset = e && e.currentTarget && e.currentTarget.dataset ? e.currentTarget.dataset : {}
+  if (dataset.rippleDisabled) return
+  var p = eventPoint(e)
+  if (!p) return
+
+  queryTargets(page, function(rects) {
+    var rect = pickRect(rects, p)
+    if (!rect) {
+      if (dataset.ripple) rect = fallbackRect(p, parseInt(dataset.rippleSize, 10) || 48)
+      else return
+    }
+    addRipple(page, p, dataset, rect, hold)
   })
 }
 
-function clearPending(page) {
-  if (!page || !page._ripplePending) return
-  if (page._ripplePending.timer) clearTimeout(page._ripplePending.timer)
-  page._ripplePending = null
+function clearHoldRipples(page) {
+  var list = page && page.data && page.data.rippleList ? page.data.rippleList : []
+  if (!list.length) return
+  var next = []
+  for (var i = 0; i < list.length; i++) {
+    if (!list[i].hold) next.push(list[i])
+  }
+  if (next.length !== list.length) page.setData({ rippleList: next })
 }
 
 function clearRipples(page) {
-  clearPending(page)
-  if (page && page._rippleValidateTimer) {
-    clearTimeout(page._rippleValidateTimer)
-    page._rippleValidateTimer = null
-  }
-  if (page && page._rippleValidateTimerLate) {
-    clearTimeout(page._rippleValidateTimerLate)
-    page._rippleValidateTimerLate = null
-  }
   if (page && page.data && page.data.rippleList && page.data.rippleList.length) {
     page.setData({ rippleList: [] })
   }
 }
 
-function lockScrollRipple(page) {
-  if (!page) return
-  page._rippleScrollLockUntil = Date.now() + SCROLL_LOCK_MS
+function onRippleTap(e) {
+  if (this._rippleLongPressUntil && Date.now() < this._rippleLongPressUntil) return
+  addRippleFromEvent(this, e, false)
 }
 
-function isScrollRippleLocked(page) {
-  return !!(page && page._rippleScrollLockUntil && Date.now() < page._rippleScrollLockUntil)
+function onRippleLongPress(e) {
+  this._rippleLongPressUntil = Date.now() + 450
+  addRippleFromEvent(this, e, true)
 }
 
-function pointDistance(a, b) {
-  if (!a || !b) return 0
-  var dx = a.x - b.x
-  var dy = a.y - b.y
-  return Math.sqrt(dx * dx + dy * dy)
+function onRippleTouchStart() {
 }
 
-function addPendingRipple(page, pending, done) {
-  if (!pending || pending.cancelled || pending.started) {
-    if (done) done(false)
-    return
-  }
-  pending.started = true
-  if (pending.rect) {
-    addRipple(page, pending.start, pending.dataset, pending.rect)
-    if (done) done(true)
-    return
-  }
-  pending.resolving = true
-  queryRects(page, function(rects) {
-    if (!page._ripplePending || page._ripplePending.id !== pending.id || pending.cancelled) {
-      pending.resolving = false
-      if (done) done(false)
-      return
-    }
-    var rect = pickRect(rects, pending.start)
-    if (!rect) {
-      pending.resolving = false
-      clearPending(page)
-      if (done) done(false)
-      return
-    }
-    addRipple(page, pending.start, pending.dataset, rect)
-    pending.resolving = false
-    if (pending.releaseAfterResolve) clearPending(page)
-    if (done) done(true)
-  })
+function onRippleTouchMove() {
+  suppressTap(this)
+  clearHoldRipples(this)
 }
 
-function isSimilarRect(rect, item) {
-  if (!rect || !item) return false
-  if (!contains(rect, { x: item.centerX, y: item.centerY })) return false
-  var dw = Math.abs((rect.width || 0) - (item.rectW || 0))
-  var dh = Math.abs((rect.height || 0) - (item.rectH || 0))
-  return dw <= 4 && dh <= 4
-}
-
-function validateRipples(page) {
-  if (!page || !page.data || !page.data.rippleList || !page.data.rippleList.length) return
-  queryRects(page, function(rects) {
-    var list = page.data && page.data.rippleList ? page.data.rippleList : []
-    if (!list.length) return
-    var next = []
-    for (var i = 0; i < list.length; i++) {
-      var keep = false
-      for (var j = 0; j < rects.length; j++) {
-        if (isSimilarRect(rects[j], list[i])) {
-          keep = true
-          break
-        }
-      }
-      if (keep) next.push(list[i])
-    }
-    if (next.length !== list.length) page.setData({ rippleList: next })
-  })
-}
-
-function scheduleValidate(page) {
-  if (!page) return
-  if (page._rippleValidateTimer) clearTimeout(page._rippleValidateTimer)
-  if (page._rippleValidateTimerLate) clearTimeout(page._rippleValidateTimerLate)
-  page._rippleValidateTimer = setTimeout(function() { validateRipples(page) }, VALIDATE_DELAY)
-  page._rippleValidateTimerLate = setTimeout(function() { validateRipples(page) }, VALIDATE_DELAY_LATE)
-}
-
-function onRippleTouchStart(e) {
-  if (isScrollRippleLocked(this)) return
-  var p = touchPoint(e)
-  if (!p) return
-  var dataset = e && e.currentTarget && e.currentTarget.dataset ? e.currentTarget.dataset : {}
-  if (dataset.rippleDisabled) return
-  var page = this
-  clearPending(page)
-  var pending = {
-    id: nextRippleId(page) + '-pending',
-    start: p,
-    dataset: dataset,
-    cancelled: false,
-    started: false,
-    timer: null
-  }
-  pending.timer = setTimeout(function() {
-    addPendingRipple(page, pending)
-  }, HOLD_DELAY)
-  page._ripplePending = pending
-  queryRects(page, function(rects) {
-    if (!page._ripplePending || page._ripplePending.id !== pending.id || pending.cancelled || pending.started) return
-    pending.rect = pickRect(rects, pending.start)
-  })
-}
-
-function onRippleTouchMove(e) {
-  var pending = this._ripplePending
-  if (!pending) return
-  var p = touchPoint(e)
-  pending.lastMove = p
-  if (pointDistance(p, pending.start) <= TOUCH_SLOP) return
-  pending.cancelled = true
-  lockScrollRipple(this)
-  clearRipples(this)
-}
-
-function onRippleTouchEnd(e) {
-  var pending = this._ripplePending
-  if (!pending) return
-  if (pending.timer) clearTimeout(pending.timer)
-  var endPoint = touchPoint(e) || pending.lastMove
-  if (pointDistance(endPoint, pending.start) > TOUCH_SLOP) {
-    pending.cancelled = true
-    lockScrollRipple(this)
-    clearRipples(this)
-    return
-  }
-  if (!pending.cancelled && !pending.started) {
-    var page = this
-    addPendingRipple(page, pending, function() {
-      if (page._ripplePending && page._ripplePending.id === pending.id) clearPending(page)
-    })
-    return
-  }
-  if (pending.started && pending.resolving) {
-    pending.releaseAfterResolve = true
-    return
-  }
-  clearPending(this)
+function onRippleTouchEnd() {
+  clearHoldRipples(this)
 }
 
 function onRippleTouchCancel() {
-  lockScrollRipple(this)
-  clearRipples(this)
+  suppressTap(this)
+  clearHoldRipples(this)
 }
 
 function onRippleCancel() {
@@ -319,22 +234,30 @@ function onRippleCancel() {
 }
 
 function onRippleScroll() {
-  lockScrollRipple(this)
+  suppressTap(this)
   clearRipples(this)
 }
 
 function onRippleAnimationEnd(e) {
   var id = e && e.currentTarget && e.currentTarget.dataset ? e.currentTarget.dataset.id : ''
   var list = this.data && this.data.rippleList ? this.data.rippleList : []
+  if (!list.length) return
   if (!id) {
     this.setData({ rippleList: list.slice(1) })
     return
   }
+
   var next = []
+  var changed = false
   for (var i = 0; i < list.length; i++) {
-    if (list[i].id !== id) next.push(list[i])
+    if (list[i].id === id) {
+      if (list[i].hold) next.push(list[i])
+      else changed = true
+    } else {
+      next.push(list[i])
+    }
   }
-  this.setData({ rippleList: next })
+  if (changed) this.setData({ rippleList: next })
 }
 
 function attach(options) {
@@ -342,6 +265,8 @@ function attach(options) {
   var oldHide = options.onHide
   var oldUnload = options.onUnload
   options.data = Object.assign({ rippleList: [] }, options.data || {})
+  options.onRippleTap = options.onRippleTap || onRippleTap
+  options.onRippleLongPress = options.onRippleLongPress || onRippleLongPress
   options.onRippleTouchStart = options.onRippleTouchStart || onRippleTouchStart
   options.onRippleTouchMove = options.onRippleTouchMove || onRippleTouchMove
   options.onRippleTouchEnd = options.onRippleTouchEnd || onRippleTouchEnd
@@ -364,6 +289,8 @@ function attach(options) {
 module.exports = {
   attach: attach,
   methods: {
+    onRippleTap: onRippleTap,
+    onRippleLongPress: onRippleLongPress,
     onRippleTouchStart: onRippleTouchStart,
     onRippleTouchMove: onRippleTouchMove,
     onRippleTouchEnd: onRippleTouchEnd,

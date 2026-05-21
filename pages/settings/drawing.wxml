@@ -5,10 +5,10 @@
   <view class="nav-bar" style="padding-top:{{statusBarH}}px;">
     <view class="nav-row">
       <view class="nav-actions">
-        <view class="icon-btn-sm nav-menu" wx:if="{{navMode === 'drawer'}}" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onOpenDrawer">
+        <view class="icon-btn-sm nav-menu" wx:if="{{navMode === 'drawer'}}" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onOpenDrawer">
           <text class="material-icons">menu</text>
         </view>
-        <view class="icon-btn-sm" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onSave">
+        <view class="icon-btn-sm" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onSave">
           <text class="material-icons">save</text>
         </view>
       </view>
@@ -24,43 +24,43 @@
     <view wx:if="{{!toolbarCollapsed}}">
       <view class="dt-row">
         <view class="dt-tools">
-          <view class="tool-toggle {{tool === 'pen' ? 'sel' : ''}}" data-tool="pen" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onSelectTool">
+          <view class="tool-toggle {{tool === 'pen' ? 'sel' : ''}}" data-tool="pen" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onSelectTool">
             <text class="material-icons">edit</text>
           </view>
-          <view class="tool-toggle {{tool === 'eraser' ? 'sel' : ''}}" data-tool="eraser" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onSelectTool">
+          <view class="tool-toggle {{tool === 'eraser' ? 'sel' : ''}}" data-tool="eraser" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onSelectTool">
             <text class="material-icons">ink_eraser</text>
           </view>
-          <view class="tool-toggle" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onClear">
+          <view class="tool-toggle" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onClear">
             <text class="material-icons">delete_sweep</text>
           </view>
         </view>
         <scroll-view class="dt-colors" scroll-x="true" enable-flex bindscroll="onRippleScroll">
           <view class="color-dot {{c === color ? 'sel' : ''}}"
                 wx:for="{{colorPalette}}" wx:key="*this" wx:for-item="c"
-                style="background:{{c}};" data-color="{{c}}" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onPickColor"></view>
+                style="background:{{c}};" data-color="{{c}}" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onPickColor"></view>
         </scroll-view>
       </view>
       <view class="dt-row">
         <slider class="flex-1" min="2" max="48" value="{{brushSize}}"
                 bindchange="onBrushSizeChange" activeColor="#038387" block-color="#038387" block-size="20" />
         <view class="dt-actions">
-          <view class="tool-toggle" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onUndo">
+          <view class="tool-toggle" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onUndo">
             <text class="material-icons">undo</text>
           </view>
-          <view class="tool-toggle" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onRedo">
+          <view class="tool-toggle" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onRedo">
             <text class="material-icons">redo</text>
           </view>
-          <view class="tool-toggle" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onSave">
+          <view class="tool-toggle" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onSave">
             <text class="material-icons">save</text>
           </view>
-          <view class="tool-toggle" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onToggleToolbar">
+          <view class="tool-toggle" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onToggleToolbar">
             <text class="material-icons">expand_more</text>
           </view>
         </view>
       </view>
     </view>
     <view class="dt-mini-row" wx:if="{{toolbarCollapsed}}">
-      <view class="tool-toggle" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onToggleToolbar">
+      <view class="tool-toggle" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onToggleToolbar">
         <text class="material-icons">expand_less</text>
       </view>
     </view>
@@ -72,6 +72,6 @@
 
 <view class="ripple-host" wx:if="{{rippleList.length}}">
   <view class="sc-ripple-clip" wx:for="{{rippleList}}" wx:key="id" style="{{item.clipStyle}}">
-    <view class="sc-ripple" data-id="{{item.id}}" style="{{item.style}}" bindanimationend="onRippleAnimationEnd"></view>
+    <view class="sc-ripple {{item.hold ? 'sc-ripple-hold' : ''}}" data-id="{{item.id}}" style="{{item.style}}" bindanimationend="onRippleAnimationEnd"></view>
   </view>
 </view>

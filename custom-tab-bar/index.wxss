@@ -129,7 +129,17 @@
   animation-fill-mode: forwards;
 }
 
+.sc-ripple.sc-ripple-hold {
+  animation: scRippleHold 1s ease-out;
+  animation-fill-mode: forwards;
+}
+
 @keyframes scRipple {
   from { transform: scale(0.1); opacity: 0.3; }
   to { transform: scale(2.5); opacity: 0; }
+}
+
+@keyframes scRippleHold {
+  from { transform: scale(0.1); opacity: 0.3; }
+  to { transform: scale(2.5); opacity: 0.3; }
 }

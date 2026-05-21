@@ -5,7 +5,7 @@
   <view class="nav-bar" style="padding-top:{{statusBarH}}px;">
     <view class="nav-row">
       <view class="nav-actions">
-        <view class="icon-btn-sm nav-menu" wx:if="{{navMode === 'drawer'}}" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onOpenDrawer">
+        <view class="icon-btn-sm nav-menu" wx:if="{{navMode === 'drawer'}}" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onOpenDrawer">
           <text class="material-icons">menu</text>
         </view>
       </view>
@@ -29,12 +29,12 @@
 
     <view class="settings-card">
       <view class="sc-title">系统与布局</view>
-      <view class="list-item" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onToggleTheme">
+      <view class="list-item" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onToggleTheme">
         <text class="item-icon material-icons">palette</text>
         <view class="item-body"><view class="item-title">主题模式</view><view class="item-support">{{settings.themeMode === 1 ? '浅色' : '深色'}}</view></view>
         <text class="item-right material-icons sm">chevron_right</text>
       </view>
-      <view class="list-item" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onToggleNavMode">
+      <view class="list-item" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onToggleNavMode">
         <text class="item-icon material-icons">bottom_navigation</text>
         <view class="item-body"><view class="item-title">导航模式</view><view class="item-support">{{navMode === 'drawer' ? '抽屉菜单' : '底栏导航'}}</view></view>
         <text class="item-right material-icons sm">chevron_right</text>
@@ -105,17 +105,17 @@
 
     <view class="settings-card">
       <view class="sc-title">数据管理</view>
-      <view class="list-item" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onExportAll">
+      <view class="list-item" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onExportAll">
         <text class="item-icon material-icons">ios_share</text>
         <view class="item-body"><view class="item-title">导出所有预设</view><view class="item-support">导出字幕和音效预设到剪贴板</view></view>
         <text class="item-right material-icons sm">chevron_right</text>
       </view>
-      <view class="list-item" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onShowImportEditor">
+      <view class="list-item" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onShowImportEditor">
         <text class="item-icon material-icons">folder_open</text>
         <view class="item-body"><view class="item-title">导入预设</view><view class="item-support">粘贴导出的 JSON 预设文本</view></view>
         <text class="item-right material-icons sm">chevron_right</text>
       </view>
-      <view class="list-item" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onClearAll">
+      <view class="list-item" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onClearAll">
         <text class="item-icon material-icons" style="color: var(--md1-error);">delete_sweep</text>
         <view class="item-body"><view class="item-title" style="color: var(--md1-error);">清除所有数据</view><view class="item-support">恢复出厂设置，此操作不可撤销</view></view>
         <text class="item-right material-icons sm" style="color: var(--md1-error);">chevron_right</text>
@@ -135,7 +135,7 @@
     <view class="sheet-body">
       <view class="import-field"><label>粘贴导出的 JSON 数据</label><textarea class="import-textarea" value="{{importData}}" bindinput="onImportDataInput" placeholder='{"subtitle":{...},"soundboard":{...}}' placeholder-class="textarea-placeholder" maxlength="-1" /></view>
     </view>
-    <view class="sheet-footer"><view class="btn-text-sm" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onCloseImportEditor">取消</view><view class="btn-filled-sm" data-ripple="1" data-ripple-color="rgb(255,255,255)" bindtouchstart="onRippleTouchStart" bindtap="onDoImport">导入</view></view>
+    <view class="sheet-footer"><view class="btn-text-sm" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onCloseImportEditor">取消</view><view class="btn-filled-sm" data-ripple="1" data-ripple-color="rgb(255,255,255)" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onDoImport">导入</view></view>
   </view>
 </view>
 
@@ -143,6 +143,6 @@
 
 <view class="ripple-host" wx:if="{{rippleList.length}}">
   <view class="sc-ripple-clip" wx:for="{{rippleList}}" wx:key="id" style="{{item.clipStyle}}">
-    <view class="sc-ripple" data-id="{{item.id}}" style="{{item.style}}" bindanimationend="onRippleAnimationEnd"></view>
+    <view class="sc-ripple {{item.hold ? 'sc-ripple-hold' : ''}}" data-id="{{item.id}}" style="{{item.style}}" bindanimationend="onRippleAnimationEnd"></view>
   </view>
 </view>

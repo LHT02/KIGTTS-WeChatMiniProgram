@@ -6,14 +6,14 @@
     </view>
     <view class="tab-item {{selectedPath === item.path ? 'active' : ''}}"
           wx:for="{{list}}" wx:key="path"
-          data-path="{{item.path}}" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onTap">
+          data-path="{{item.path}}" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onTap">
       <text class="material-icons tab-icon">{{item.icon}}</text>
       <text class="tab-label">{{item.text}}</text>
     </view>
   </view>
   <view class="ripple-host" wx:if="{{rippleList.length}}">
     <view class="sc-ripple-clip" wx:for="{{rippleList}}" wx:key="id" style="{{item.clipStyle}}">
-      <view class="sc-ripple" data-id="{{item.id}}" style="{{item.style}}" bindanimationend="onRippleAnimationEnd"></view>
+      <view class="sc-ripple {{item.hold ? 'sc-ripple-hold' : ''}}" data-id="{{item.id}}" style="{{item.style}}" bindanimationend="onRippleAnimationEnd"></view>
     </view>
   </view>
 </view>

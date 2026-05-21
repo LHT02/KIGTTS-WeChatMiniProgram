@@ -3,13 +3,13 @@
   <view class="nav-bar" style="padding-top:{{statusBarH}}px;">
     <view class="nav-row">
       <view class="nav-actions">
-        <view class="nav-back" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onNavBack">
+        <view class="nav-back" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onNavBack">
           <text class="material-icons">arrow_back</text>
         </view>
-        <view class="icon-btn-sm" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onImportPreset">
+        <view class="icon-btn-sm" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onImportPreset">
           <text class="material-icons">folder_open</text>
         </view>
-        <view class="icon-btn-sm" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onExportPreset">
+        <view class="icon-btn-sm" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onExportPreset">
           <text class="material-icons">share</text>
         </view>
       </view>
@@ -22,13 +22,13 @@
     <view class="editor-card">
       <view class="ec-row-header">
         <view class="ec-title">分组</view>
-        <view class="btn-text-sm" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onAddGroup">＋ 新增</view>
+        <view class="btn-text-sm" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onAddGroup">＋ 新增</view>
       </view>
 
       <scroll-view class="group-chips" scroll-x="true" enable-flex bindscroll="onRippleScroll">
         <view class="group-chip {{selectedGroupIdx === idx ? 'active' : ''}}"
               wx:for="{{groups}}" wx:key="id" wx:for-index="idx"
-              data-index="{{idx}}" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onSelectGroup">
+              data-index="{{idx}}" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onSelectGroup">
           <text class="material-icons" style="font-size:40rpx;">{{item.icon || 'music_note'}}</text>
           <text>{{item.title || '未命名'}}</text>
           <text class="chip-count">({{item.items ? item.items.length : 0}})</text>
@@ -43,20 +43,20 @@
 
         <view class="ec-field">
           <label>图标</label>
-          <view class="icon-row" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onOpenIconPicker">
+          <view class="icon-row" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onOpenIconPicker">
             <view class="cur-icon"><text class="material-icons" style="font-size:44rpx;">{{editingGroupIcon}}</text></view>
             <text class="arrow">›</text>
           </view>
         </view>
 
         <view class="ec-btn-row">
-          <view class="icon-btn-sm {{selectedGroupIdx === 0 ? 'disabled' : ''}}" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onMoveGroupLeft">
+          <view class="icon-btn-sm {{selectedGroupIdx === 0 ? 'disabled' : ''}}" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onMoveGroupLeft">
             <text class="material-icons">arrow_back</text>
           </view>
-          <view class="icon-btn-sm {{selectedGroupIdx >= groups.length - 1 ? 'disabled' : ''}}" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onMoveGroupRight">
+          <view class="icon-btn-sm {{selectedGroupIdx >= groups.length - 1 ? 'disabled' : ''}}" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onMoveGroupRight">
             <text class="material-icons">arrow_forward</text>
           </view>
-          <view class="icon-btn-sm" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onDeleteGroup" wx:if="{{groups.length > 1}}">
+          <view class="icon-btn-sm" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onDeleteGroup" wx:if="{{groups.length > 1}}">
             <text class="material-icons" style="color:var(--md1-error);">delete</text>
           </view>
         </view>
@@ -68,19 +68,19 @@
       <view class="ec-row-header">
         <view class="ec-title">音效条目</view>
         <view wx:if="{{!batchMode}}">
-          <view class="btn-text-sm" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onAddItem">＋ 新增</view>
+          <view class="btn-text-sm" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onAddItem">＋ 新增</view>
         </view>
         <view wx:else class="batch-actions">
-          <view class="btn-text-sm" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onBatchDelete" wx:if="{{batchCount > 0}}">删除所选</view>
-          <view class="btn-text-sm" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onBatchMove" wx:if="{{batchCount > 0 && groups.length > 1}}">移动到</view>
-          <view class="btn-text-sm" style="color:var(--md1-error);" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onExitBatch">关闭</view>
+          <view class="btn-text-sm" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onBatchDelete" wx:if="{{batchCount > 0}}">删除所选</view>
+          <view class="btn-text-sm" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onBatchMove" wx:if="{{batchCount > 0 && groups.length > 1}}">移动到</view>
+          <view class="btn-text-sm" style="color:var(--md1-error);" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onExitBatch">关闭</view>
         </view>
       </view>
 
       <view wx:if="{{selectedGroup && selectedGroup.items && selectedGroup.items.length > 0}}">
         <view class="item-row {{batchMode ? 'batch-row' : ''}} {{selectedItems[idx] ? 'selected' : ''}} {{draggingIndex === idx ? 'dragging' : ''}}"
               wx:for="{{selectedGroup.items}}" wx:key="id" wx:for-index="idx"
-              data-index="{{idx}}" data-ripple="1" data-ripple-size="72" bindtouchstart="onRippleTouchStart" bindtap="onItemRowTap" bindlongpress="onItemLongPress">
+              data-index="{{idx}}" data-ripple="1" data-ripple-size="72" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onItemRowTap" bindlongpress="onItemLongPress">
           <view wx:if="{{batchMode}}" class="item-check" data-index="{{idx}}" hover-class="pressed" hover-start-time="0" hover-stay-time="300" catchtap="onToggleBatchItem">
             <view class="native-checkbox {{selectedItems[idx] ? 'checked' : ''}}">
               <view class="native-checkbox-ripple"></view>
@@ -93,16 +93,16 @@
             <text class="item-sub">标签：{{item.wakeWord || '—'}} · {{item.filePath || '未选择音频'}}</text>
           </view>
           <view class="item-actions" wx:if="{{!batchMode}}" catchlongpress="noop">
-            <view class="btn-micro" data-index="{{idx}}" data-ripple="1" catchtouchstart="onRippleTouchStart" catchtap="onChooseAudio">
+            <view class="btn-micro" data-index="{{idx}}" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" catchtap="onChooseAudio">
               <text class="material-icons" style="font-size:44rpx;">folder_open</text>
             </view>
-            <view class="btn-micro" data-index="{{idx}}" data-ripple="1" catchtouchstart="onRippleTouchStart" catchtap="onEditItem">
+            <view class="btn-micro" data-index="{{idx}}" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" catchtap="onEditItem">
               <text class="material-icons" style="font-size:44rpx;">edit</text>
             </view>
             <view class="btn-micro drag-handle" data-index="{{idx}}" catchtouchstart="onItemDragStart" catchtouchmove="onItemDragMove" catchtouchend="onItemDragEnd" catchtouchcancel="onItemDragEnd" catchlongpress="noop">
               <text class="material-icons" style="font-size:44rpx;">drag_indicator</text>
             </view>
-            <view class="btn-micro" data-index="{{idx}}" data-ripple="1" catchtouchstart="onRippleTouchStart" catchtap="onDeleteItem" style="color:var(--md1-error);">
+            <view class="btn-micro" data-index="{{idx}}" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" catchtap="onDeleteItem" style="color:var(--md1-error);">
               <text class="material-icons" style="font-size:44rpx;">delete</text>
             </view>
           </view>
@@ -125,7 +125,7 @@
     </view>
     <view class="icon-grid">
       <view class="icon-cell {{item === editingGroupIcon ? 'active' : ''}}" wx:for="{{iconList}}" wx:key="*this"
-            data-icon="{{item}}" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onPickGroupIcon">
+            data-icon="{{item}}" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onPickGroupIcon">
         <text class="material-icons">{{item}}</text>
       </view>
     </view>
@@ -145,7 +145,7 @@
       <label>标签</label>
       <view class="md-text-field"><input value="{{addWakeWord}}" bindinput="onAddWakeInput" placeholder="标签（可选）" placeholder-class="input-placeholder" /></view>
     </view>
-    <view class="dialog-footer"><view class="btn-text-sm" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onCloseAddDialog">取消</view><view class="btn-filled-sm" data-ripple="1" data-ripple-color="rgb(255,255,255)" bindtouchstart="onRippleTouchStart" bindtap="onConfirmAdd">添加</view></view>
+    <view class="dialog-footer"><view class="btn-text-sm" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onCloseAddDialog">取消</view><view class="btn-filled-sm" data-ripple="1" data-ripple-color="rgb(255,255,255)" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onConfirmAdd">添加</view></view>
   </view>
 </view>
 
@@ -162,7 +162,7 @@
       <label>标签</label>
       <view class="md-text-field"><input value="{{editWakeWord}}" bindinput="onEditWakeInput" placeholder="标签（可选）" placeholder-class="input-placeholder" /></view>
     </view>
-    <view class="dialog-footer"><view class="btn-text-sm" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onCloseEditDialog">取消</view><view class="btn-filled-sm" data-ripple="1" data-ripple-color="rgb(255,255,255)" bindtouchstart="onRippleTouchStart" bindtap="onConfirmEdit">保存</view></view>
+    <view class="dialog-footer"><view class="btn-text-sm" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onCloseEditDialog">取消</view><view class="btn-filled-sm" data-ripple="1" data-ripple-color="rgb(255,255,255)" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onConfirmEdit">保存</view></view>
   </view>
 </view>
 
@@ -171,12 +171,12 @@
       bindtouchmove="onRippleTouchMove" bindtouchend="onRippleTouchEnd" bindtouchcancel="onRippleTouchCancel">
   <view class="dialog-box" catchtap="noop">
     <view class="dialog-text">确定删除此音效条目？</view>
-    <view class="dialog-footer"><view class="btn-text-sm" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onCancelDeleteItem">取消</view><view class="btn-text-sm" style="color:var(--md1-error);" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onConfirmDeleteItem">删除</view></view>
+    <view class="dialog-footer"><view class="btn-text-sm" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onCancelDeleteItem">取消</view><view class="btn-text-sm" style="color:var(--md1-error);" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onConfirmDeleteItem">删除</view></view>
   </view>
 </view>
 
 <view class="ripple-host" wx:if="{{rippleList.length}}">
   <view class="sc-ripple-clip" wx:for="{{rippleList}}" wx:key="id" style="{{item.clipStyle}}">
-    <view class="sc-ripple" data-id="{{item.id}}" style="{{item.style}}" bindanimationend="onRippleAnimationEnd"></view>
+    <view class="sc-ripple {{item.hold ? 'sc-ripple-hold' : ''}}" data-id="{{item.id}}" style="{{item.style}}" bindanimationend="onRippleAnimationEnd"></view>
   </view>
 </view>
