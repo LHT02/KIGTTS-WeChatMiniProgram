@@ -49,6 +49,7 @@ Page(ripple.attach({
   _getCurrentSize: function() { return this._currentTool === 'eraser' ? this.data.eraserSize : this.data.brushSize },
 
   onTouchStart: function(e) {
+    if (this.data.drawerOpen) return
     if (!this.ctx) this.ctx = wx.createCanvasContext('drawCanvas', this)
     var ctx = this.ctx, x = e.touches[0].x, y = e.touches[0].y
     ctx.beginPath(); ctx.moveTo(x, y)
@@ -60,6 +61,7 @@ Page(ripple.attach({
   },
 
   onTouchMove: function(e) {
+    if (this.data.drawerOpen) return
     if (!this.ctx || !this._path) return
     var ctx = this.ctx, x = e.touches[0].x, y = e.touches[0].y, bg = this._boardBg()
     ctx.lineTo(x, y); ctx.stroke(); ctx.draw(true)
@@ -140,8 +142,16 @@ Page(ripple.attach({
     }, this)
   },
 
-  onOpenDrawer: function() { this.setData({ drawerOpen: true }) },
-  onCloseDrawer: function() { this.setData({ drawerOpen: false }) },
+  onOpenDrawer: function() {
+    this._path = null
+    this.setData({ drawerOpen: true })
+  },
+  onCloseDrawer: function() {
+    var that = this
+    this.setData({ drawerOpen: false }, function() {
+      setTimeout(function() { that._repaint() }, 40)
+    })
+  },
   onDrawerNavTap: function(e) { nav.go(e.currentTarget.dataset.path, this.data.currentPath) },
   noop: function() {}
 }))

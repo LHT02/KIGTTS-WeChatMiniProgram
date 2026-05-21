@@ -16,6 +16,7 @@
     </view>
   </view>
   <canvas class="canvas-wrap" canvas-id="drawCanvas" id="drawCanvas"
+          hidden="{{drawerOpen}}"
           disable-scroll="{{true}}"
           bindtouchstart="onTouchStart" bindtouchmove="onTouchMove" bindtouchend="onTouchEnd" />
   <view class="draw-toolbar card {{toolbarCollapsed ? 'mini' : ''}}">
