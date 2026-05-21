@@ -3,6 +3,11 @@ function nextRippleId(page) {
   return 'ripple-' + page._rippleId
 }
 
+var HOLD_DELAY = 90
+var TOUCH_SLOP = 8
+var VALIDATE_DELAY = 80
+var VALIDATE_DELAY_LATE = 220
+
 function touchPoint(e) {
   var t = e && e.touches && e.touches[0]
   if (!t && e && e.changedTouches) t = e.changedTouches[0]
@@ -101,13 +106,17 @@ function clipRadius(rect, dataset) {
 }
 
 function addRipple(page, p, dataset, rect) {
-  rect = rect || fallbackRect(p, parseInt(dataset.rippleSize, 10) || 48)
+  rect = rect || fallbackRect(p, parseInt(dataset && dataset.rippleSize, 10) || 48)
   var localX = clamp(p.x - rect.left, 0, rect.width || 0)
   var localY = clamp(p.y - rect.top, 0, rect.height || 0)
   var size = rippleDiameter(rect, localX, localY, dataset)
   var half = size / 2
   var item = {
     id: nextRippleId(page),
+    centerX: rect.left + (rect.width || 0) / 2,
+    centerY: rect.top + (rect.height || 0) / 2,
+    rectW: rect.width || 0,
+    rectH: rect.height || 0,
     clipStyle: [
       'left:' + rect.left + 'px',
       'top:' + rect.top + 'px',
@@ -127,7 +136,87 @@ function addRipple(page, p, dataset, rect) {
   }
   var list = (page.data && page.data.rippleList ? page.data.rippleList.slice(-5) : [])
   list.push(item)
-  page.setData({ rippleList: list })
+  page.setData({ rippleList: list }, function() {
+    scheduleValidate(page)
+  })
+}
+
+function clearPending(page) {
+  if (!page || !page._ripplePending) return
+  if (page._ripplePending.timer) clearTimeout(page._ripplePending.timer)
+  page._ripplePending = null
+}
+
+function clearRipples(page) {
+  clearPending(page)
+  if (page && page._rippleValidateTimer) {
+    clearTimeout(page._rippleValidateTimer)
+    page._rippleValidateTimer = null
+  }
+  if (page && page._rippleValidateTimerLate) {
+    clearTimeout(page._rippleValidateTimerLate)
+    page._rippleValidateTimerLate = null
+  }
+  if (page && page.data && page.data.rippleList && page.data.rippleList.length) {
+    page.setData({ rippleList: [] })
+  }
+}
+
+function pointDistance(a, b) {
+  if (!a || !b) return 0
+  var dx = a.x - b.x
+  var dy = a.y - b.y
+  return Math.sqrt(dx * dx + dy * dy)
+}
+
+function addPendingRipple(page, pending) {
+  if (!pending || pending.cancelled || pending.started) return
+  pending.started = true
+  queryRects(page, function(rects) {
+    if (!page._ripplePending || page._ripplePending.id !== pending.id || pending.cancelled) return
+    var rect = pickRect(rects, pending.start)
+    if (!rect) {
+      clearPending(page)
+      return
+    }
+    addRipple(page, pending.start, pending.dataset, rect)
+  })
+}
+
+function isSimilarRect(rect, item) {
+  if (!rect || !item) return false
+  if (!contains(rect, { x: item.centerX, y: item.centerY })) return false
+  var dw = Math.abs((rect.width || 0) - (item.rectW || 0))
+  var dh = Math.abs((rect.height || 0) - (item.rectH || 0))
+  return dw <= 4 && dh <= 4
+}
+
+function validateRipples(page) {
+  if (!page || !page.data || !page.data.rippleList || !page.data.rippleList.length) return
+  queryRects(page, function(rects) {
+    var list = page.data && page.data.rippleList ? page.data.rippleList : []
+    if (!list.length) return
+    var next = []
+    for (var i = 0; i < list.length; i++) {
+      var keep = false
+      for (var j = 0; j < rects.length; j++) {
+        if (isSimilarRect(rects[j], list[i])) {
+          keep = true
+          break
+        }
+      }
+      if (keep) next.push(list[i])
+    }
+    if (next.length !== list.length) page.setData({ rippleList: next })
+  })
+}
+
+function scheduleValidate(page) {
+  if (!page) return
+  if (page._rippleValidateTimer) clearTimeout(page._rippleValidateTimer)
+  if (page._rippleValidateTimerLate) clearTimeout(page._rippleValidateTimerLate)
+  page._rippleValidateTimer = setTimeout(function() { validateRipples(page) }, VALIDATE_DELAY)
+  page._rippleValidateTimerLate = setTimeout(function() { validateRipples(page) }, VALIDATE_DELAY_LATE)
 }
 
 function onRippleTouchStart(e) {
@@ -136,9 +225,52 @@ function onRippleTouchStart(e) {
   var dataset = e && e.currentTarget && e.currentTarget.dataset ? e.currentTarget.dataset : {}
   if (dataset.rippleDisabled) return
   var page = this
-  queryRects(page, function(rects) {
-    addRipple(page, p, dataset, pickRect(rects, p))
-  })
+  clearPending(page)
+  var pending = {
+    id: nextRippleId(page) + '-pending',
+    start: p,
+    dataset: dataset,
+    cancelled: false,
+    started: false,
+    timer: null
+  }
+  pending.timer = setTimeout(function() {
+    addPendingRipple(page, pending)
+  }, HOLD_DELAY)
+  page._ripplePending = pending
+}
+
+function onRippleTouchMove(e) {
+  var pending = this._ripplePending
+  if (!pending) return
+  var p = touchPoint(e)
+  if (pointDistance(p, pending.start) <= TOUCH_SLOP) return
+  pending.cancelled = true
+  clearRipples(this)
+}
+
+function onRippleTouchEnd() {
+  var pending = this._ripplePending
+  if (!pending) return
+  if (pending.timer) clearTimeout(pending.timer)
+  if (!pending.cancelled && !pending.started) {
+    var page = this
+    setTimeout(function() {
+      if (!page._ripplePending || page._ripplePending.id !== pending.id || pending.cancelled) return
+      addPendingRipple(page, pending)
+      clearPending(page)
+    }, 20)
+    return
+  }
+  clearPending(this)
+}
+
+function onRippleTouchCancel() {
+  clearRipples(this)
+}
+
+function onRippleCancel() {
+  clearRipples(this)
 }
 
 function onRippleAnimationEnd(e) {
@@ -157,9 +289,24 @@ function onRippleAnimationEnd(e) {
 
 function attach(options) {
   options = options || {}
+  var oldHide = options.onHide
+  var oldUnload = options.onUnload
   options.data = Object.assign({ rippleList: [] }, options.data || {})
   options.onRippleTouchStart = options.onRippleTouchStart || onRippleTouchStart
+  options.onRippleTouchMove = options.onRippleTouchMove || onRippleTouchMove
+  options.onRippleTouchEnd = options.onRippleTouchEnd || onRippleTouchEnd
+  options.onRippleTouchCancel = options.onRippleTouchCancel || onRippleTouchCancel
+  options.onRippleCancel = options.onRippleCancel || onRippleCancel
+  options.onRippleClear = options.onRippleClear || onRippleCancel
   options.onRippleAnimationEnd = options.onRippleAnimationEnd || onRippleAnimationEnd
+  options.onHide = function() {
+    clearRipples(this)
+    if (oldHide) oldHide.apply(this, arguments)
+  }
+  options.onUnload = function() {
+    clearRipples(this)
+    if (oldUnload) oldUnload.apply(this, arguments)
+  }
   return options
 }
 
@@ -167,6 +314,11 @@ module.exports = {
   attach: attach,
   methods: {
     onRippleTouchStart: onRippleTouchStart,
+    onRippleTouchMove: onRippleTouchMove,
+    onRippleTouchEnd: onRippleTouchEnd,
+    onRippleTouchCancel: onRippleTouchCancel,
+    onRippleCancel: onRippleCancel,
+    onRippleClear: onRippleCancel,
     onRippleAnimationEnd: onRippleAnimationEnd
   }
 }

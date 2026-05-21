@@ -1,6 +1,7 @@
 <import src="../../templates/shell.wxml" />
 
-<view class="page route-tab theme-animated {{themeClass}} nav-{{navMode}}">
+<view class="page route-tab theme-animated {{themeClass}} nav-{{navMode}}"
+      bindtouchmove="onRippleTouchMove" bindtouchend="onRippleTouchEnd" bindtouchcancel="onRippleTouchCancel">
   <view class="nav-bar" style="padding-top:{{statusBarH}}px;">
     <view class="nav-row">
       <view class="nav-actions">
@@ -12,7 +13,7 @@
     </view>
   </view>
 
-  <scroll-view class="settings-scroll" scroll-y="true" enhanced="true" show-scrollbar="false">
+  <scroll-view class="settings-scroll" scroll-y="true" enhanced="true" show-scrollbar="false" bindscroll="onRippleClear">
     <view class="settings-scroll-inner">
     <view class="about-card">
       <image class="about-logo-img" src="{{logoSrc}}" mode="aspectFit" />
@@ -44,32 +45,36 @@
       <view class="list-item">
         <text class="item-icon material-icons">fit_screen</text>
         <view class="item-body"><view class="item-title">便捷字幕字体大小自适应</view><view class="item-support">{{settings.subtitleAutoFit ? '开启' : '关闭'}}</view></view>
-        <view class="md1-switch {{settings.subtitleAutoFit ? 'checked' : ''}}" data-key="subtitleAutoFit" data-ripple="1" bindtouchstart="onRippleTouchStart" catchtap="onSwitchTap">
+        <view class="md1-switch {{settings.subtitleAutoFit ? 'checked' : ''}}" data-key="subtitleAutoFit" hover-class="pressed" hover-start-time="0" hover-stay-time="300" catchtap="onSwitchTap">
           <view class="md1-switch-track"></view>
+          <view class="md1-switch-ripple"></view>
           <view class="md1-switch-thumb"></view>
         </view>
       </view>
       <view class="list-item">
         <text class="item-icon material-icons">format_bold</text>
         <view class="item-body"><view class="item-title">粗体字幕</view><view class="item-support">{{settings.subtitleBold ? '开启' : '关闭'}}</view></view>
-        <view class="md1-switch {{settings.subtitleBold ? 'checked' : ''}}" data-key="subtitleBold" data-ripple="1" bindtouchstart="onRippleTouchStart" catchtap="onSwitchTap">
+        <view class="md1-switch {{settings.subtitleBold ? 'checked' : ''}}" data-key="subtitleBold" hover-class="pressed" hover-start-time="0" hover-stay-time="300" catchtap="onSwitchTap">
           <view class="md1-switch-track"></view>
+          <view class="md1-switch-ripple"></view>
           <view class="md1-switch-thumb"></view>
         </view>
       </view>
       <view class="list-item">
         <text class="item-icon material-icons">format_align_center</text>
         <view class="item-body"><view class="item-title">居中显示</view><view class="item-support">{{settings.subtitleCenter ? '开启' : '关闭'}}</view></view>
-        <view class="md1-switch {{settings.subtitleCenter ? 'checked' : ''}}" data-key="subtitleCenter" data-ripple="1" bindtouchstart="onRippleTouchStart" catchtap="onSwitchTap">
+        <view class="md1-switch {{settings.subtitleCenter ? 'checked' : ''}}" data-key="subtitleCenter" hover-class="pressed" hover-start-time="0" hover-stay-time="300" catchtap="onSwitchTap">
           <view class="md1-switch-track"></view>
+          <view class="md1-switch-ripple"></view>
           <view class="md1-switch-thumb"></view>
         </view>
       </view>
       <view class="list-item">
         <text class="item-icon material-icons">swap_vert</text>
         <view class="item-body"><view class="item-title">字幕旋转 180°</view><view class="item-support">{{settings.subtitleRotated180 ? '开启' : '关闭'}}</view></view>
-        <view class="md1-switch {{settings.subtitleRotated180 ? 'checked' : ''}}" data-key="subtitleRotated180" data-ripple="1" bindtouchstart="onRippleTouchStart" catchtap="onSwitchTap">
+        <view class="md1-switch {{settings.subtitleRotated180 ? 'checked' : ''}}" data-key="subtitleRotated180" hover-class="pressed" hover-start-time="0" hover-stay-time="300" catchtap="onSwitchTap">
           <view class="md1-switch-track"></view>
+          <view class="md1-switch-ripple"></view>
           <view class="md1-switch-thumb"></view>
         </view>
       </view>
@@ -80,16 +85,18 @@
       <view class="list-item">
         <text class="item-icon material-icons">record_voice_over</text>
         <view class="item-body"><view class="item-title">微信同声传译 TTS</view><view class="item-support">{{settings.ttsEnabled ? '开启' : '关闭'}}</view></view>
-        <view class="md1-switch {{settings.ttsEnabled ? 'checked' : ''}}" data-key="ttsEnabled" data-ripple="1" bindtouchstart="onRippleTouchStart" catchtap="onSwitchTap">
+        <view class="md1-switch {{settings.ttsEnabled ? 'checked' : ''}}" data-key="ttsEnabled" hover-class="pressed" hover-start-time="0" hover-stay-time="300" catchtap="onSwitchTap">
           <view class="md1-switch-track"></view>
+          <view class="md1-switch-ripple"></view>
           <view class="md1-switch-thumb"></view>
         </view>
       </view>
       <view class="list-item">
         <text class="item-icon material-icons">volume_up</text>
         <view class="item-body"><view class="item-title">发送后朗读</view><view class="item-support">{{settings.subtitlePlayOnSend ? '开启' : '关闭'}}</view></view>
-        <view class="md1-switch {{settings.subtitlePlayOnSend ? 'checked' : ''}}" data-key="subtitlePlayOnSend" data-ripple="1" bindtouchstart="onRippleTouchStart" catchtap="onSwitchTap">
+        <view class="md1-switch {{settings.subtitlePlayOnSend ? 'checked' : ''}}" data-key="subtitlePlayOnSend" hover-class="pressed" hover-start-time="0" hover-stay-time="300" catchtap="onSwitchTap">
           <view class="md1-switch-track"></view>
+          <view class="md1-switch-ripple"></view>
           <view class="md1-switch-thumb"></view>
         </view>
       </view>
@@ -119,7 +126,8 @@
   </scroll-view>
 </view>
 
-<view class="sheet-mask theme-animated {{themeClass}}" wx:if="{{showImportEditor}}" bindtap="onCloseImportEditor">
+<view class="sheet-mask theme-animated {{themeClass}}" wx:if="{{showImportEditor}}" bindtap="onCloseImportEditor"
+      bindtouchmove="onRippleTouchMove" bindtouchend="onRippleTouchEnd" bindtouchcancel="onRippleTouchCancel">
   <view class="sheet-panel" catchtap="noop">
     <view class="sheet-header"><text class="sheet-title">导入预设</text><text class="material-icons lg" bindtap="onCloseImportEditor" style="padding:8rpx;">close</text></view>
     <view class="sheet-body">

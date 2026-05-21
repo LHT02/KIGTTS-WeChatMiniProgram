@@ -1,6 +1,7 @@
 <import src="../../templates/shell.wxml" />
 
-<view class="page route-tab {{themeClass}} nav-{{navMode}} {{sortMode ? 'sort-open' : ''}}">
+<view class="page route-tab {{themeClass}} nav-{{navMode}} {{sortMode ? 'sort-open' : ''}}"
+      bindtouchmove="onRippleTouchMove" bindtouchend="onRippleTouchEnd" bindtouchcancel="onRippleTouchCancel">
   <view class="nav-bar" style="padding-top:{{statusBarH}}px;">
     <view class="nav-row">
       <view class="nav-actions">
@@ -84,7 +85,8 @@
 </view>
 
 <!-- Preview Dialog -->
-<view class="dialog-mask {{themeClass}}" wx:if="{{showPreview}}" bindtap="onClosePreview">
+<view class="dialog-mask {{themeClass}}" wx:if="{{showPreview}}" bindtap="onClosePreview"
+      bindtouchmove="onRippleTouchMove" bindtouchend="onRippleTouchEnd" bindtouchcancel="onRippleTouchCancel">
   <view class="preview-card-dialog" style="background: {{previewCard.imagePath ? 'transparent' : previewCard.themeColor}};" catchtap="noop">
     <image wx:if="{{previewCard.imagePath}}" class="card-bg-img" src="{{previewCard.imagePath}}" mode="aspectFill" />
     <view class="card-header">
@@ -116,13 +118,14 @@
 </view>
 
 <!-- Editor Sheet -->
-<view class="sheet-mask {{themeClass}}" wx:if="{{showEditor}}" bindtap="onCloseEditor">
+<view class="sheet-mask {{themeClass}}" wx:if="{{showEditor}}" bindtap="onCloseEditor"
+      bindtouchmove="onRippleTouchMove" bindtouchend="onRippleTouchEnd" bindtouchcancel="onRippleTouchCancel">
   <view class="editor-sheet" catchtap="noop">
     <view class="sheet-header">
       <text class="sheet-title">{{editingId ? '编辑名片' : '新建名片'}}</text>
       <text class="material-icons lg" bindtap="onCloseEditor" style="padding:8rpx;">close</text>
     </view>
-    <scroll-view class="sheet-scroll" scroll-y="true">
+    <scroll-view class="sheet-scroll" scroll-y="true" bindscroll="onRippleClear">
       <!-- 基础信息 -->
       <view class="editor-card">
         <view class="editor-card-title">基础信息</view>
@@ -182,13 +185,14 @@
 <template is="appDrawer" data="{{drawerOpen: drawerOpen, navItems: navItems, currentPath: currentPath, themeClass: themeClass, logoGlyph: logoGlyph, statusBarH: statusBarH}}" />
 
 <!-- Color Picker Sheet -->
-<view class="sheet-mask {{themeClass}}" wx:if="{{showColorPicker}}" bindtap="onCloseColorPicker">
+<view class="sheet-mask {{themeClass}}" wx:if="{{showColorPicker}}" bindtap="onCloseColorPicker"
+      bindtouchmove="onRippleTouchMove" bindtouchend="onRippleTouchEnd" bindtouchcancel="onRippleTouchCancel">
   <view class="color-picker-sheet" catchtap="noop">
     <view class="sheet-header">
       <text class="sheet-title">名片主题色</text>
       <text class="material-icons lg" bindtap="onCloseColorPicker" style="padding:8rpx;">close</text>
     </view>
-    <scroll-view class="sheet-scroll" scroll-y="true">
+    <scroll-view class="sheet-scroll" scroll-y="true" bindscroll="onRippleClear">
       <view class="picker-section">
         <view class="picker-label">候选主题色</view>
         <view class="preset-grid">
@@ -232,7 +236,8 @@
 </view>
 
 <!-- Delete Confirm -->
-<view class="dialog-mask {{themeClass}}" wx:if="{{showDeleteConfirm}}" bindtap="onCancelDelete">
+<view class="dialog-mask {{themeClass}}" wx:if="{{showDeleteConfirm}}" bindtap="onCancelDelete"
+      bindtouchmove="onRippleTouchMove" bindtouchend="onRippleTouchEnd" bindtouchcancel="onRippleTouchCancel">
   <view class="dialog-box" catchtap="noop">
     <view class="dialog-text">确定要删除这张名片吗？此操作不可撤销。</view>
     <view class="dialog-footer">

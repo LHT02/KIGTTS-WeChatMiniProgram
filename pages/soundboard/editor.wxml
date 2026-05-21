@@ -1,4 +1,5 @@
-<view class="page route-push {{themeClass}}">
+<view class="page route-push {{themeClass}}"
+      bindtouchmove="onRippleTouchMove" bindtouchend="onRippleTouchEnd" bindtouchcancel="onRippleTouchCancel">
   <view class="nav-bar" style="padding-top:{{statusBarH}}px;">
     <view class="nav-row">
       <view class="nav-actions">
@@ -16,7 +17,7 @@
     </view>
   </view>
 
-  <scroll-view class="editor-scroll" scroll-y="true">
+  <scroll-view class="editor-scroll" scroll-y="true" bindscroll="onRippleClear">
 
     <view class="editor-card">
       <view class="ec-row-header">
@@ -24,7 +25,7 @@
         <view class="btn-text-sm" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onAddGroup">＋ 新增</view>
       </view>
 
-      <scroll-view class="group-chips" scroll-x="true" enable-flex>
+      <scroll-view class="group-chips" scroll-x="true" enable-flex bindscroll="onRippleClear">
         <view class="group-chip {{selectedGroupIdx === idx ? 'active' : ''}}"
               wx:for="{{groups}}" wx:key="id" wx:for-index="idx"
               data-index="{{idx}}" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onSelectGroup">
@@ -80,8 +81,10 @@
         <view class="item-row {{batchMode ? 'batch-row' : ''}} {{selectedItems[idx] ? 'selected' : ''}} {{draggingIndex === idx ? 'dragging' : ''}}"
               wx:for="{{selectedGroup.items}}" wx:key="id" wx:for-index="idx"
               data-index="{{idx}}" data-ripple="1" data-ripple-size="72" bindtouchstart="onRippleTouchStart" bindtap="onItemRowTap" bindlongpress="onItemLongPress">
-          <view wx:if="{{batchMode}}" class="item-check" data-index="{{idx}}" catchtap="onToggleBatchItem">
+          <view wx:if="{{batchMode}}" class="item-check" data-index="{{idx}}" hover-class="pressed" hover-start-time="0" hover-stay-time="300" catchtap="onToggleBatchItem">
             <view class="native-checkbox {{selectedItems[idx] ? 'checked' : ''}}">
+              <view class="native-checkbox-ripple"></view>
+              <view class="native-checkbox-bg"></view>
               <text wx:if="{{selectedItems[idx]}}" class="native-checkbox-mark material-icons">check</text>
             </view>
           </view>
@@ -113,7 +116,8 @@
 </view>
 
 <!-- Icon Picker -->
-<view class="sheet-mask {{themeClass}}" wx:if="{{showIconPicker}}" bindtap="onCloseIconPicker">
+<view class="sheet-mask {{themeClass}}" wx:if="{{showIconPicker}}" bindtap="onCloseIconPicker"
+      bindtouchmove="onRippleTouchMove" bindtouchend="onRippleTouchEnd" bindtouchcancel="onRippleTouchCancel">
   <view class="picker-panel" catchtap="noop">
     <view class="picker-header">
       <text class="picker-title">选择图标</text>
@@ -129,7 +133,8 @@
 </view>
 
 <!-- Add Item Dialog -->
-<view class="dialog-mask {{themeClass}}" wx:if="{{showAddDialog}}" bindtap="onCloseAddDialog">
+<view class="dialog-mask {{themeClass}}" wx:if="{{showAddDialog}}" bindtap="onCloseAddDialog"
+      bindtouchmove="onRippleTouchMove" bindtouchend="onRippleTouchEnd" bindtouchcancel="onRippleTouchCancel">
   <view class="dialog-box" catchtap="noop">
     <view class="dialog-title">新增音效条目</view>
     <view class="ec-field">
@@ -145,7 +150,8 @@
 </view>
 
 <!-- Edit Item Dialog -->
-<view class="dialog-mask {{themeClass}}" wx:if="{{showEditDialog}}" bindtap="onCloseEditDialog">
+<view class="dialog-mask {{themeClass}}" wx:if="{{showEditDialog}}" bindtap="onCloseEditDialog"
+      bindtouchmove="onRippleTouchMove" bindtouchend="onRippleTouchEnd" bindtouchcancel="onRippleTouchCancel">
   <view class="dialog-box" catchtap="noop">
     <view class="dialog-title">编辑音效条目</view>
     <view class="ec-field">
@@ -161,7 +167,8 @@
 </view>
 
 <!-- Delete Confirm -->
-<view class="dialog-mask {{themeClass}}" wx:if="{{showDeleteConfirm}}" bindtap="onCancelDeleteItem">
+<view class="dialog-mask {{themeClass}}" wx:if="{{showDeleteConfirm}}" bindtap="onCancelDeleteItem"
+      bindtouchmove="onRippleTouchMove" bindtouchend="onRippleTouchEnd" bindtouchcancel="onRippleTouchCancel">
   <view class="dialog-box" catchtap="noop">
     <view class="dialog-text">确定删除此音效条目？</view>
     <view class="dialog-footer"><view class="btn-text-sm" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onCancelDeleteItem">取消</view><view class="btn-text-sm" style="color:var(--md1-error);" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onConfirmDeleteItem">删除</view></view>

@@ -21,7 +21,11 @@ Component({
 
   pageLifetimes: {
     show: function() {
+      ripple.methods.onRippleClear.call(this)
       this.sync()
+    },
+    hide: function() {
+      ripple.methods.onRippleClear.call(this)
     }
   },
 
@@ -50,6 +54,10 @@ Component({
     },
 
     onRippleTouchStart: ripple.methods.onRippleTouchStart,
+    onRippleTouchMove: ripple.methods.onRippleTouchMove,
+    onRippleTouchEnd: ripple.methods.onRippleTouchEnd,
+    onRippleTouchCancel: ripple.methods.onRippleTouchCancel,
+    onRippleClear: ripple.methods.onRippleClear,
     onRippleAnimationEnd: ripple.methods.onRippleAnimationEnd
   }
 })
