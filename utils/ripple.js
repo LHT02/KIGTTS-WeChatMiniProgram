@@ -3,8 +3,9 @@ function nextRippleId(page) {
   return 'ripple-' + page._rippleId
 }
 
-var HOLD_DELAY = 90
-var TOUCH_SLOP = 8
+var HOLD_DELAY = 140
+var TOUCH_SLOP = 6
+var SCROLL_LOCK_MS = 180
 var VALIDATE_DELAY = 80
 var VALIDATE_DELAY_LATE = 220
 
@@ -162,6 +163,15 @@ function clearRipples(page) {
   }
 }
 
+function lockScrollRipple(page) {
+  if (!page) return
+  page._rippleScrollLockUntil = Date.now() + SCROLL_LOCK_MS
+}
+
+function isScrollRippleLocked(page) {
+  return !!(page && page._rippleScrollLockUntil && Date.now() < page._rippleScrollLockUntil)
+}
+
 function pointDistance(a, b) {
   if (!a || !b) return 0
   var dx = a.x - b.x
@@ -238,6 +248,7 @@ function scheduleValidate(page) {
 }
 
 function onRippleTouchStart(e) {
+  if (isScrollRippleLocked(this)) return
   var p = touchPoint(e)
   if (!p) return
   var dataset = e && e.currentTarget && e.currentTarget.dataset ? e.currentTarget.dataset : {}
@@ -266,15 +277,24 @@ function onRippleTouchMove(e) {
   var pending = this._ripplePending
   if (!pending) return
   var p = touchPoint(e)
+  pending.lastMove = p
   if (pointDistance(p, pending.start) <= TOUCH_SLOP) return
   pending.cancelled = true
+  lockScrollRipple(this)
   clearRipples(this)
 }
 
-function onRippleTouchEnd() {
+function onRippleTouchEnd(e) {
   var pending = this._ripplePending
   if (!pending) return
   if (pending.timer) clearTimeout(pending.timer)
+  var endPoint = touchPoint(e) || pending.lastMove
+  if (pointDistance(endPoint, pending.start) > TOUCH_SLOP) {
+    pending.cancelled = true
+    lockScrollRipple(this)
+    clearRipples(this)
+    return
+  }
   if (!pending.cancelled && !pending.started) {
     var page = this
     addPendingRipple(page, pending, function() {
@@ -290,10 +310,16 @@ function onRippleTouchEnd() {
 }
 
 function onRippleTouchCancel() {
+  lockScrollRipple(this)
   clearRipples(this)
 }
 
 function onRippleCancel() {
+  clearRipples(this)
+}
+
+function onRippleScroll() {
+  lockScrollRipple(this)
   clearRipples(this)
 }
 
@@ -322,6 +348,7 @@ function attach(options) {
   options.onRippleTouchCancel = options.onRippleTouchCancel || onRippleTouchCancel
   options.onRippleCancel = options.onRippleCancel || onRippleCancel
   options.onRippleClear = options.onRippleClear || onRippleCancel
+  options.onRippleScroll = options.onRippleScroll || onRippleScroll
   options.onRippleAnimationEnd = options.onRippleAnimationEnd || onRippleAnimationEnd
   options.onHide = function() {
     clearRipples(this)
@@ -343,6 +370,7 @@ module.exports = {
     onRippleTouchCancel: onRippleTouchCancel,
     onRippleCancel: onRippleCancel,
     onRippleClear: onRippleCancel,
+    onRippleScroll: onRippleScroll,
     onRippleAnimationEnd: onRippleAnimationEnd
   }
 }

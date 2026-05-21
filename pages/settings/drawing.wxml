@@ -33,7 +33,7 @@
             <text class="material-icons">delete_sweep</text>
           </view>
         </view>
-        <scroll-view class="dt-colors" scroll-x="true" enable-flex bindscroll="onRippleClear">
+        <scroll-view class="dt-colors" scroll-x="true" enable-flex bindscroll="onRippleScroll">
           <view class="color-dot {{c === color ? 'sel' : ''}}"
                 wx:for="{{colorPalette}}" wx:key="*this" wx:for-item="c"
                 style="background:{{c}};" data-color="{{c}}" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onPickColor"></view>

@@ -17,7 +17,7 @@
     </view>
   </view>
 
-  <scroll-view class="editor-scroll" scroll-y="true" bindscroll="onRippleClear">
+  <scroll-view class="editor-scroll" scroll-y="true" bindscroll="onRippleScroll">
 
     <view class="editor-card">
       <view class="ec-row-header">
@@ -25,7 +25,7 @@
         <view class="btn-text-sm" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onAddGroup">＋ 新增</view>
       </view>
 
-      <scroll-view class="group-chips" scroll-x="true" enable-flex bindscroll="onRippleClear">
+      <scroll-view class="group-chips" scroll-x="true" enable-flex bindscroll="onRippleScroll">
         <view class="group-chip {{selectedGroupIdx === idx ? 'active' : ''}}"
               wx:for="{{groups}}" wx:key="id" wx:for-index="idx"
               data-index="{{idx}}" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onSelectGroup">

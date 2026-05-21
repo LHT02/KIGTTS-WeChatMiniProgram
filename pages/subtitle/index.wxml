@@ -18,7 +18,7 @@
   <view class="subtitle-card">
     <scroll-view class="subtitle-text-wrap {{subtitleNeedsScroll ? 'scrollable' : ''}} {{textAnim ? 'subtitle-animating' : ''}}"
                  scroll-y="{{subtitleNeedsScroll}}" enhanced="true" show-scrollbar="false"
-                 bindscroll="onRippleClear" bindtap="onSubtitleTap" bindlongpress="onSubtitleLongPress">
+                 bindscroll="onRippleScroll" bindtap="onSubtitleTap" bindlongpress="onSubtitleLongPress">
       <view class="subtitle-text-viewport">
         <text class="subtitle-text {{subtitlePlaceholder && !keyboardCompact ? 'placeholder' : ''}} {{settings.subtitleBold ? 'bold' : ''}} {{settings.subtitleCenter ? 'center' : ''}} {{settings.subtitleRotated180 ? 'rotated' : ''}}" style="font-size: {{autoFontSize || settings.subtitleFontSize || 72}}rpx;">{{keyboardCompact ? inputText : displayText}}</text>
       </view>
@@ -53,7 +53,7 @@
     </view>
   </view>
 
-  <scroll-view class="quick-text-scroll" scroll-x="true" enable-flex wx:if="{{!keyboardCompact && !quickInputCollapsed}}" bindscroll="onRippleClear">
+  <scroll-view class="quick-text-scroll" scroll-x="true" enable-flex wx:if="{{!keyboardCompact && !quickInputCollapsed}}" bindscroll="onRippleScroll">
     <view class="quick-spacer start"></view>
     <view class="quick-chip"
           wx:for="{{currentGroup.items}}" wx:key="id"
@@ -68,7 +68,7 @@
   </scroll-view>
 
   <view class="group-tabs-card" wx:if="{{!keyboardCompact && !quickInputCollapsed}}">
-    <scroll-view class="group-scroll" scroll-x="true" enable-flex bindscroll="onRippleClear">
+    <scroll-view class="group-scroll" scroll-x="true" enable-flex bindscroll="onRippleScroll">
       <view class="group-chip {{config.selectedGroupId === item.id ? 'active' : ''}}"
             wx:for="{{config.groups}}" wx:key="id"
             data-gid="{{item.id}}" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onSelectGroup">
@@ -113,7 +113,7 @@
       <text class="sheet-title">{{currentGroup.title || '快捷文本'}}</text>
       <text class="material-icons lg" bindtap="onCloseQuickList" style="padding:8rpx;">close</text>
     </view>
-    <scroll-view class="sheet-body quick-list-body" scroll-y="true" bindscroll="onRippleClear">
+    <scroll-view class="sheet-body quick-list-body" scroll-y="true" bindscroll="onRippleScroll">
       <view class="quick-list-item" wx:for="{{currentGroup.items}}" wx:key="id" data-text="{{item.text}}" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onQuickListItemTap">
         <text>{{item.text}}</text>
       </view>
@@ -131,7 +131,7 @@
     <text class="material-icons">close</text>
   </view>
   <view class="preview-card" catchtap="noop">
-    <scroll-view class="preview-text-wrap {{previewNeedsScroll ? 'scrollable' : ''}}" scroll-y="{{previewNeedsScroll}}" enhanced="true" show-scrollbar="false" bindscroll="onRippleClear">
+    <scroll-view class="preview-text-wrap {{previewNeedsScroll ? 'scrollable' : ''}}" scroll-y="{{previewNeedsScroll}}" enhanced="true" show-scrollbar="false" bindscroll="onRippleScroll">
       <view class="preview-text-viewport">
         <text class="preview-text {{previewPlaceholder ? 'placeholder' : ''}} {{settings.subtitleBold ? 'bold' : ''}} {{settings.subtitleCenter ? 'center' : ''}} {{settings.subtitleRotated180 ? 'rotated' : ''}}" style="font-size: {{previewFontSize || 90}}rpx;" bindlongpress="onPreviewTextLongPress">{{previewText}}</text>
       </view>
@@ -147,7 +147,7 @@
       <text class="sheet-title">历史记录</text>
       <text class="material-icons lg" bindtap="onCloseHistory" style="padding:8rpx;">close</text>
     </view>
-    <scroll-view class="sheet-body scrollable" scroll-y="true" bindscroll="onRippleClear">
+    <scroll-view class="sheet-body scrollable" scroll-y="true" bindscroll="onRippleScroll">
       <view class="sheet-list-item" wx:for="{{history}}" wx:key="_idx" data-text="{{item.text}}" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onHistoryTap" bindlongpress="onHistoryLongPress">
         <text class="text-ellipsis flex-1">{{item.text}}</text>
         <text class="time">{{item.timeStr}}</text>

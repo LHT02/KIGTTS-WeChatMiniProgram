@@ -15,7 +15,7 @@
       <view class="nav-title">音效板</view>
     </view>
   </view>
-  <scroll-view class="sound-list" scroll-y="true" enable-flex bindscroll="onRippleClear">
+  <scroll-view class="sound-list" scroll-y="true" enable-flex bindscroll="onRippleScroll">
     <view class="sound-list-inner {{layoutCols > 1 ? 'grid' : ''}}">
     <block wx:for="{{currentGroup.items}}" wx:key="id" wx:for-item="item" wx:for-index="idx">
       <!-- List mode -->
@@ -59,7 +59,7 @@
   </scroll-view>
 
   <view class="group-tabs-card">
-    <scroll-view class="chip-scroll" scroll-x="true" enable-flex bindscroll="onRippleClear">
+    <scroll-view class="chip-scroll" scroll-x="true" enable-flex bindscroll="onRippleScroll">
       <view class="group-chip {{config.selectedGroupId === item.id ? 'active' : ''}}"
             wx:for="{{config.groups}}" wx:key="id" data-gid="{{item.id}}" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onGroupTap">
         <text class="material-icons" style="font-size:40rpx;">{{item.icon || 'music_note'}}</text>
@@ -120,7 +120,7 @@
       </view>
       <view class="sheet-editor-field">
         <label>图标</label>
-        <scroll-view class="icon-picker" scroll-x="true" bindscroll="onRippleClear">
+        <scroll-view class="icon-picker" scroll-x="true" bindscroll="onRippleScroll">
           <view class="icon-chip {{item === editingGroupIcon ? 'active' : ''}}" wx:for="{{groupIcons}}" wx:key="*this"
                 data-icon="{{item}}" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onPickGroupIcon">
             <text class="material-icons sm">{{item}}</text>

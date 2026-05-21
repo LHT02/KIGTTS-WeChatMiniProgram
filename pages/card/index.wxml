@@ -125,7 +125,7 @@
       <text class="sheet-title">{{editingId ? '编辑名片' : '新建名片'}}</text>
       <text class="material-icons lg" bindtap="onCloseEditor" style="padding:8rpx;">close</text>
     </view>
-    <scroll-view class="sheet-scroll" scroll-y="true" bindscroll="onRippleClear">
+    <scroll-view class="sheet-scroll" scroll-y="true" bindscroll="onRippleScroll">
       <!-- 基础信息 -->
       <view class="editor-card">
         <view class="editor-card-title">基础信息</view>
@@ -192,7 +192,7 @@
       <text class="sheet-title">名片主题色</text>
       <text class="material-icons lg" bindtap="onCloseColorPicker" style="padding:8rpx;">close</text>
     </view>
-    <scroll-view class="sheet-scroll" scroll-y="true" bindscroll="onRippleClear">
+    <scroll-view class="sheet-scroll" scroll-y="true" bindscroll="onRippleScroll">
       <view class="picker-section">
         <view class="picker-label">候选主题色</view>
         <view class="preset-grid">

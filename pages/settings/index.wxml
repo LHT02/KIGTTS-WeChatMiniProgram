@@ -13,7 +13,7 @@
     </view>
   </view>
 
-  <scroll-view class="settings-scroll" scroll-y="true" enhanced="true" show-scrollbar="false" bindscroll="onRippleClear">
+  <scroll-view class="settings-scroll" scroll-y="true" enhanced="true" show-scrollbar="false" bindscroll="onRippleScroll">
     <view class="settings-scroll-inner">
     <view class="about-card">
       <image class="about-logo-img" src="{{logoSrc}}" mode="aspectFit" />
