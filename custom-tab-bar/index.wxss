@@ -11,15 +11,17 @@
 }
 
 .tabbar {
+  position: relative;
   min-height: 112rpx;
   padding: 8rpx 12rpx calc(10rpx + env(safe-area-inset-bottom));
-  background: #1E1E1E;
+  background: #34383b;
   border-top: 1px solid rgba(255, 255, 255, 0.10);
   box-shadow: var(--md1-shadow-bottombar);
   display: flex;
   align-items: center;
   box-sizing: border-box;
   pointer-events: auto;
+  overflow: hidden;
 }
 
 .tab-shell.theme-light .tabbar {
@@ -32,6 +34,8 @@
 }
 
 .tab-item {
+  position: relative;
+  z-index: 1;
   flex: 1;
   min-width: 0;
   height: 88rpx;
@@ -72,6 +76,25 @@
   font-size: 24rpx;
   line-height: 1.2;
   white-space: nowrap;
+}
+
+.tab-driver {
+  position: absolute;
+  left: 0;
+  bottom: env(safe-area-inset-bottom);
+  height: 4rpx;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+  transition: transform 300ms linear;
+  will-change: transform;
+}
+
+.tab-driver-inner {
+  width: 56rpx;
+  height: 4rpx;
+  border-radius: 4rpx 4rpx 0 0;
+  background: #038387;
 }
 
 .ripple-host {

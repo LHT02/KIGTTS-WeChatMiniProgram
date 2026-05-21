@@ -9,13 +9,13 @@
    ═══════════════════════════════════════════════════════════════ */
 
 page {
-  background: #121212;
+  background: #131416;
   color: #E6E6E6;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 28rpx; line-height: 1.45;
-  --md1-surface: #1E1E1E;
-  --md1-surface-raised: #242424;
-  --md1-surface-menu: #2C2C2C;
+  --md1-surface: #34383b;
+  --md1-surface-raised: #2a2e30;
+  --md1-surface-menu: #34383b;
   --md1-primary: #038387;
   --md1-text-primary: #E6E6E6;
   --md1-text-secondary: #C2C2C2;
@@ -43,10 +43,10 @@ page {
 .page {
   animation: mdTabEnter 0.20s cubic-bezier(0.2,0,0,1);
   transform-origin: center center;
-  --md1-bg: #121212;
-  --md1-surface: #1E1E1E;
-  --md1-surface-raised: #242424;
-  --md1-surface-menu: #2C2C2C;
+  --md1-bg: #131416;
+  --md1-surface: #34383b;
+  --md1-surface-raised: #2a2e30;
+  --md1-surface-menu: #34383b;
   --md1-field: rgba(255,255,255,0.08);
   --md1-divider: rgba(255,255,255,0.10);
   --md1-shadow-card: 0 6rpx 2rpx -4rpx rgba(0,0,0,0.14), 0 4rpx 4rpx 0 rgba(0,0,0,0.098), 0 2rpx 10rpx 0 rgba(0,0,0,0.084);
@@ -231,8 +231,17 @@ page {
 
 .sheet-mask {
   position: fixed; top:0;left:0;right:0;bottom:0;
-  background: rgba(0,0,0,0.5); z-index:200;
+  background: rgba(0,0,0,0.5); z-index:900;
   display: flex; align-items: flex-end; justify-content: center;
+  box-sizing: border-box;
+}
+.sheet-mask.nav-bottom {
+  padding-bottom: calc(112rpx + env(safe-area-inset-bottom));
+}
+.sheet-mask.nav-bottom .sheet-panel,
+.sheet-mask.nav-bottom .editor-sheet,
+.sheet-mask.nav-bottom .color-picker-sheet {
+  max-height: calc(80vh - 112rpx - env(safe-area-inset-bottom));
 }
 .sheet-panel {
   background: var(--md1-surface-menu);
@@ -288,9 +297,12 @@ page {
 
 /* ═══════ Dialog ═══════ */
 
-.dialog-mask { position:fixed; top:0;left:0;right:0;bottom:0; background:rgba(0,0,0,0.52); z-index:200; display:flex; align-items:center; justify-content:center; padding:56rpx; }
+.dialog-mask { position:fixed; top:0;left:0;right:0;bottom:0; background:rgba(0,0,0,0.52); z-index:900; display:flex; align-items:center; justify-content:center; padding:56rpx; box-sizing:border-box; }
+.dialog-mask.nav-bottom {
+  padding-bottom: calc(56rpx + 112rpx + env(safe-area-inset-bottom));
+}
 .dialog-box {
-  background:var(--md1-surface-menu, #2C2C2C); border-radius:var(--md1-radius);
+  background:var(--md1-surface-menu, #34383b); border-radius:var(--md1-radius);
   width:500rpx; max-width:100%; padding:40rpx;
   box-sizing:border-box;
   box-shadow:var(--md1-shadow-card);

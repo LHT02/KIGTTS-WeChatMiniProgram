@@ -1,6 +1,6 @@
 /* 画板 */
 .page { background:var(--md1-bg); display:flex; flex-direction:column; height:100vh; overflow:hidden; }
-.canvas-wrap { flex:1; width:100%; background:#242424; }
+.canvas-wrap { flex:1; width:100%; background:var(--md1-surface-raised); }
 .page.theme-light .canvas-wrap { background:#FCFDFE; }
 
 .nav-bar { position:relative; z-index:60; background:var(--md1-surface); flex-shrink:0; box-shadow:var(--md1-shadow-appbar); }

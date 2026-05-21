@@ -73,7 +73,7 @@
 
 </view>
 
-<view class="sheet-mask {{themeClass}}" wx:if="{{showEditor}}" bindtap="onCloseEditor"
+<view class="sheet-mask {{themeClass}} nav-{{navMode}}" wx:if="{{showEditor}}" bindtap="onCloseEditor"
       bindtouchmove="onRippleTouchMove" bindtouchend="onRippleTouchEnd" bindtouchcancel="onRippleTouchCancel">
   <view class="sheet-panel" catchtap="noop">
     <view class="sheet-header">
@@ -106,7 +106,7 @@
 
 <template is="appDrawer" data="{{drawerOpen: drawerOpen, navItems: navItems, currentPath: currentPath, themeClass: themeClass, logoGlyph: logoGlyph, statusBarH: statusBarH}}" />
 
-<view class="sheet-mask {{themeClass}}" wx:if="{{showGroupEditor}}" bindtap="onCloseGroupEditor"
+<view class="sheet-mask {{themeClass}} nav-{{navMode}}" wx:if="{{showGroupEditor}}" bindtap="onCloseGroupEditor"
       bindtouchmove="onRippleTouchMove" bindtouchend="onRippleTouchEnd" bindtouchcancel="onRippleTouchCancel">
   <view class="sheet-panel" catchtap="noop">
     <view class="sheet-header">

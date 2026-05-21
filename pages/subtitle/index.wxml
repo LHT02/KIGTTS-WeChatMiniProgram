@@ -1,6 +1,6 @@
 <import src="../../templates/shell.wxml" />
 
-<view class="page route-tab {{themeClass}} nav-{{navMode}} {{keyboardCompact ? 'keyboard-compact' : ''}}" style="padding-bottom:{{keyboardCompact ? keyboardHeight : 0}}px;"
+<view class="page route-tab {{themeClass}} nav-{{navMode}} {{keyboardCompact ? 'keyboard-compact' : ''}}" style="padding-bottom:{{keyboardCompact ? keyboardHeight : 0}}px; --status-bar-h:{{statusBarH}}px;"
       bindtouchmove="onRippleTouchMove" bindtouchend="onRippleTouchEnd" bindtouchcancel="onRippleTouchCancel">
   <view class="nav-bar" style="padding-top:{{statusBarH}}px;" wx:if="{{!keyboardCompact}}">
     <view class="nav-row">
@@ -106,7 +106,7 @@
 
 <template is="appDrawer" data="{{drawerOpen: drawerOpen, navItems: navItems, currentPath: currentPath, themeClass: themeClass, logoGlyph: logoGlyph, statusBarH: statusBarH}}" />
 
-<view class="sheet-mask {{themeClass}}" wx:if="{{showQuickList}}" bindtap="onCloseQuickList"
+<view class="sheet-mask {{themeClass}} nav-{{navMode}}" wx:if="{{showQuickList}}" bindtap="onCloseQuickList"
       bindtouchmove="onRippleTouchMove" bindtouchend="onRippleTouchEnd" bindtouchcancel="onRippleTouchCancel">
   <view class="sheet-panel quick-list-sheet" catchtap="noop">
     <view class="sheet-header">
@@ -125,7 +125,7 @@
   </view>
 </view>
 
-<view class="preview-mask {{themeClass}}" wx:if="{{showPreview}}" bindtap="onClosePreview"
+<view class="preview-mask {{themeClass}} nav-{{navMode}}" wx:if="{{showPreview}}" bindtap="onClosePreview"
       bindtouchmove="onRippleTouchMove" bindtouchend="onRippleTouchEnd" bindtouchcancel="onRippleTouchCancel">
   <view class="preview-card" catchtap="noop">
     <view class="preview-close-btn" data-ripple="1" bindtouchstart="onRippleTouchStart" catchtap="onClosePreview">
@@ -136,7 +136,7 @@
   </view>
 </view>
 
-<view class="sheet-mask {{themeClass}}" wx:if="{{showHistory}}" bindtap="onCloseHistory"
+<view class="sheet-mask {{themeClass}} nav-{{navMode}}" wx:if="{{showHistory}}" bindtap="onCloseHistory"
       bindtouchmove="onRippleTouchMove" bindtouchend="onRippleTouchEnd" bindtouchcancel="onRippleTouchCancel">
   <view class="sheet-panel" catchtap="noop">
     <view class="sheet-header">

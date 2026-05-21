@@ -7,8 +7,8 @@
   z-index: 800;
   background: rgba(0, 0, 0, 0.52);
   animation: fadeIn 0.14s cubic-bezier(0.4, 0, 0.2, 1);
-  --md1-surface: #1E1E1E;
-  --md1-surface-menu: #2C2C2C;
+  --md1-surface: #34383b;
+  --md1-surface-menu: #34383b;
   --md1-text-primary: #E6E6E6;
   --md1-text-secondary: #C2C2C2;
   --md1-text-hint: #8C8C8C;

@@ -1,6 +1,7 @@
 /* 便捷字幕 */
 
 .page { display:flex; flex-direction:column; height:100vh; background:var(--md1-bg); overflow:hidden; box-sizing:border-box; }
+.page.keyboard-compact { padding-top:calc(var(--status-bar-h, 44px) + 88rpx); }
 
 .nav-bar { position:relative; z-index:60; background:var(--md1-surface); flex-shrink:0; box-shadow:var(--md1-shadow-appbar); }
 .nav-row { position:relative; display:flex; align-items:center; justify-content:center; height:88rpx; padding:0 220rpx; box-sizing:border-box; }
@@ -51,7 +52,8 @@
 .send-btn.disabled { color:var(--md1-text-disabled); }
 .send-btn:active { background:transparent; }
 
-.preview-mask { position:fixed; top:0;left:0;right:0;bottom:0; background:rgba(0,0,0,0.52); z-index:300; display:flex; align-items:center; justify-content:center; padding:28rpx; animation:previewMaskIn 0.15s cubic-bezier(0.4,0,0.2,1); }
+.preview-mask { position:fixed; top:0;left:0;right:0;bottom:0; background:rgba(0,0,0,0.52); z-index:900; display:flex; align-items:center; justify-content:center; padding:28rpx; box-sizing:border-box; animation:previewMaskIn 0.15s cubic-bezier(0.4,0,0.2,1); }
+.preview-mask.nav-bottom { padding-bottom:calc(28rpx + 112rpx + env(safe-area-inset-bottom)); }
 .preview-card { background:var(--md1-surface-raised); border-radius:var(--md1-radius); padding:64rpx 48rpx 48rpx; max-width:90vw; max-height:85vh; display:flex; flex-direction:column; align-items:center; position:relative; box-shadow:var(--md1-shadow-appbar); transform-origin:center; animation:previewCardIn 0.18s cubic-bezier(0.4,0,0.2,1); }
 .preview-close-btn { position:absolute; top:-20rpx; left:-20rpx; width:80rpx; height:80rpx; border-radius:50%; background:var(--md1-surface-menu); display:flex; align-items:center; justify-content:center; color:var(--md1-text-primary); font-size:44rpx; box-shadow:var(--md1-shadow-fab); z-index:10; }
 .preview-text { color:var(--md1-text-primary); word-break:keep-all; overflow-wrap:break-word; line-height:1.36; text-align:center; max-height:50vh; overflow:auto; }

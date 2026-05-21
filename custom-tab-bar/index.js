@@ -10,6 +10,8 @@ Component({
     navMode: theme.navMode(),
     themeClass: theme.themeClass(),
     keyboardHidden: false,
+    activeIndex: 0,
+    tabDriverStyle: 'width:20%;transform:translateX(0%);',
     list: nav.items
   },
 
@@ -34,8 +36,18 @@ Component({
       var pages = getCurrentPages()
       var current = pages.length ? pages[pages.length - 1].route : ''
       var settings = storage.getSettings()
+      var activeIndex = 0
+      for (var i = 0; i < nav.items.length; i++) {
+        if (nav.items[i].path === current) {
+          activeIndex = i
+          break
+        }
+      }
+      var count = nav.items.length || 1
       this.setData({
         selectedPath: current,
+        activeIndex: activeIndex,
+        tabDriverStyle: 'width:' + (100 / count) + '%;transform:translateX(' + (activeIndex * 100) + '%);',
         navMode: settings.navMode || 'bottom',
         themeClass: settings.themeMode === 1 ? 'theme-light' : ''
       })

@@ -1,6 +1,9 @@
 <view class="tab-shell {{themeClass}} {{selectedPath === 'pages/subtitle/index' ? 'subtitle-current' : ''}}" wx:if="{{navMode !== 'drawer' && !keyboardHidden}}"
       bindtouchmove="onRippleTouchMove" bindtouchend="onRippleTouchEnd" bindtouchcancel="onRippleTouchCancel">
   <view class="tabbar">
+    <view class="tab-driver" style="{{tabDriverStyle}}">
+      <view class="tab-driver-inner"></view>
+    </view>
     <view class="tab-item {{selectedPath === item.path ? 'active' : ''}}"
           wx:for="{{list}}" wx:key="path"
           data-path="{{item.path}}" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onTap">
