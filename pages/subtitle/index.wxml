@@ -125,14 +125,18 @@
   </view>
 </view>
 
-<view class="preview-mask {{themeClass}} nav-{{navMode}}" wx:if="{{showPreview}}" bindtap="onClosePreview"
+<view class="preview-mask {{themeClass}} nav-{{navMode}}" wx:if="{{showPreview}}" style="--status-bar-h:{{statusBarH}}px;" bindtap="onClosePreview"
       bindtouchmove="onRippleTouchMove" bindtouchend="onRippleTouchEnd" bindtouchcancel="onRippleTouchCancel">
+  <view class="preview-close-btn" data-ripple="1" bindtouchstart="onRippleTouchStart" catchtap="onClosePreview">
+    <text class="material-icons">close</text>
+  </view>
   <view class="preview-card" catchtap="noop">
-    <view class="preview-close-btn" data-ripple="1" bindtouchstart="onRippleTouchStart" catchtap="onClosePreview">
-      <text class="material-icons">close</text>
-    </view>
-    <text class="preview-text {{settings.subtitleBold ? 'bold' : ''}} {{settings.subtitleCenter ? 'center' : ''}} {{settings.subtitleRotated180 ? 'rotated' : ''}}" style="font-size: {{(settings.subtitleFontSize || 72) * 1.25}}rpx;">{{displayText}}</text>
-    <view class="preview-hint">长按复制 · 点击空白关闭</view>
+    <scroll-view class="preview-text-wrap {{previewNeedsScroll ? 'scrollable' : ''}}" scroll-y="{{previewNeedsScroll}}" enhanced="true" show-scrollbar="false" bindscroll="onRippleClear">
+      <view class="preview-text-viewport">
+        <text class="preview-text {{settings.subtitleBold ? 'bold' : ''}} {{settings.subtitleCenter ? 'center' : ''}} {{settings.subtitleRotated180 ? 'rotated' : ''}}" style="font-size: {{previewFontSize || 90}}rpx;" bindlongpress="onPreviewTextLongPress">{{previewText}}</text>
+      </view>
+    </scroll-view>
+    <view class="preview-hint">长按复制</view>
   </view>
 </view>
 

@@ -13,6 +13,7 @@ Page(ripple.attach({
     settings: initialSettings, config: {}, currentGroup: {},
     showActionButtons: true, showPreview: false, showHistory: false, showQuickList: false,
     inputText: '', autoFontSize: 72, subtitleNeedsScroll: false, textAnim: false,
+    previewText: '', previewFontSize: 90, previewNeedsScroll: false,
     quickInputCollapsed: !!initialSettings.quickInputCollapsed,
     keyboardActive: false, keyboardCompact: false, keyboardHeight: 0,
     ttsBusy: false,
@@ -58,10 +59,27 @@ Page(ripple.attach({
   onSubtitleTap: function() {
     var t = this._visibleDisplayText()
     if (!t || t === '我不太方便说话，请等我一下……') return
-    this.setData({ showPreview: true })
+    var that = this
+    this.setData({
+      showPreview: true,
+      previewText: t,
+      previewFontSize: Math.round((this.data.settings.subtitleFontSize || 72) * 1.25),
+      previewNeedsScroll: false
+    }, function() {
+      that._schedulePreviewFit(40)
+    })
   },
 
-  onClosePreview: function() { this.setData({ showPreview: false }) },
+  onClosePreview: function() {
+    this._previewFitToken = ''
+    this.setData({ showPreview: false, previewText: '' })
+  },
+
+  onPreviewTextLongPress: function() {
+    var t = (this.data.previewText || '').trim()
+    if (!t || t === '我不太方便说话，请等我一下……') return
+    wx.setClipboardData({ data: t, success: function() { wx.showToast({ title: '已复制', icon: 'success' }) } })
+  },
 
   onSubtitleLongPress: function() {
     var t = this._visibleDisplayText()
@@ -507,23 +525,24 @@ Page(ripple.attach({
     }
   },
 
-  _calcFitSize: function(rect, text, baseSize) {
+  _calcFitSize: function(rect, text, baseSize, options) {
+    options = options || {}
     var ratio = this._rpxRatio()
     var rectW = rect.width / ratio
     var rectH = rect.height / ratio
-    var padW = 56
-    var padH = 12
+    var padW = options.padW == null ? 56 : options.padW
+    var padH = options.padH == null ? 12 : options.padH
     var availW = Math.max(rectW - padW, 40)
     var availH = Math.max(rectH - padH, 40)
     var requestedMax = Math.max(28, baseSize || 72)
-    var minSize = Math.min(28, requestedMax)
-    var lineHeight = 1.15
+    var minSize = Math.min(options.minSize || 28, requestedMax)
+    var lineHeight = options.lineHeight || 1.15
     var bold = !!(this.data.settings && this.data.settings.subtitleBold)
-    var autoFit = !(this.data.settings && this.data.settings.subtitleAutoFit === false)
+    var autoFit = options.forceAutoFit ? true : !(this.data.settings && this.data.settings.subtitleAutoFit === false)
     var source = String(text || '').trim()
     if (!source) return { size: requestedMax, needsScroll: false }
     if (!autoFit) return { size: requestedMax, needsScroll: true }
-    var dynamicMax = Math.min(260, Math.max(minSize, requestedMax))
+    var dynamicMax = options.maxSize ? Math.max(minSize, options.maxSize) : Math.min(260, Math.max(minSize, requestedMax))
 
     var fits = function(size) {
       var m = this._measureWrappedText(source, size, availW, lineHeight, bold)
@@ -565,6 +584,41 @@ Page(ripple.attach({
       }
       var fit = that._calcFitSize(rect, text, baseSize)
       that.setData({ autoFontSize: fit.size, subtitleNeedsScroll: fit.needsScroll })
+    }).exec()
+  },
+
+  _schedulePreviewFit: function(delay) {
+    var that = this
+    var token = Date.now() + '_' + Math.random()
+    this._previewFitToken = token
+    setTimeout(function() {
+      if (that._previewFitToken !== token || !that.data.showPreview) return
+      that._fitPreviewFont()
+    }, delay || 0)
+  },
+
+  _fitPreviewFont: function() {
+    var that = this
+    var text = (this.data.previewText || '').trim()
+    var baseSize = Math.round((this.data.settings.subtitleFontSize || 72) * 1.25)
+    if (!text || text === '我不太方便说话，请等我一下……') {
+      this.setData({ previewFontSize: baseSize, previewNeedsScroll: false })
+      return
+    }
+    wx.createSelectorQuery().in(that).select('.preview-text-wrap').boundingClientRect(function(rect) {
+      if (!rect || rect.width < 40 || rect.height < 40) {
+        setTimeout(function() { if (that.data.showPreview) that._fitPreviewFont() }, 120)
+        return
+      }
+      var fit = that._calcFitSize(rect, text, baseSize, {
+        forceAutoFit: true,
+        minSize: 32,
+        maxSize: Math.min(320, Math.max(180, baseSize * 1.4)),
+        padW: 48,
+        padH: 16,
+        lineHeight: 1.18
+      })
+      that.setData({ previewFontSize: fit.size, previewNeedsScroll: fit.needsScroll })
     }).exec()
   },
 
