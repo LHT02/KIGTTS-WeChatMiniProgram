@@ -18,6 +18,10 @@ var ACTIONS = {
   'pages/settings/index': []
 }
 
+var TAB_DRIVER_RPX = 56
+var TAB_DRIVER_MIN_PX = 24
+var TAB_DRIVER_MAX_RATIO = 0.62
+
 function normalize(path) {
   return (path || '').replace(/^\/+/, '')
 }
@@ -36,13 +40,35 @@ function indexFor(path) {
   return 0
 }
 
+function fallbackTabDriverStyle(index) {
+  var count = nav.items.length || 1
+  var slot = 750 / count
+  var left = slot * index + Math.max(0, (slot - TAB_DRIVER_RPX) / 2)
+  return 'width:' + TAB_DRIVER_RPX + 'rpx;transform:translateX(' + left + 'rpx) translateY(-2rpx);'
+}
+
+function rpxToPx(rpx) {
+  try {
+    var sys = wx.getSystemInfoSync()
+    return (sys.windowWidth || 375) * rpx / 750
+  } catch (e) {
+    return rpx / 2
+  }
+}
+
+function tabDriverWidth(itemWidth) {
+  var defaultWidth = rpxToPx(TAB_DRIVER_RPX)
+  var maxWidth = Math.max(TAB_DRIVER_MIN_PX, itemWidth * TAB_DRIVER_MAX_RATIO)
+  return Math.max(TAB_DRIVER_MIN_PX, Math.min(defaultWidth, maxWidth))
+}
+
 Page(ripple.attach({
   data: {
     activePath: 'pages/subtitle/index',
     activeTitle: '便捷字幕',
     activeActions: ACTIONS['pages/subtitle/index'],
     activeIndex: 0,
-    tabDriverStyle: 'width:20%;transform:translateX(0%) translateY(-2rpx);',
+    tabDriverStyle: fallbackTabDriverStyle(0),
     tabDriverUnequal: false,
     tabScrollLeft: 0,
     navItems: nav.items,
@@ -139,18 +165,19 @@ Page(ripple.attach({
     var metrics = this._tabMetrics
     if (!metrics || !metrics.items || !metrics.items[index]) {
       return {
-        tabDriverStyle: 'width:' + (100 / count) + '%;transform:translateX(' + (index * 100) + '%) translateY(-2rpx);',
+        tabDriverStyle: fallbackTabDriverStyle(index),
         tabDriverUnequal: false
       }
     }
 
     var item = metrics.items[index]
     var previous = metrics.items[previousIndex]
-    var left = item.left - metrics.tabStartPosition
-    var width = item.width
+    var width = tabDriverWidth(item.width || 0)
+    var previousWidth = previous ? tabDriverWidth(previous.width || 0) : width
+    var left = item.left - metrics.tabStartPosition + Math.max(0, ((item.width || width) - width) / 2)
     var data = {
       tabDriverStyle: 'width:' + width + 'px;transform:translateX(' + left + 'px) translateY(-2rpx);',
-      tabDriverUnequal: !!(previous && Math.abs(previous.width - width) > 0.5)
+      tabDriverUnequal: !!(previous && Math.abs(previousWidth - width) > 0.5)
     }
 
     if (metrics.scrollViewWidth && metrics.scrollViewWidth < metrics.tabListWidth) {

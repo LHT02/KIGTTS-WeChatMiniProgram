@@ -130,6 +130,22 @@
 .btn-micro:active { background:transparent; }
 .drag-handle { color:var(--md1-text-primary); }
 
+.audio-pick-row {
+  display:flex;
+  align-items:center;
+  gap:12rpx;
+  min-height:64rpx;
+}
+.audio-name {
+  flex:1;
+  min-width:0;
+  color:var(--md1-text-hint);
+  font-size:24rpx;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
 .dialog-title { font-size:32rpx; font-weight:500; color:var(--md1-text-primary); margin-bottom:20rpx; }
 
 .picker-panel {

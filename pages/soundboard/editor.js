@@ -2,6 +2,7 @@ var storage = require('../../utils/storage')
 var preset = require('../../utils/preset')
 var theme = require('../../utils/theme')
 var ripple = require('../../utils/ripple')
+var soundFile = require('../../utils/sound-file')
 
 Page(ripple.attach({
   data: {
@@ -16,8 +17,8 @@ Page(ripple.attach({
     showIconPicker: false,
 
     // Item editor
-    showAddDialog: false, addTitle: '', addWakeWord: '',
-    showEditDialog: false, editItemIdx: -1, editTitle: '', editWakeWord: '',
+    showAddDialog: false, addTitle: '', addWakeWord: '', addFilePath: '', addFileName: '', addFileSize: 0,
+    showEditDialog: false, editItemIdx: -1, editTitle: '', editWakeWord: '', editFilePath: '', editFileName: '', editFileSize: 0,
     showDeleteConfirm: false, deleteItemIdx: -1,
 
     // Batch operations
@@ -154,7 +155,7 @@ Page(ripple.attach({
 
   // === Items ===
   onAddItem: function() {
-    this.setData({ showAddDialog: true, addTitle: '', addWakeWord: '' })
+    this.setData({ showAddDialog: true, addTitle: '', addWakeWord: '', addFilePath: '', addFileName: '', addFileSize: 0 })
   },
 
   onCloseAddDialog: function() { this.setData({ showAddDialog: false }) },
@@ -165,9 +166,10 @@ Page(ripple.attach({
   onConfirmAdd: function() {
     var title = (this.data.addTitle || '').trim()
     if (!title) { wx.showToast({ title: '请输入条目名', icon: 'none' }); return }
+    if (!this.data.addFilePath) { wx.showToast({ title: '请选择音频文件', icon: 'none' }); return }
     var g = this.data.selectedGroup; if (!g) return
     if (!g.items) g.items = []
-    g.items.push({ id: Date.now(), title: title, wakeWord: (this.data.addWakeWord || '').trim() })
+    g.items.push({ id: Date.now(), title: title, wakeWord: (this.data.addWakeWord || '').trim(), filePath: this.data.addFilePath, fileName: this.data.addFileName, fileSize: this.data.addFileSize || 0 })
     this.setData({ showAddDialog: false })
     this._save(); this._refresh()
   },
@@ -176,7 +178,7 @@ Page(ripple.attach({
     var idx = parseInt(e.currentTarget.dataset.index)
     var item = this.data.selectedGroup.items[idx]
     if (!item) return
-    this.setData({ showEditDialog: true, editItemIdx: idx, editTitle: item.title || '', editWakeWord: item.wakeWord || '' })
+    this.setData({ showEditDialog: true, editItemIdx: idx, editTitle: item.title || '', editWakeWord: item.wakeWord || '', editFilePath: item.filePath || '', editFileName: item.fileName || '', editFileSize: item.fileSize || 0 })
   },
 
   onCloseEditDialog: function() { this.setData({ showEditDialog: false }) },
@@ -186,9 +188,16 @@ Page(ripple.attach({
   onConfirmEdit: function() {
     var title = (this.data.editTitle || '').trim()
     if (!title) { wx.showToast({ title: '请输入条目名', icon: 'none' }); return }
+    if (!this.data.editFilePath) { wx.showToast({ title: '请选择音频文件', icon: 'none' }); return }
     var g = this.data.selectedGroup; if (!g) return
     var item = g.items[this.data.editItemIdx]
-    if (item) { item.title = title; item.wakeWord = (this.data.editWakeWord || '').trim() }
+    if (item) {
+      item.title = title
+      item.wakeWord = (this.data.editWakeWord || '').trim()
+      item.filePath = this.data.editFilePath
+      item.fileName = this.data.editFileName
+      item.fileSize = this.data.editFileSize || 0
+    }
     this.setData({ showEditDialog: false })
     this._save(); this._refresh()
   },
@@ -275,13 +284,39 @@ Page(ripple.attach({
 
   onChooseAudio: function(e) {
     var that = this, idx = parseInt(e.currentTarget.dataset.index)
-    wx.chooseMessageFile({ count: 1, type: 'file',
-      success: function(r) {
-        var g = that.data.selectedGroup; if (!g) return
-        var item = g.items[idx]; if (!item) return
-        item.filePath = r.tempFiles[0].path
-        that._save(); that._refresh()
-      }
+    soundFile.chooseAudioFile().then(function(file) {
+      var g = that.data.selectedGroup; if (!g) return
+      var item = g.items[idx]; if (!item) return
+      item.filePath = file.filePath
+      item.fileName = file.fileName
+      item.fileSize = file.fileSize || 0
+      that._save(); that._refresh()
+      wx.showToast({ title: '音频已导入', icon: 'success' })
+    }).catch(function(err) {
+      if (err && err.errMsg && err.errMsg.indexOf('cancel') !== -1) return
+      wx.showToast({ title: '导入失败', icon: 'none' })
+    })
+  },
+
+  onChooseAddAudio: function() {
+    var that = this
+    soundFile.chooseAudioFile().then(function(file) {
+      that.setData({ addFilePath: file.filePath, addFileName: file.fileName, addFileSize: file.fileSize || 0 })
+      wx.showToast({ title: '音频已导入', icon: 'success' })
+    }).catch(function(err) {
+      if (err && err.errMsg && err.errMsg.indexOf('cancel') !== -1) return
+      wx.showToast({ title: '导入失败', icon: 'none' })
+    })
+  },
+
+  onChooseEditAudio: function() {
+    var that = this
+    soundFile.chooseAudioFile().then(function(file) {
+      that.setData({ editFilePath: file.filePath, editFileName: file.fileName, editFileSize: file.fileSize || 0 })
+      wx.showToast({ title: '音频已导入', icon: 'success' })
+    }).catch(function(err) {
+      if (err && err.errMsg && err.errMsg.indexOf('cancel') !== -1) return
+      wx.showToast({ title: '导入失败', icon: 'none' })
     })
   },
 

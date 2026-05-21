@@ -1,5 +1,6 @@
 var storage = require('../../utils/storage')
 var audio = require('../../utils/audio')
+var soundFile = require('../../utils/sound-file')
 var nav = require('../../utils/nav')
 var theme = require('../../utils/theme')
 var ripple = require('../../utils/ripple')
@@ -13,7 +14,7 @@ Component(componentPage.fromPage(ripple.attach({
     layoutCols: 1,
     showEditor: false, showGroupEditor: false,
     editingItem: null, editingGroup: null,
-    editingTitle: '', editingWakeWord: '', editingFilePath: '',
+    editingTitle: '', editingWakeWord: '', editingFilePath: '', editingFileName: '', editingFileSize: 0,
     editingGroupTitle: '', editingGroupIcon: 'music_note',
     playingId: null, themeClass: theme.themeClass(), statusBarH: 44,
     routeEnterClass: '',
@@ -37,6 +38,10 @@ Component(componentPage.fromPage(ripple.attach({
     nav.syncTabBar(this)
     this.loadData(function() { that._syncPlayingState() })
     routeAnim.enter(this)
+  },
+
+  onHide: function() {
+    if (!audio.isPlaying() && this.data.playingId !== null) this.setData({ playingId: null })
   },
 
   loadData(callback) {
@@ -152,7 +157,7 @@ Component(componentPage.fromPage(ripple.attach({
     var that = this
     wx.showActionSheet({ itemList: ['编辑', '删除', '上移', '下移'],
       success: function(r) {
-        if (r.tapIndex === 0) { that.setData({ showEditor: true, editingItem: item, editingTitle: item.title, editingWakeWord: item.wakeWord || '', editingFilePath: item.filePath || '' }) }
+        if (r.tapIndex === 0) { that.setData({ showEditor: true, editingItem: item, editingTitle: item.title, editingWakeWord: item.wakeWord || '', editingFilePath: item.filePath || '', editingFileName: item.fileName || '', editingFileSize: item.fileSize || 0 }) }
         else if (r.tapIndex === 1) {
           wx.showModal({ title: '确认删除', content: '删除"' + item.title + '"？', confirmColor: '#cf6679',
             success: function(rr) { if (!rr.confirm) return; that._doDeleteItem(idx); }
@@ -178,13 +183,19 @@ Component(componentPage.fromPage(ripple.attach({
     storage.saveSoundboardConfig(config); this.loadData()
   },
 
-  onAddItem() { this.setData({ showEditor: true, editingItem: null, editingTitle: '', editingWakeWord: '', editingFilePath: '' }) },
+  onAddItem() { this.setData({ showEditor: true, editingItem: null, editingTitle: '', editingWakeWord: '', editingFilePath: '', editingFileName: '', editingFileSize: 0 }) },
   onCloseEditor() { this.setData({ showEditor: false }) },
   onEditorTitleChange(e) { this.setData({ editingTitle: e.detail.value }) },
   onEditorWakeWordChange(e) { this.setData({ editingWakeWord: e.detail.value }) },
   onChooseAudioFile() {
     var that = this
-    wx.chooseMessageFile({ count: 1, type: 'file', success: function(r) { that.setData({ editingFilePath: r.tempFiles[0].path }) } })
+    soundFile.chooseAudioFile().then(function(file) {
+      that.setData({ editingFilePath: file.filePath, editingFileName: file.fileName, editingFileSize: file.fileSize || 0 })
+      wx.showToast({ title: '音频已导入', icon: 'success' })
+    }).catch(function(err) {
+      if (err && err.errMsg && err.errMsg.indexOf('cancel') !== -1) return
+      wx.showToast({ title: '导入失败', icon: 'none' })
+    })
   },
 
   onSaveItem() {
@@ -195,9 +206,9 @@ Component(componentPage.fromPage(ripple.attach({
     for (var i = 0; i < config.groups.length; i++) {
       if (config.groups[i].id === this.data.config.selectedGroupId) {
         if (this.data.editingItem) {
-          for (var j = 0; j < config.groups[i].items.length; j++) { if (config.groups[i].items[j].id === this.data.editingItem.id) { config.groups[i].items[j].title = title; config.groups[i].items[j].wakeWord = this.data.editingWakeWord; config.groups[i].items[j].filePath = this.data.editingFilePath; break } }
+          for (var j = 0; j < config.groups[i].items.length; j++) { if (config.groups[i].items[j].id === this.data.editingItem.id) { config.groups[i].items[j].title = title; config.groups[i].items[j].wakeWord = this.data.editingWakeWord; config.groups[i].items[j].filePath = this.data.editingFilePath; config.groups[i].items[j].fileName = this.data.editingFileName; config.groups[i].items[j].fileSize = this.data.editingFileSize || 0; break } }
         } else {
-          config.groups[i].items.push({ id: Date.now(), title: title, wakeWord: this.data.editingWakeWord, filePath: this.data.editingFilePath })
+          config.groups[i].items.push({ id: Date.now(), title: title, wakeWord: this.data.editingWakeWord, filePath: this.data.editingFilePath, fileName: this.data.editingFileName, fileSize: this.data.editingFileSize || 0 })
         }
         break
       }

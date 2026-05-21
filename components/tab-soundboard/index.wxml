@@ -76,7 +76,7 @@
       <view class="sheet-editor-field">
         <label>音频文件</label>
         <view class="flex-row" style="gap:12rpx;">
-          <text class="flex-1 text-ellipsis" style="color:var(--md1-text-hint);">{{editingFilePath || '未选择'}}</text>
+          <text class="flex-1 text-ellipsis" style="color:var(--md1-text-hint);">{{editingFileName || editingFilePath || '未选择'}}</text>
           <view class="btn-outlined-sm" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onChooseAudioFile">选择</view>
         </view>
       </view>

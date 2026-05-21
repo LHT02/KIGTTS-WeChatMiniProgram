@@ -90,7 +90,7 @@
           </view>
           <view class="item-body">
             <text class="item-name">{{item.title || '未命名音效'}}</text>
-            <text class="item-sub">标签：{{item.wakeWord || '—'}} · {{item.filePath || '未选择音频'}}</text>
+            <text class="item-sub">标签：{{item.wakeWord || '—'}} · {{item.fileName || item.filePath || '未选择音频'}}</text>
           </view>
           <view class="item-actions" wx:if="{{!batchMode}}" catchlongpress="noop">
             <view class="btn-micro" data-index="{{idx}}" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" catchtap="onChooseAudio">
@@ -145,6 +145,13 @@
       <label>标签</label>
       <view class="md-text-field"><input value="{{addWakeWord}}" bindinput="onAddWakeInput" placeholder="标签（可选）" placeholder-class="input-placeholder" /></view>
     </view>
+    <view class="ec-field">
+      <label>音频文件</label>
+      <view class="audio-pick-row">
+        <text class="audio-name">{{addFileName || addFilePath || '未选择'}}</text>
+        <view class="btn-outlined-sm" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onChooseAddAudio">选择</view>
+      </view>
+    </view>
     <view class="dialog-footer"><view class="btn-text-sm" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onCloseAddDialog">取消</view><view class="btn-filled-sm" data-ripple="1" data-ripple-color="rgb(255,255,255)" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onConfirmAdd">添加</view></view>
   </view>
 </view>
@@ -161,6 +168,13 @@
     <view class="ec-field">
       <label>标签</label>
       <view class="md-text-field"><input value="{{editWakeWord}}" bindinput="onEditWakeInput" placeholder="标签（可选）" placeholder-class="input-placeholder" /></view>
+    </view>
+    <view class="ec-field">
+      <label>音频文件</label>
+      <view class="audio-pick-row">
+        <text class="audio-name">{{editFileName || editFilePath || '未选择'}}</text>
+        <view class="btn-outlined-sm" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onChooseEditAudio">选择</view>
+      </view>
     </view>
     <view class="dialog-footer"><view class="btn-text-sm" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onCloseEditDialog">取消</view><view class="btn-filled-sm" data-ripple="1" data-ripple-color="rgb(255,255,255)" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onConfirmEdit">保存</view></view>
   </view>
