@@ -18,6 +18,12 @@ Component({
   lifetimes: {
     attached: function() {
       this.sync()
+    },
+    detached: function() {
+      if (this._switchTimer) {
+        clearTimeout(this._switchTimer)
+        this._switchTimer = null
+      }
     }
   },
 
@@ -56,7 +62,28 @@ Component({
     onTap: function(e) {
       var path = e.currentTarget.dataset.path
       if (!path || path === this.data.selectedPath) return
-      wx.switchTab({ url: '/' + path })
+      if (this._switchTimer) clearTimeout(this._switchTimer)
+      var activeIndex = 0
+      for (var i = 0; i < nav.items.length; i++) {
+        if (nav.items[i].path === path) {
+          activeIndex = i
+          break
+        }
+      }
+      var count = nav.items.length || 1
+      var that = this
+      this.setData({
+        selectedPath: path,
+        activeIndex: activeIndex,
+        tabDriverStyle: 'width:' + (100 / count) + '%;transform:translateX(' + (activeIndex * 100) + '%);'
+      })
+      this._switchTimer = setTimeout(function() {
+        that._switchTimer = null
+        wx.switchTab({
+          url: '/' + path,
+          fail: function() { that.sync() }
+        })
+      }, 160)
     },
 
     setKeyboardHidden: function(hidden) {

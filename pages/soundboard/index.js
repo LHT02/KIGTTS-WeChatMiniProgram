@@ -3,6 +3,7 @@ var audio = require('../../utils/audio')
 var nav = require('../../utils/nav')
 var theme = require('../../utils/theme')
 var ripple = require('../../utils/ripple')
+var routeAnim = require('../../utils/route-anim')
 
 Page(ripple.attach({
   data: {
@@ -14,6 +15,7 @@ Page(ripple.attach({
     editingTitle: '', editingWakeWord: '', editingFilePath: '',
     editingGroupTitle: '', editingGroupIcon: 'music_note',
     playingId: null, themeClass: theme.themeClass(), statusBarH: 44,
+    routeEnterClass: '',
     navMode: theme.navMode(),
     drawerOpen: false, currentPath: 'pages/soundboard/index', navItems: nav.items,
     logoGlyph: nav.logoGlyph,
@@ -33,6 +35,7 @@ Page(ripple.attach({
     })
     nav.syncTabBar(this)
     this.loadData(function() { that._syncPlayingState() })
+    routeAnim.enter(this)
   },
 
   loadData(callback) {

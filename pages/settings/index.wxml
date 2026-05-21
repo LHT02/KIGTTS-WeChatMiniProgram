@@ -1,6 +1,6 @@
 <import src="../../templates/shell.wxml" />
 
-<view class="page route-tab theme-animated {{themeClass}} nav-{{navMode}}"
+<view class="page route-tab {{routeEnterClass}} theme-animated {{themeClass}} nav-{{navMode}}"
       bindtouchmove="onRippleTouchMove" bindtouchend="onRippleTouchEnd" bindtouchcancel="onRippleTouchCancel">
   <view class="nav-bar" style="padding-top:{{statusBarH}}px;">
     <view class="nav-row">

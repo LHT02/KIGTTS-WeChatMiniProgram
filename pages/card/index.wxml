@@ -1,6 +1,6 @@
 <import src="../../templates/shell.wxml" />
 
-<view class="page route-tab {{themeClass}} nav-{{navMode}} {{sortMode ? 'sort-open' : ''}}"
+<view class="page route-tab {{routeEnterClass}} {{themeClass}} nav-{{navMode}} {{sortMode ? 'sort-open' : ''}}"
       bindtouchmove="onRippleTouchMove" bindtouchend="onRippleTouchEnd" bindtouchcancel="onRippleTouchCancel">
   <view class="nav-bar" style="padding-top:{{statusBarH}}px;">
     <view class="nav-row">

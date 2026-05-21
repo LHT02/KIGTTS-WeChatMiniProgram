@@ -4,6 +4,7 @@ var nav = require('../../utils/nav')
 var theme = require('../../utils/theme')
 var logoData = require('../../utils/logo-data')
 var ripple = require('../../utils/ripple')
+var routeAnim = require('../../utils/route-anim')
 var initialSettings = storage.getSettings()
 var initialThemeClass = theme.themeClass(initialSettings)
 
@@ -11,6 +12,7 @@ Page(ripple.attach({
   data: {
     settings: initialSettings, showImportEditor: false, importData: '', themeClass: initialThemeClass,
     navMode: theme.navMode(initialSettings), statusBarH: 44,
+    routeEnterClass: '',
     drawerOpen: false, currentPath: 'pages/settings/index', navItems: nav.items,
     logoGlyph: nav.logoGlyph,
     logoSrc: logoData.getLogoSrc(initialThemeClass)
@@ -30,6 +32,7 @@ Page(ripple.attach({
       logoSrc: logoData.getLogoSrc(themeMode === 1 ? 'theme-light' : '')
     })
     nav.syncTabBar(this)
+    routeAnim.enter(this)
   },
 
   loadSettings: function() {

@@ -1,6 +1,6 @@
 <import src="../../templates/shell.wxml" />
 
-<view class="page route-tab {{themeClass}} nav-{{navMode}} {{keyboardCompact ? 'keyboard-compact' : ''}}" style="padding-bottom:{{keyboardCompact ? keyboardHeight : 0}}px; --status-bar-h:{{statusBarH}}px;"
+<view class="page route-tab {{routeEnterClass}} {{themeClass}} nav-{{navMode}} {{keyboardCompact ? 'keyboard-compact' : ''}}" style="padding-bottom:{{keyboardCompact ? keyboardHeight : 0}}px; --status-bar-h:{{statusBarH}}px;"
       bindtouchmove="onRippleTouchMove" bindtouchend="onRippleTouchEnd" bindtouchcancel="onRippleTouchCancel">
   <view class="nav-bar" style="padding-top:{{statusBarH}}px;" wx:if="{{!keyboardCompact}}">
     <view class="nav-row">

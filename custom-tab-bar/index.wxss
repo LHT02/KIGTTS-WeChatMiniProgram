@@ -48,6 +48,7 @@
   color: #C2C2C2;
   gap: 2rpx;
   -webkit-tap-highlight-color: transparent;
+  transition: color 160ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .tab-shell.theme-light .tab-item {
@@ -71,6 +72,7 @@
 .tab-icon {
   font-size: 44rpx;
   line-height: 1;
+  transition: color 160ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .tab-label {
@@ -78,6 +80,7 @@
   font-size: 24rpx;
   line-height: 1.2;
   white-space: nowrap;
+  transition: color 160ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .tab-driver {
@@ -88,7 +91,7 @@
   display: flex;
   justify-content: center;
   pointer-events: none;
-  transition: transform 300ms linear;
+  transition: transform 220ms cubic-bezier(0.4, 0, 0.2, 1);
   will-change: transform;
 }
 

@@ -5,6 +5,7 @@ var nav = require('../../utils/nav')
 var tts = require('../../utils/tts')
 var theme = require('../../utils/theme')
 var ripple = require('../../utils/ripple')
+var routeAnim = require('../../utils/route-anim')
 var initialSettings = storage.getSettings()
 var PLACEHOLDER_TEXT = '我不太方便说话，请等我一下……'
 
@@ -20,6 +21,7 @@ Page(ripple.attach({
     ttsBusy: false,
     subtitlePlaceholder: true,
     themeClass: theme.themeClass(initialSettings),
+    routeEnterClass: '',
     statusBarH: 44, navTitle: '便捷字幕',
     navMode: theme.navMode(initialSettings),
     drawerOpen: false, currentPath: 'pages/subtitle/index', navItems: nav.items,
@@ -47,6 +49,7 @@ Page(ripple.attach({
       this.setData({ displayText: PLACEHOLDER_TEXT, subtitlePlaceholder: true })
     }
     this._scheduleFit(80)
+    routeAnim.enter(this)
   },
 
   onHide: function() {

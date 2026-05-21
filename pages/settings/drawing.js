@@ -2,6 +2,7 @@ var storage = require('../../utils/storage')
 var nav = require('../../utils/nav')
 var theme = require('../../utils/theme')
 var ripple = require('../../utils/ripple')
+var routeAnim = require('../../utils/route-anim')
 
 Page(ripple.attach({
   data: {
@@ -12,6 +13,7 @@ Page(ripple.attach({
     colorPalette: [],
     hasDrawn: false,
     themeClass: theme.themeClass(), statusBarH: 44,
+    routeEnterClass: '',
     navMode: theme.navMode(),
     drawerOpen: false,
     currentPath: 'pages/settings/drawing',
@@ -37,6 +39,7 @@ Page(ripple.attach({
     })
     nav.syncTabBar(this)
     this._currentColor = isLight ? '#038387' : '#7DE8EA'
+    routeAnim.enter(this)
   },
 
   onLoad: function() {
