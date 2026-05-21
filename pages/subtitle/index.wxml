@@ -133,7 +133,7 @@
   <view class="preview-card" catchtap="noop">
     <scroll-view class="preview-text-wrap {{previewNeedsScroll ? 'scrollable' : ''}}" scroll-y="{{previewNeedsScroll}}" enhanced="true" show-scrollbar="false" bindscroll="onRippleClear">
       <view class="preview-text-viewport">
-        <text class="preview-text {{settings.subtitleBold ? 'bold' : ''}} {{settings.subtitleCenter ? 'center' : ''}} {{settings.subtitleRotated180 ? 'rotated' : ''}}" style="font-size: {{previewFontSize || 90}}rpx;" bindlongpress="onPreviewTextLongPress">{{previewText}}</text>
+        <text class="preview-text {{previewPlaceholder ? 'placeholder' : ''}} {{settings.subtitleBold ? 'bold' : ''}} {{settings.subtitleCenter ? 'center' : ''}} {{settings.subtitleRotated180 ? 'rotated' : ''}}" style="font-size: {{previewFontSize || 90}}rpx;" bindlongpress="onPreviewTextLongPress">{{previewText}}</text>
       </view>
     </scroll-view>
     <view class="preview-hint">长按复制</view>

@@ -14,7 +14,7 @@ Page(ripple.attach({
     settings: initialSettings, config: {}, currentGroup: {},
     showActionButtons: true, showPreview: false, showHistory: false, showQuickList: false,
     inputText: '', autoFontSize: 72, subtitleNeedsScroll: false, textAnim: false,
-    previewText: '', previewFontSize: 90, previewNeedsScroll: false,
+    previewText: '', previewFontSize: 90, previewNeedsScroll: false, previewPlaceholder: false,
     quickInputCollapsed: !!initialSettings.quickInputCollapsed,
     keyboardActive: false, keyboardCompact: false, keyboardHeight: 0,
     ttsBusy: false,
@@ -64,11 +64,12 @@ Page(ripple.attach({
 
   onSubtitleTap: function() {
     var t = this._visibleDisplayText()
-    if (!t || this._isPlaceholderText(t)) return
+    if (!t) return
     var that = this
     this.setData({
       showPreview: true,
       previewText: t,
+      previewPlaceholder: this._isPlaceholderText(t),
       previewFontSize: Math.round((this.data.settings.subtitleFontSize || 72) * 1.25),
       previewNeedsScroll: false
     }, function() {
@@ -78,12 +79,12 @@ Page(ripple.attach({
 
   onClosePreview: function() {
     this._previewFitToken = ''
-    this.setData({ showPreview: false, previewText: '' })
+    this.setData({ showPreview: false, previewText: '', previewPlaceholder: false })
   },
 
   onPreviewTextLongPress: function() {
     var t = (this.data.previewText || '').trim()
-    if (!t || this._isPlaceholderText(t)) return
+    if (!t) return
     wx.setClipboardData({ data: t, success: function() { wx.showToast({ title: '已复制', icon: 'success' }) } })
   },
 
@@ -613,7 +614,7 @@ Page(ripple.attach({
     var that = this
     var text = (this.data.previewText || '').trim()
     var baseSize = Math.round((this.data.settings.subtitleFontSize || 72) * 1.25)
-    if (!text || this._isPlaceholderText(text)) {
+    if (!text) {
       this.setData({ previewFontSize: baseSize, previewNeedsScroll: false })
       return
     }
