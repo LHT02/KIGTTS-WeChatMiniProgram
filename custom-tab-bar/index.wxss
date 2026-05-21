@@ -7,6 +7,7 @@
   bottom: 0;
   z-index: 700;
   pointer-events: none;
+  font-family: -apple-system-font, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   --md1-shadow-bottombar: 0 -3rpx 4rpx -2rpx rgba(0, 0, 0, 0.16), 0 -6rpx 9rpx 0 rgba(0, 0, 0, 0.10), 0 -2rpx 12rpx 0 rgba(0, 0, 0, 0.08);
 }
 
@@ -73,6 +74,7 @@
 }
 
 .tab-label {
+  font-family: -apple-system-font, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 24rpx;
   line-height: 1.2;
   white-space: nowrap;

@@ -97,4 +97,4 @@
 
 .import-field { margin-bottom:24rpx; }
 .import-field label { display:block; font-size:22rpx; color:var(--md1-text-secondary); margin-bottom:8rpx; }
-.import-textarea { width:100%; min-height:320rpx; box-sizing:border-box; padding:16rpx 20rpx; background:var(--md1-field); border-radius:var(--md1-radius); color:var(--md1-text-primary); font-size:24rpx; line-height:1.5; border:none; outline:none; font-family:monospace; }
+.import-textarea { width:100%; min-height:320rpx; box-sizing:border-box; padding:16rpx 20rpx; background:var(--md1-field); border-radius:var(--md1-radius); color:var(--md1-text-primary); font-size:24rpx; line-height:1.5; border:none; outline:none; font-family:-apple-system-font, system-ui, -apple-system, BlinkMacSystemFont, sans-serif; }

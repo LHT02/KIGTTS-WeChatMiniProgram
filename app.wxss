@@ -11,7 +11,7 @@
 page {
   background: #131416;
   color: #E6E6E6;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: -apple-system-font, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 28rpx; line-height: 1.45;
   --md1-surface: #34383b;
   --md1-surface-raised: #2a2e30;
@@ -37,6 +37,19 @@ page {
   --md1-shadow-drag: 0 12rpx 20rpx -4rpx rgba(0,0,0,0.20), 0 20rpx 28rpx 2rpx rgba(0,0,0,0.14), 0 6rpx 36rpx 4rpx rgba(0,0,0,0.12);
   --md1-shadow-switch-thumb: 0 2rpx 2rpx 0 rgba(0,0,0,0.20), 0 2rpx 4rpx 0 rgba(0,0,0,0.14), 0 4rpx 2rpx -2rpx rgba(0,0,0,0.12);
   --md1-shadow-switch-thumb-pressed: 0 4rpx 4rpx 0 rgba(0,0,0,0.22), 0 2rpx 8rpx 0 rgba(0,0,0,0.16);
+}
+
+input,
+textarea,
+button,
+.input-placeholder,
+.textarea-placeholder {
+  font-family: -apple-system-font, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.input-placeholder,
+.textarea-placeholder {
+  color: var(--md1-text-hint);
 }
 
 /* 每个页面的根容器持有主题变量，通过 themeClass 切换 */
@@ -202,6 +215,7 @@ page {
   flex: 1; height: 100%; padding: 0 8rpx;
   background: transparent; color: var(--md1-text-primary);
   font-size: 32rpx; border: none; outline: none;
+  font-family: -apple-system-font, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   caret-color: var(--md1-primary);
 }
 

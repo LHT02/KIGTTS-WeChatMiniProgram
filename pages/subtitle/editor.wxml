@@ -16,7 +16,7 @@
     <view class="form-field">
       <label>名称</label>
       <view class="md-text-field">
-        <input value="{{title}}" bindinput="onTitleInput" placeholder="分组名称" />
+        <input value="{{title}}" bindinput="onTitleInput" placeholder="分组名称" placeholder-class="input-placeholder" />
       </view>
     </view>
     <view class="form-field">
@@ -99,7 +99,7 @@
     <view class="sheet-body">
       <view class="form-field">
         <label>文本内容</label>
-        <view class="md-text-field"><input value="{{editingText}}" bindinput="onItemTextInput" placeholder="文本内容" /></view>
+        <view class="md-text-field"><input value="{{editingText}}" bindinput="onItemTextInput" placeholder="文本内容" placeholder-class="input-placeholder" /></view>
       </view>
     </view>
     <view class="sheet-footer">

@@ -95,7 +95,7 @@
     </view>
     <view class="input-row">
       <view class="md-text-field flex-1">
-        <input placeholder="请输入文本" value="{{inputText}}" bindinput="onInputChange" bindfocus="onInputFocus" bindblur="onInputBlur" bindkeyboardheightchange="onKeyboardHeightChange" bindconfirm="onInputConfirm" confirm-type="send" adjust-position="{{false}}" cursor-spacing="{{keyboardCompact ? 32 : (navMode === 'bottom' ? 160 : 32)}}" />
+        <input placeholder="请输入文本" placeholder-class="input-placeholder" value="{{inputText}}" bindinput="onInputChange" bindfocus="onInputFocus" bindblur="onInputBlur" bindkeyboardheightchange="onKeyboardHeightChange" bindconfirm="onInputConfirm" confirm-type="send" adjust-position="{{false}}" cursor-spacing="{{keyboardCompact ? 32 : (navMode === 'bottom' ? 160 : 32)}}" />
       </view>
       <view class="send-btn {{inputText ? 'enabled' : 'disabled'}}" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onSendText">
         <text class="material-icons">send</text>

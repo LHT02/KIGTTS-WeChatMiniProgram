@@ -38,7 +38,7 @@
       <view wx:if="{{selectedGroup}}" class="group-detail">
         <view class="ec-field">
           <label>分组名称</label>
-          <view class="md-text-field"><input value="{{editingGroupTitle}}" bindinput="onGroupTitleInput" placeholder="分组名称" /></view>
+          <view class="md-text-field"><input value="{{editingGroupTitle}}" bindinput="onGroupTitleInput" placeholder="分组名称" placeholder-class="input-placeholder" /></view>
         </view>
 
         <view class="ec-field">
@@ -139,11 +139,11 @@
     <view class="dialog-title">新增音效条目</view>
     <view class="ec-field">
       <label>条目名</label>
-      <view class="md-text-field"><input value="{{addTitle}}" bindinput="onAddTitleInput" placeholder="条目名" /></view>
+      <view class="md-text-field"><input value="{{addTitle}}" bindinput="onAddTitleInput" placeholder="条目名" placeholder-class="input-placeholder" /></view>
     </view>
     <view class="ec-field">
       <label>标签</label>
-      <view class="md-text-field"><input value="{{addWakeWord}}" bindinput="onAddWakeInput" placeholder="标签（可选）" /></view>
+      <view class="md-text-field"><input value="{{addWakeWord}}" bindinput="onAddWakeInput" placeholder="标签（可选）" placeholder-class="input-placeholder" /></view>
     </view>
     <view class="dialog-footer"><view class="btn-text-sm" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onCloseAddDialog">取消</view><view class="btn-filled-sm" data-ripple="1" data-ripple-color="rgb(255,255,255)" bindtouchstart="onRippleTouchStart" bindtap="onConfirmAdd">添加</view></view>
   </view>
@@ -156,11 +156,11 @@
     <view class="dialog-title">编辑音效条目</view>
     <view class="ec-field">
       <label>条目名</label>
-      <view class="md-text-field"><input value="{{editTitle}}" bindinput="onEditTitleInput" placeholder="条目名" /></view>
+      <view class="md-text-field"><input value="{{editTitle}}" bindinput="onEditTitleInput" placeholder="条目名" placeholder-class="input-placeholder" /></view>
     </view>
     <view class="ec-field">
       <label>标签</label>
-      <view class="md-text-field"><input value="{{editWakeWord}}" bindinput="onEditWakeInput" placeholder="标签（可选）" /></view>
+      <view class="md-text-field"><input value="{{editWakeWord}}" bindinput="onEditWakeInput" placeholder="标签（可选）" placeholder-class="input-placeholder" /></view>
     </view>
     <view class="dialog-footer"><view class="btn-text-sm" data-ripple="1" bindtouchstart="onRippleTouchStart" bindtap="onCloseEditDialog">取消</view><view class="btn-filled-sm" data-ripple="1" data-ripple-color="rgb(255,255,255)" bindtouchstart="onRippleTouchStart" bindtap="onConfirmEdit">保存</view></view>
   </view>

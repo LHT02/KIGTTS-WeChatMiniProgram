@@ -131,15 +131,15 @@
         <view class="editor-card-title">基础信息</view>
         <view class="editor-field">
           <label>标题</label>
-          <view class="md-text-field"><input value="{{title}}" bindinput="onTitleInput" placeholder="名片标题" /></view>
+          <view class="md-text-field"><input value="{{title}}" bindinput="onTitleInput" placeholder="名片标题" placeholder-class="input-placeholder" /></view>
         </view>
         <view class="editor-field">
           <label>备注（可空）</label>
-          <textarea class="md-textarea" value="{{note}}" bindinput="onNoteInput" placeholder="备注信息" maxlength="-1" />
+          <textarea class="md-textarea" value="{{note}}" bindinput="onNoteInput" placeholder="备注信息" placeholder-class="textarea-placeholder" maxlength="-1" />
         </view>
         <view class="editor-field">
           <label>链接（可空）</label>
-          <view class="md-text-field"><input value="{{link}}" bindinput="onLinkInput" placeholder="https://..." /></view>
+          <view class="md-text-field"><input value="{{link}}" bindinput="onLinkInput" placeholder="https://..." placeholder-class="input-placeholder" /></view>
         </view>
       </view>
 
@@ -224,7 +224,7 @@
         <view class="picker-label">HEX</view>
         <view class="flex-row" style="gap:12rpx;">
           <view class="md-text-field flex-1">
-            <input value="{{hexInput}}" bindinput="onHexInputChange" placeholder="#RRGGBB" />
+            <input value="{{hexInput}}" bindinput="onHexInputChange" placeholder="#RRGGBB" placeholder-class="input-placeholder" />
           </view>
           <view class="btn-filled-sm" data-ripple="1" data-ripple-color="rgb(255,255,255)" bindtouchstart="onRippleTouchStart" bindtap="onApplyHexColor">应用</view>
         </view>
