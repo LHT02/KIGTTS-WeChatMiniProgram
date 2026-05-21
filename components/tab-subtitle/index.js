@@ -6,6 +6,7 @@ var tts = require('../../utils/tts')
 var theme = require('../../utils/theme')
 var ripple = require('../../utils/ripple')
 var routeAnim = require('../../utils/route-anim')
+var system = require('../../utils/system')
 var initialSettings = storage.getSettings()
 var PLACEHOLDER_TEXT = '我不太方便说话，请等我一下……'
 
@@ -33,10 +34,9 @@ Component(componentPage.fromPage(ripple.attach({
     var app = getApp()
     var settings = storage.getSettings()
     var themeMode = settings.themeMode || 0
-    var sys = wx.getSystemInfoSync()
     this.setData({
       themeClass: themeMode === 1 ? 'theme-light' : '',
-      statusBarH: sys.statusBarHeight || 44,
+      statusBarH: system.statusBarHeight(),
       navMode: settings.navMode || 'bottom',
       drawerOpen: (settings.navMode || 'bottom') === 'drawer' ? this.data.drawerOpen : false
     })
@@ -458,12 +458,7 @@ Component(componentPage.fromPage(ripple.attach({
   },
 
   _rpxRatio: function() {
-    try {
-      var sys = wx.getSystemInfoSync()
-      return (sys.windowWidth || 375) / 750
-    } catch (e) {
-      return 0.5
-    }
+    return system.rpxRatio()
   },
 
   _charWidthFactor: function(code, ch) {

@@ -4,6 +4,7 @@ var nav = require('../../utils/nav')
 var theme = require('../../utils/theme')
 var ripple = require('../../utils/ripple')
 var routeAnim = require('../../utils/route-anim')
+var system = require('../../utils/system')
 
 var PRESET_COLORS = ['#f44336','#e91e63','#9c27b0','#673ab7','#3f51b5','#2196f3','#03a9f4','#00bcd4','#009688','#4caf50','#8bc34a','#cddc39','#ffeb3b','#ffc107','#ff9800','#ff5722','#795548','#9e9e9e','#607d8b','#038387']
 
@@ -28,11 +29,11 @@ Component(componentPage.fromPage(ripple.attach({
     var app = getApp()
     var settings = storage.getSettings()
     var themeMode = settings.themeMode || 0
-    var sys = wx.getSystemInfoSync()
+    var sys = system.windowInfo()
     var navMode = settings.navMode || 'bottom'
     this.setData({
       themeClass: themeMode === 1 ? 'theme-light' : '',
-      statusBarH: sys.statusBarHeight || 44,
+      statusBarH: system.statusBarHeight(),
       navMode: navMode,
       drawerOpen: navMode === 'drawer' ? this.data.drawerOpen : false,
       cardFrameStyle: this._buildCardFrameStyle(sys, navMode, this.data.sortMode)
@@ -47,7 +48,7 @@ Component(componentPage.fromPage(ripple.attach({
   onResize: function() { this._syncCardFrameSize() },
 
   _syncCardFrameSize: function(navMode, sortMode) {
-    var sys = wx.getSystemInfoSync()
+    var sys = system.windowInfo()
     this.setData({
       cardFrameStyle: this._buildCardFrameStyle(
         sys,
@@ -58,15 +59,12 @@ Component(componentPage.fromPage(ripple.attach({
   },
 
   _buildCardFrameStyle: function(sys, navMode, sortMode) {
-    sys = sys || wx.getSystemInfoSync()
-    var ww = sys.windowWidth || 375
+    sys = sys || system.windowInfo()
+    var ww = sys.windowWidth || sys.screenWidth || 375
     var wh = sys.windowHeight || sys.screenHeight || 667
     var rpx = ww / 750
     var status = sys.statusBarHeight || 0
-    var safeBottom = 0
-    if (sys.safeArea && sys.screenHeight) {
-      safeBottom = Math.max(0, sys.screenHeight - sys.safeArea.bottom)
-    }
+    var safeBottom = system.safeAreaBottom(sys)
 
     var navHeight = status + 88 * rpx
     var slidePaddingY = 40 * rpx

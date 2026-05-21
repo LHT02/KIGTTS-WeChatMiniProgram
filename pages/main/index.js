@@ -2,6 +2,7 @@ var nav = require('../../utils/nav')
 var theme = require('../../utils/theme')
 var storage = require('../../utils/storage')
 var ripple = require('../../utils/ripple')
+var system = require('../../utils/system')
 
 var PATH_TO_ID = {
   'pages/subtitle/index': 'tab-subtitle',
@@ -48,12 +49,7 @@ function fallbackTabDriverStyle(index) {
 }
 
 function rpxToPx(rpx) {
-  try {
-    var sys = wx.getSystemInfoSync()
-    return (sys.windowWidth || 375) * rpx / 750
-  } catch (e) {
-    return rpx / 2
-  }
+  return system.rpxToPx(rpx)
 }
 
 function tabDriverWidth(itemWidth) {
@@ -102,12 +98,11 @@ Page(ripple.attach({
 
   _syncShell: function(syncChildren) {
     var settings = storage.getSettings()
-    var sys = wx.getSystemInfoSync()
     var that = this
     this.setData({
       themeClass: (settings.themeMode || 0) === 1 ? 'theme-light' : '',
       navMode: settings.navMode || 'bottom',
-      statusBarH: sys.statusBarHeight || 44,
+      statusBarH: system.statusBarHeight(),
       drawerOpen: (settings.navMode || 'bottom') === 'drawer' ? this.data.drawerOpen : false
     }, function() {
       if (syncChildren) that._syncChildrenShell()

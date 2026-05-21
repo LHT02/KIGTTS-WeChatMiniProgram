@@ -3,6 +3,7 @@ var preset = require('../../utils/preset')
 var theme = require('../../utils/theme')
 var ripple = require('../../utils/ripple')
 var soundFile = require('../../utils/sound-file')
+var system = require('../../utils/system')
 
 Page(ripple.attach({
   data: {
@@ -47,8 +48,7 @@ Page(ripple.attach({
 
   onShow: function() {
     var themeMode = storage.getSettings().themeMode || 0
-    var sys = wx.getSystemInfoSync()
-    this.setData({ themeClass: themeMode === 1 ? 'theme-light' : '', statusBarH: sys.statusBarHeight || 44 })
+    this.setData({ themeClass: themeMode === 1 ? 'theme-light' : '', statusBarH: system.statusBarHeight() })
     this._refresh()
   },
 
@@ -274,12 +274,7 @@ Page(ripple.attach({
   },
 
   _dragThresholdPx: function() {
-    try {
-      var sys = wx.getSystemInfoSync()
-      return Math.max(32, (sys.windowWidth || 375) * 76 / 750)
-    } catch (e) {
-      return 38
-    }
+    return Math.max(32, system.rpxToPx(76))
   },
 
   onChooseAudio: function(e) {

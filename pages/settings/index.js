@@ -5,6 +5,7 @@ var theme = require('../../utils/theme')
 var logoData = require('../../utils/logo-data')
 var ripple = require('../../utils/ripple')
 var routeAnim = require('../../utils/route-anim')
+var system = require('../../utils/system')
 var initialSettings = storage.getSettings()
 var initialThemeClass = theme.themeClass(initialSettings)
 
@@ -24,10 +25,9 @@ Page(ripple.attach({
     var app = getApp()
     var settings = storage.getSettings()
     var themeMode = settings.themeMode || 0
-    var sys = wx.getSystemInfoSync()
     this.setData({
       themeClass: themeMode === 1 ? 'theme-light' : '',
-      statusBarH: sys.statusBarHeight || 44,
+      statusBarH: system.statusBarHeight(),
       navMode: settings.navMode || 'bottom',
       drawerOpen: (settings.navMode || 'bottom') === 'drawer' ? this.data.drawerOpen : false,
       logoSrc: logoData.getLogoSrc(themeMode === 1 ? 'theme-light' : '')

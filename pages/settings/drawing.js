@@ -3,6 +3,7 @@ var nav = require('../../utils/nav')
 var theme = require('../../utils/theme')
 var ripple = require('../../utils/ripple')
 var routeAnim = require('../../utils/route-anim')
+var system = require('../../utils/system')
 
 Page(ripple.attach({
   data: {
@@ -27,11 +28,10 @@ Page(ripple.attach({
   onShow: function() {
     var settings = storage.getSettings()
     var themeMode = settings.themeMode || 0
-    var sys = wx.getSystemInfoSync()
     var isLight = themeMode === 1
     this.setData({
       themeClass: isLight ? 'theme-light' : '',
-      statusBarH: sys.statusBarHeight || 44,
+      statusBarH: system.statusBarHeight(),
       colorPalette: isLight ? this.data.lightColors : this.data.darkColors,
       color: isLight ? '#038387' : '#7DE8EA',
       navMode: settings.navMode || 'bottom',
