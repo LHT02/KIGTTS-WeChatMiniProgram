@@ -186,6 +186,12 @@
   box-sizing: border-box;
 }
 
+.tab-bar-item.active,
+.tab-bar-item.active .tab-icon,
+.tab-bar-item.active .tab-label {
+  color: var(--md1-primary);
+}
+
 .tab-bar-item:active,
 .sc-tab-btn:active {
   background: transparent;
