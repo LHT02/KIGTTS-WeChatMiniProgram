@@ -6,6 +6,7 @@ var tts = require('../../utils/tts')
 var theme = require('../../utils/theme')
 var ripple = require('../../utils/ripple')
 var initialSettings = storage.getSettings()
+var PLACEHOLDER_TEXT = '我不太方便说话，请等我一下……'
 
 Page(ripple.attach({
   data: {
@@ -17,6 +18,7 @@ Page(ripple.attach({
     quickInputCollapsed: !!initialSettings.quickInputCollapsed,
     keyboardActive: false, keyboardCompact: false, keyboardHeight: 0,
     ttsBusy: false,
+    subtitlePlaceholder: true,
     themeClass: theme.themeClass(initialSettings),
     statusBarH: 44, navTitle: '便捷字幕',
     navMode: theme.navMode(initialSettings),
@@ -38,8 +40,12 @@ Page(ripple.attach({
     nav.syncTabBar(this)
     this._setTabBarKeyboardHidden(false)
     this._load()
-    if (app.globalData.currentSubtitle) this.setData({ displayText: app.globalData.currentSubtitle })
-    if (!this.data.displayText) this.setData({ displayText: '我不太方便说话，请等我一下……', autoFontSize: 72 })
+    if (app.globalData.currentSubtitle) {
+      this.setData({ displayText: app.globalData.currentSubtitle, subtitlePlaceholder: false })
+    }
+    if (!this.data.displayText || this._isPlaceholderText(this.data.displayText)) {
+      this.setData({ displayText: PLACEHOLDER_TEXT, subtitlePlaceholder: true })
+    }
     this._scheduleFit(80)
   },
 
@@ -58,7 +64,7 @@ Page(ripple.attach({
 
   onSubtitleTap: function() {
     var t = this._visibleDisplayText()
-    if (!t || t === '我不太方便说话，请等我一下……') return
+    if (!t || this._isPlaceholderText(t)) return
     var that = this
     this.setData({
       showPreview: true,
@@ -77,13 +83,13 @@ Page(ripple.attach({
 
   onPreviewTextLongPress: function() {
     var t = (this.data.previewText || '').trim()
-    if (!t || t === '我不太方便说话，请等我一下……') return
+    if (!t || this._isPlaceholderText(t)) return
     wx.setClipboardData({ data: t, success: function() { wx.showToast({ title: '已复制', icon: 'success' }) } })
   },
 
   onSubtitleLongPress: function() {
     var t = this._visibleDisplayText()
-    if (!t || t === '我不太方便说话，请等我一下……') return
+    if (!t || this._isPlaceholderText(t)) return
     var that = this
     wx.showActionSheet({ itemList: ['复制字幕', '清除字幕'],
       success: function(r) {
@@ -139,9 +145,12 @@ Page(ripple.attach({
       success: function(r) {
         if (!r.confirm) return
         that._animateSubtitleText({
-          displayText: '我不太方便说话，请等我一下……',
+          displayText: PLACEHOLDER_TEXT,
+          subtitlePlaceholder: true,
           autoFontSize: that.data.settings.subtitleFontSize || 72,
           subtitleNeedsScroll: false
+        }, function() {
+          that._scheduleFit(0)
         })
         app.globalData.currentSubtitle = ''
       }
@@ -326,7 +335,7 @@ Page(ripple.attach({
     app.globalData.currentSubtitle = t
     storage.addSubtitleHistory(t)
     var that = this
-    this._animateSubtitleText({ displayText: t }, function() {
+    this._animateSubtitleText({ displayText: t, subtitlePlaceholder: false }, function() {
       that._scheduleFit(0)
       if (speakAfterApply) that._speak(t)
     })
@@ -343,6 +352,9 @@ Page(ripple.attach({
     this.setData({ textAnim: false })
     wx.nextTick(function() {
       var next = updates || {}
+      if (next.displayText !== undefined && next.subtitlePlaceholder === undefined) {
+        next.subtitlePlaceholder = that._isPlaceholderText(next.displayText)
+      }
       next.textAnim = true
       that.setData(next, done)
       that._textAnimTimer = setTimeout(function() {
@@ -386,7 +398,7 @@ Page(ripple.attach({
 
   onSpeakCurrent: function() {
     var t = (this.data.displayText || '').trim()
-    if (!t || t === '我不太方便说话，请等我一下……') {
+    if (!t || this._isPlaceholderText(t)) {
       wx.showToast({ title: '没有可朗读的字幕', icon: 'none' })
       return
     }
@@ -573,7 +585,7 @@ Page(ripple.attach({
     var that = this
     var text = this._visibleDisplayText()
     var baseSize = this.data.settings.subtitleFontSize || 72
-    if (!text || text === '我不太方便说话，请等我一下……') {
+    if (!text) {
       this.setData({ autoFontSize: baseSize, subtitleNeedsScroll: false }); return
     }
     var sel = '.subtitle-text-wrap'
@@ -601,7 +613,7 @@ Page(ripple.attach({
     var that = this
     var text = (this.data.previewText || '').trim()
     var baseSize = Math.round((this.data.settings.subtitleFontSize || 72) * 1.25)
-    if (!text || text === '我不太方便说话，请等我一下……') {
+    if (!text || this._isPlaceholderText(text)) {
       this.setData({ previewFontSize: baseSize, previewNeedsScroll: false })
       return
     }
@@ -626,6 +638,10 @@ Page(ripple.attach({
     var d = new Date(ts)
     function pad(n) { return n < 10 ? '0' + n : '' + n }
     return pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds())
+  },
+
+  _isPlaceholderText: function(text) {
+    return String(text || '').trim() === PLACEHOLDER_TEXT
   },
 
   onOpenDrawer: function() { this.setData({ drawerOpen: true }) },

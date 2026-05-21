@@ -20,7 +20,7 @@
                  scroll-y="{{subtitleNeedsScroll}}" enhanced="true" show-scrollbar="false"
                  bindscroll="onRippleClear" bindtap="onSubtitleTap" bindlongpress="onSubtitleLongPress">
       <view class="subtitle-text-viewport">
-        <text class="subtitle-text {{settings.subtitleBold ? 'bold' : ''}} {{settings.subtitleCenter ? 'center' : ''}} {{settings.subtitleRotated180 ? 'rotated' : ''}}" style="font-size: {{autoFontSize || settings.subtitleFontSize || 72}}rpx;">{{keyboardCompact ? inputText : displayText}}</text>
+        <text class="subtitle-text {{subtitlePlaceholder && !keyboardCompact ? 'placeholder' : ''}} {{settings.subtitleBold ? 'bold' : ''}} {{settings.subtitleCenter ? 'center' : ''}} {{settings.subtitleRotated180 ? 'rotated' : ''}}" style="font-size: {{autoFontSize || settings.subtitleFontSize || 72}}rpx;">{{keyboardCompact ? inputText : displayText}}</text>
       </view>
     </scroll-view>
 
