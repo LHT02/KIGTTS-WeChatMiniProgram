@@ -99,10 +99,24 @@ button,
   --color-danger: var(--md1-error);
 }
 
-.page.route-tab.route-enter-a { animation: mdTabFloatInA 0.18s cubic-bezier(0.2,0,0,1); }
-.page.route-tab.route-enter-b { animation: mdTabFloatInB 0.18s cubic-bezier(0.2,0,0,1); }
-.page.route-tab.route-exit-a { animation: mdTabFloatOutA 0.16s cubic-bezier(0.4,0,1,1) forwards; pointer-events: none; }
-.page.route-tab.route-exit-b { animation: mdTabFloatOutB 0.16s cubic-bezier(0.4,0,1,1) forwards; pointer-events: none; }
+.page.route-tab.route-exit-a,
+.page.route-tab.route-exit-b { pointer-events: none; }
+.page.route-tab.route-enter-a > view,
+.page.route-tab.route-enter-a > scroll-view,
+.page.route-tab.route-enter-a > swiper,
+.page.route-tab.route-enter-a > canvas { animation: mdTabFloatInA 0.18s cubic-bezier(0.2,0,0,1); }
+.page.route-tab.route-enter-b > view,
+.page.route-tab.route-enter-b > scroll-view,
+.page.route-tab.route-enter-b > swiper,
+.page.route-tab.route-enter-b > canvas { animation: mdTabFloatInB 0.18s cubic-bezier(0.2,0,0,1); }
+.page.route-tab.route-exit-a > view,
+.page.route-tab.route-exit-a > scroll-view,
+.page.route-tab.route-exit-a > swiper,
+.page.route-tab.route-exit-a > canvas { animation: mdTabFloatOutA 0.16s cubic-bezier(0.4,0,1,1) forwards; }
+.page.route-tab.route-exit-b > view,
+.page.route-tab.route-exit-b > scroll-view,
+.page.route-tab.route-exit-b > swiper,
+.page.route-tab.route-exit-b > canvas { animation: mdTabFloatOutB 0.16s cubic-bezier(0.4,0,1,1) forwards; }
 .page.route-push { animation: mdPushEnter 0.22s cubic-bezier(0.2,0,0,1); }
 .page.route-launch { animation: none; }
 
