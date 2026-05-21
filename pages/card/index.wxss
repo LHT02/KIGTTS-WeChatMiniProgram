@@ -128,7 +128,7 @@
 
 .editor-field { margin-bottom:20rpx; }
 .editor-field:last-child { margin-bottom:0; }
-.editor-field label { display:block; font-size:22rpx; color:var(--md1-text-secondary); margin-bottom:8rpx; }
+.editor-label { display:block; font-size:22rpx; color:var(--md1-text-secondary); margin-bottom:8rpx; }
 .md-textarea { width:100%; min-height:120rpx; padding:14rpx 16rpx; background:var(--md1-field); border-radius:var(--md1-radius); color:var(--md1-text-primary); font-size:28rpx; line-height:1.5; border:1px solid var(--md1-divider); box-sizing:border-box; }
 
 .color-row {
@@ -148,7 +148,7 @@
 .editor-hint { font-size:22rpx; color:var(--md1-text-hint); line-height:1.6; }
 
 .img-preview { width:120rpx; height:120rpx; border-radius:var(--md1-radius); background:var(--md1-field); margin-top:12rpx; overflow:hidden; }
-.img-preview image { width:100%; height:100%; border-radius:var(--md1-radius); }
+.img-preview-img { width:100%; height:100%; border-radius:var(--md1-radius); }
 
 /* Color Picker Sheet */
 .color-picker-sheet {

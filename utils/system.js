@@ -43,6 +43,11 @@ function windowHeight() {
   return info.windowHeight || info.screenHeight || 667
 }
 
+function pixelRatio() {
+  var info = windowInfo()
+  return info.pixelRatio || 1
+}
+
 function screenHeight(info) {
   info = info || windowInfo()
   return info.screenHeight || info.windowHeight || 667
@@ -77,6 +82,7 @@ module.exports = {
   windowInfo: windowInfo,
   windowWidth: windowWidth,
   windowHeight: windowHeight,
+  pixelRatio: pixelRatio,
   screenHeight: screenHeight,
   statusBarHeight: statusBarHeight,
   safeAreaBottom: safeAreaBottom,

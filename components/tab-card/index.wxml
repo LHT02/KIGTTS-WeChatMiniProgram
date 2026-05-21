@@ -76,7 +76,7 @@
     </view>
     <view class="card-center">
       <view class="qr-card" wx:if="{{previewCard.link}}">
-        <canvas id="qrPreviewCanvas" canvas-id="qrPreviewCanvas" class="qr-canvas" />
+        <canvas id="qrPreviewCanvas" type="2d" class="qr-canvas" />
       </view>
       <view wx:else></view>
     </view>
@@ -111,15 +111,15 @@
       <view class="editor-card">
         <view class="editor-card-title">基础信息</view>
         <view class="editor-field">
-          <label>标题</label>
+          <label class="editor-label">标题</label>
           <view class="md-text-field"><input value="{{title}}" bindinput="onTitleInput" placeholder="名片标题" placeholder-class="input-placeholder" /></view>
         </view>
         <view class="editor-field">
-          <label>备注（可空）</label>
+          <label class="editor-label">备注（可空）</label>
           <textarea class="md-textarea" value="{{note}}" bindinput="onNoteInput" placeholder="备注信息" placeholder-class="textarea-placeholder" maxlength="-1" />
         </view>
         <view class="editor-field">
-          <label>链接（可空）</label>
+          <label class="editor-label">链接（可空）</label>
           <view class="md-text-field"><input value="{{link}}" bindinput="onLinkInput" placeholder="https://..." placeholder-class="input-placeholder" /></view>
         </view>
       </view>
@@ -152,7 +152,7 @@
             </view>
           </view>
         </view>
-        <view class="img-preview" wx:if="{{imagePath}}"><image src="{{imagePath}}" mode="aspectFill" /></view>
+        <view class="img-preview" wx:if="{{imagePath}}"><image class="img-preview-img" src="{{imagePath}}" mode="aspectFill" /></view>
         <view class="editor-hint" wx:else>未设置图片时使用主题色背景，并显示装饰文字。</view>
       </view>
     </scroll-view>

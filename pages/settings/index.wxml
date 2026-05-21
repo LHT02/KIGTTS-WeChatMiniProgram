@@ -156,7 +156,7 @@
   <view class="sheet-panel" catchtap="noop">
     <view class="sheet-header"><text class="sheet-title">导入预设</text><text class="material-icons lg" bindtap="onCloseImportEditor" style="padding:8rpx;">close</text></view>
     <view class="sheet-body">
-      <view class="import-field"><label>粘贴导出的 JSON 数据</label><textarea class="import-textarea" value="{{importData}}" bindinput="onImportDataInput" placeholder='{"subtitle":{...},"soundboard":{...}}' placeholder-class="textarea-placeholder" maxlength="-1" /></view>
+      <view class="import-field"><label class="import-label">粘贴导出的 JSON 数据</label><textarea class="import-textarea" value="{{importData}}" bindinput="onImportDataInput" placeholder='{"subtitle":{...},"soundboard":{...}}' placeholder-class="textarea-placeholder" maxlength="-1" /></view>
     </view>
     <view class="sheet-footer"><view class="btn-text-sm" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onCloseImportEditor">取消</view><view class="btn-filled-sm" data-ripple="1" data-ripple-color="rgb(255,255,255)" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onDoImport">导入</view></view>
   </view>

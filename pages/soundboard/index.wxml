@@ -84,15 +84,15 @@
     </view>
     <view class="sheet-body">
       <view class="sheet-editor-field">
-        <label>音效名称</label>
+        <label class="sheet-editor-label">音效名称</label>
         <view class="md-text-field"><input value="{{editingTitle}}" bindinput="onEditorTitleChange" placeholder="音效名称" placeholder-class="input-placeholder" /></view>
       </view>
       <view class="sheet-editor-field">
-        <label>标签（可选）</label>
+        <label class="sheet-editor-label">标签（可选）</label>
         <view class="md-text-field"><input value="{{editingWakeWord}}" bindinput="onEditorWakeWordChange" placeholder="标签" placeholder-class="input-placeholder" /></view>
       </view>
       <view class="sheet-editor-field">
-        <label>音频文件</label>
+        <label class="sheet-editor-label">音频文件</label>
         <view class="flex-row" style="gap:12rpx;">
           <text class="flex-1 text-ellipsis" style="color:var(--md1-text-hint);">{{editingFileName || editingFilePath || '未选择'}}</text>
           <view class="btn-outlined-sm" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onChooseAudioFile">选择</view>
@@ -117,11 +117,11 @@
     </view>
     <view class="sheet-body">
       <view class="sheet-editor-field">
-        <label>分组名称</label>
+        <label class="sheet-editor-label">分组名称</label>
         <view class="md-text-field"><input value="{{editingGroupTitle}}" bindinput="onEditorGroupTitleChange" placeholder="分组名称" placeholder-class="input-placeholder" /></view>
       </view>
       <view class="sheet-editor-field">
-        <label>图标</label>
+        <label class="sheet-editor-label">图标</label>
         <scroll-view class="icon-picker" scroll-x="true" bindscroll="onRippleScroll">
           <view class="icon-chip {{item === editingGroupIcon ? 'active' : ''}}" wx:for="{{groupIcons}}" wx:key="*this"
                 data-icon="{{item}}" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onPickGroupIcon">

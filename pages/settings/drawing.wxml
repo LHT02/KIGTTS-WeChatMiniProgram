@@ -16,7 +16,7 @@
     </view>
   </view>
   <view class="route-body route-motion">
-  <canvas class="canvas-wrap" canvas-id="drawCanvas" id="drawCanvas"
+  <canvas class="canvas-wrap" type="2d" id="drawCanvas"
           hidden="{{drawerOpen}}"
           disable-scroll="{{true}}"
           bindtouchstart="onTouchStart" bindtouchmove="onTouchMove" bindtouchend="onTouchEnd" />

@@ -5,6 +5,8 @@
  * remote QR APIs. This module draws byte-mode QR codes directly to canvas.
  */
 
+var system = require('./system')
+
 var VERSIONS = [
   { version: 1, size: 21, dataCodewords: 19, eccCodewords: 7, align: [] },
   { version: 2, size: 25, dataCodewords: 34, eccCodewords: 10, align: [6, 18] },
@@ -349,7 +351,14 @@ function drawCanvas(page, canvasId, text, options) {
       reject(e)
       return
     }
-    wx.createSelectorQuery().in(page).select('#' + canvasId).boundingClientRect(function(rect) {
+    var query = page && typeof page.createSelectorQuery === 'function' ? page.createSelectorQuery() : wx.createSelectorQuery().in(page)
+    query.select('#' + canvasId).fields({ node: true, size: true }).exec(function(res) {
+      var rect = res && res[0]
+      var canvas = rect && rect.node
+      if (!canvas || !canvas.getContext) {
+        reject(new Error('Canvas 2D 节点不可用'))
+        return
+      }
       var size = options && options.size ? options.size : (rect && rect.width ? rect.width : 180)
       var quiet = 4
       var count = matrix.length + quiet * 2
@@ -359,17 +368,21 @@ function drawCanvas(page, canvasId, text, options) {
       var offset = (size - drawn) / 2
       var bg = options && options.bg ? options.bg : '#ffffff'
       var fg = options && options.fg ? options.fg : '#000000'
-      var ctx = wx.createCanvasContext(canvasId, page)
-      ctx.setFillStyle(bg)
+      var dpr = system.pixelRatio()
+      canvas.width = Math.round(size * dpr)
+      canvas.height = Math.round(size * dpr)
+      var ctx = canvas.getContext('2d')
+      ctx.scale(dpr, dpr)
+      ctx.fillStyle = bg
       ctx.fillRect(0, 0, size, size)
-      ctx.setFillStyle(fg)
+      ctx.fillStyle = fg
       for (var y = 0; y < matrix.length; y++) {
         for (var x = 0; x < matrix.length; x++) {
           if (matrix[y][x]) ctx.fillRect(offset + (x + quiet) * cell, offset + (y + quiet) * cell, cell, cell)
         }
       }
-      ctx.draw(false, function() { resolve(true) })
-    }).exec()
+      resolve(true)
+    })
   })
 }
 

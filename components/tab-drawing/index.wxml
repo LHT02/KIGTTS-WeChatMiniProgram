@@ -1,6 +1,6 @@
 <view class="page tab-component-root route-body drawing-component {{themeClass}} nav-{{navMode}}"
       bindtouchmove="onRippleTouchMove" bindtouchend="onRippleTouchEnd" bindtouchcancel="onRippleTouchCancel">
-<canvas class="canvas-wrap" canvas-id="drawCanvas" id="drawCanvas"
+<canvas class="canvas-wrap" type="2d" id="drawCanvas"
           hidden="{{drawerOpen || !active}}"
           disable-scroll="{{true}}"
           bindtouchstart="onTouchStart" bindtouchmove="onTouchMove" bindtouchend="onTouchEnd" />
