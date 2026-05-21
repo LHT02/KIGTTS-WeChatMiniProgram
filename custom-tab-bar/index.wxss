@@ -14,7 +14,7 @@
   position: relative;
   min-height: 112rpx;
   padding: 8rpx 12rpx calc(10rpx + env(safe-area-inset-bottom));
-  background: #34383b;
+  background: #2a2e30;
   border-top: 1px solid rgba(255, 255, 255, 0.10);
   box-shadow: var(--md1-shadow-bottombar);
   display: flex;

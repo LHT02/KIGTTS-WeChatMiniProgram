@@ -169,17 +169,35 @@ function pointDistance(a, b) {
   return Math.sqrt(dx * dx + dy * dy)
 }
 
-function addPendingRipple(page, pending) {
-  if (!pending || pending.cancelled || pending.started) return
+function addPendingRipple(page, pending, done) {
+  if (!pending || pending.cancelled || pending.started) {
+    if (done) done(false)
+    return
+  }
   pending.started = true
+  if (pending.rect) {
+    addRipple(page, pending.start, pending.dataset, pending.rect)
+    if (done) done(true)
+    return
+  }
+  pending.resolving = true
   queryRects(page, function(rects) {
-    if (!page._ripplePending || page._ripplePending.id !== pending.id || pending.cancelled) return
+    if (!page._ripplePending || page._ripplePending.id !== pending.id || pending.cancelled) {
+      pending.resolving = false
+      if (done) done(false)
+      return
+    }
     var rect = pickRect(rects, pending.start)
     if (!rect) {
+      pending.resolving = false
       clearPending(page)
+      if (done) done(false)
       return
     }
     addRipple(page, pending.start, pending.dataset, rect)
+    pending.resolving = false
+    if (pending.releaseAfterResolve) clearPending(page)
+    if (done) done(true)
   })
 }
 
@@ -238,6 +256,10 @@ function onRippleTouchStart(e) {
     addPendingRipple(page, pending)
   }, HOLD_DELAY)
   page._ripplePending = pending
+  queryRects(page, function(rects) {
+    if (!page._ripplePending || page._ripplePending.id !== pending.id || pending.cancelled || pending.started) return
+    pending.rect = pickRect(rects, pending.start)
+  })
 }
 
 function onRippleTouchMove(e) {
@@ -255,11 +277,13 @@ function onRippleTouchEnd() {
   if (pending.timer) clearTimeout(pending.timer)
   if (!pending.cancelled && !pending.started) {
     var page = this
-    setTimeout(function() {
-      if (!page._ripplePending || page._ripplePending.id !== pending.id || pending.cancelled) return
-      addPendingRipple(page, pending)
-      clearPending(page)
-    }, 20)
+    addPendingRipple(page, pending, function() {
+      if (page._ripplePending && page._ripplePending.id === pending.id) clearPending(page)
+    })
+    return
+  }
+  if (pending.started && pending.resolving) {
+    pending.releaseAfterResolve = true
     return
   }
   clearPending(this)
