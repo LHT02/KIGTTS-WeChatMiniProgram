@@ -73,6 +73,7 @@ Page(ripple.attach({
     statusBarH: 44,
     drawerOpen: false,
     keyboardHidden: false,
+    shellOverlayOpen: false,
     chromeAnimClass: '',
     logoGlyph: nav.logoGlyph
   },
@@ -117,7 +118,8 @@ Page(ripple.attach({
       activeTitle: titleFor(path),
       activeActions: this._actionsFor(path),
       activeIndex: idx,
-      keyboardHidden: false
+      keyboardHidden: false,
+      shellOverlayOpen: false
     }
     Object.assign(data, this._tabDriverState(idx, this.data.activeIndex))
     if (animateChrome) data.chromeAnimClass = 'chrome-changing'
@@ -282,6 +284,12 @@ Page(ripple.attach({
     var hidden = !!(e && e.detail && e.detail.hidden)
     if (this.data.keyboardHidden === hidden) return
     this.setData({ keyboardHidden: hidden }, this._scheduleTabMeasure.bind(this))
+  },
+
+  onShellOverlay: function(e) {
+    var open = !!(e && e.detail && e.detail.open)
+    if (this.data.shellOverlayOpen === open) return
+    this.setData({ shellOverlayOpen: open })
   },
 
   onShellChange: function() {

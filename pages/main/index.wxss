@@ -91,6 +91,16 @@
   z-index: 1;
 }
 
+.main-page.shell-overlay-open .main-panel.active {
+  z-index: 1200;
+}
+
+.main-page.shell-overlay-open .main-nav,
+.main-page.shell-overlay-open .main-tab-shell {
+  opacity: 0;
+  pointer-events: none;
+}
+
 .main-tab-shell {
   flex-shrink: 0;
   z-index: 700;
@@ -174,12 +184,6 @@
   justify-content: center;
   gap: 2rpx;
   box-sizing: border-box;
-}
-
-.tab-bar-item.active,
-.tab-bar-item.active .tab-icon,
-.tab-bar-item.active .tab-label {
-  color: var(--md1-primary);
 }
 
 .tab-bar-item:active,

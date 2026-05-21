@@ -1,6 +1,6 @@
 <import src="../../templates/shell.wxml" />
 
-<view class="page main-page {{themeClass}} nav-{{navMode}} {{keyboardHidden ? 'keyboard-hidden' : ''}}"
+<view class="page main-page {{themeClass}} nav-{{navMode}} {{keyboardHidden ? 'keyboard-hidden' : ''}} {{shellOverlayOpen ? 'shell-overlay-open' : ''}}"
       style="--status-bar-h:{{statusBarH}}px;"
       bindtouchmove="onRippleTouchMove" bindtouchend="onRippleTouchEnd" bindtouchcancel="onRippleTouchCancel">
   <view class="nav-bar main-nav" style="padding-top:{{statusBarH}}px;" wx:if="{{!keyboardHidden}}">
@@ -23,7 +23,7 @@
   <view class="main-content">
     <view class="main-panel {{activePath === 'pages/subtitle/index' ? 'active' : ''}}">
       <tab-subtitle id="tab-subtitle" active="{{activePath === 'pages/subtitle/index'}}"
-                    bindopendrawer="onOpenDrawer" bindkeyboardhidden="onKeyboardHidden" bindshellchange="onShellChange" />
+                    bindopendrawer="onOpenDrawer" bindkeyboardhidden="onKeyboardHidden" bindshellchange="onShellChange" bindshelloverlay="onShellOverlay" />
     </view>
     <view class="main-panel {{activePath === 'pages/card/index' ? 'active' : ''}}">
       <tab-card id="tab-card" active="{{activePath === 'pages/card/index'}}"

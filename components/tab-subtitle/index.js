@@ -55,6 +55,7 @@ Component(componentPage.fromPage(ripple.attach({
 
   onHide: function() {
     this.setData({ keyboardActive: false, keyboardCompact: false, keyboardHeight: 0 })
+    this._setShellOverlay(false)
     this._setTabBarKeyboardHidden(false)
   },
 
@@ -70,6 +71,7 @@ Component(componentPage.fromPage(ripple.attach({
     var t = this._visibleDisplayText()
     if (!t) return
     var that = this
+    this._setShellOverlay(true)
     this.setData({
       showPreview: true,
       previewText: t,
@@ -83,6 +85,7 @@ Component(componentPage.fromPage(ripple.attach({
 
   onClosePreview: function() {
     this._previewFitToken = ''
+    this._setShellOverlay(false)
     this.setData({ showPreview: false, previewText: '', previewPlaceholder: false })
   },
 
@@ -647,6 +650,11 @@ Component(componentPage.fromPage(ripple.attach({
   onOpenDrawer: function() { this.setData({ drawerOpen: true }) },
   onCloseDrawer: function() { this.setData({ drawerOpen: false }) },
   onDrawerNavTap: function(e) { nav.go(e.currentTarget.dataset.path, this.data.currentPath) },
+  _setShellOverlay: function(open) {
+    if (typeof this.triggerEvent === 'function') {
+      this.triggerEvent('shelloverlay', { open: !!open }, { bubbles: true, composed: true })
+    }
+  },
 
   noop: function() {}
 })))

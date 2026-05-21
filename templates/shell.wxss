@@ -4,7 +4,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 800;
+  z-index: 1300;
   background: rgba(0, 0, 0, 0.52);
   animation: fadeIn 0.14s cubic-bezier(0.4, 0, 0.2, 1);
   --md1-surface: #34383b;
