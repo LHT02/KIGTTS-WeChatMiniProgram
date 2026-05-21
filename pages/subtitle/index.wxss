@@ -40,7 +40,7 @@
 .group-tabs-card { height:96rpx; margin:5rpx 32rpx 16rpx; display:flex; flex-shrink:0; overflow:hidden; background:var(--md1-surface-raised); border-radius:var(--md1-radius); box-shadow:var(--md1-shadow-card); }
 .group-scroll { flex:1; min-width:0; white-space:nowrap; height:96rpx; display:flex; }
 .group-chip { display:inline-flex; align-items:center; gap:12rpx; background:transparent; height:96rpx; padding:0 20rpx; border-radius:var(--md1-radius); color:var(--md1-text-secondary); font-size:30rpx; white-space:nowrap; margin-right:4rpx; flex-shrink:0; }
-.group-chip.active { background:rgba(3,131,135,0.16); color:var(--md1-primary); }
+.group-chip.active { background:rgba(3,131,135,0.16); color:var(--md1-text-primary); }
 .group-edit-segment { width:104rpx; height:96rpx; background:var(--md1-primary); color:#fff; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
 
 .input-bar { position:relative; z-index:50; background:var(--md1-surface-raised); padding:16rpx 20rpx 16rpx; border-top:none; box-shadow:var(--md1-shadow-appbar-up); }

@@ -11,7 +11,7 @@
 .page.nav-bottom .group-tabs-card { margin-bottom:calc(128rpx + env(safe-area-inset-bottom)); }
 .chip-scroll { flex:1; min-width:0; display:flex; white-space:nowrap; height:96rpx; }
 .group-chip { display:inline-flex; align-items:center; gap:12rpx; background:transparent; height:96rpx; padding:0 20rpx; border-radius:var(--md1-radius-sm); color:var(--md1-text-secondary); font-size:30rpx; white-space:nowrap; margin-right:4rpx; flex-shrink:0; }
-.group-chip.active { background:rgba(3,131,135,0.16); color:var(--md1-primary); }
+.group-chip.active { background:rgba(3,131,135,0.16); color:var(--md1-text-primary); }
 .group-edit-segment { width:104rpx; height:96rpx; background:var(--md1-primary); color:#fff; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
 
 .sound-list { flex:1; width:100%; box-sizing:border-box; }
