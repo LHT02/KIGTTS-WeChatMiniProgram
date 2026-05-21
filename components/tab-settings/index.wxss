@@ -1,0 +1,14 @@
+@import "../../pages/settings/index.wxss";
+
+.tab-component-root.page {
+  height: 100%;
+  min-height: 0;
+  flex: 1;
+  background: transparent;
+  animation: none;
+}
+
+.tab-component-root .route-body {
+  flex: 1;
+  min-height: 0;
+}

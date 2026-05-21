@@ -1,0 +1,232 @@
+<view class="page tab-component-root route-body card-component {{themeClass}} nav-{{navMode}} {{sortMode ? 'sort-open' : ''}}"
+      bindtouchmove="onRippleTouchMove" bindtouchend="onRippleTouchEnd" bindtouchcancel="onRippleTouchCancel">
+<swiper class="card-swiper" current="{{currentIndex}}" bindchange="onSwiperChange" indicator-dots="{{false}}" circular="{{false}}" previous-margin="28rpx" next-margin="28rpx">
+    <swiper-item class="swiper-slide" wx:for="{{cards}}" wx:key="id">
+      <view class="name-card {{item.imagePath ? 'has-bg' : ''}}" style="{{cardFrameStyle}} background: {{item.imagePath ? 'transparent' : item.themeColor}};"
+            data-index="{{index}}" data-ripple="1" data-ripple-size="96" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onCardTap" bindlongpress="onCardLongPress">
+        <image wx:if="{{item.imagePath}}" class="card-bg-img" src="{{item.imagePath}}" mode="aspectFill" />
+        <view class="card-edit-btn" data-index="{{index}}" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" catchtap="onCardEditTap">
+          <text class="material-icons" style="font-size:44rpx; color:#fff;">edit</text>
+        </view>
+        <view class="card-header">
+          <view class="card-title">{{item.title}}</view>
+          <view class="card-note" wx:if="{{item.note}}">{{item.note}}</view>
+        </view>
+        <view class="card-center" wx:if="{{item.link}}">
+          <view class="qr-card">
+            <text class="material-icons" style="font-size:68rpx; color:#ccc;">qr_code_2</text>
+            <text class="qr-hint">点击展开二维码</text>
+          </view>
+        </view>
+        <view class="card-center" wx:else></view>
+        <view class="card-footer">
+          <view class="card-link-row" wx:if="{{item.link}}">
+            <view class="link-icon-btn" data-link="{{item.link}}" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" catchtap="onOpenCardLink">
+              <text class="material-icons" style="font-size:52rpx; color:#fff;">open_in_new</text>
+            </view>
+            <view class="link-icon-btn" data-link="{{item.link}}" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" catchtap="onShareCardLink">
+              <text class="material-icons" style="font-size:52rpx; color:#fff;">share</text>
+            </view>
+            <text class="card-link">{{item.link}}</text>
+          </view>
+          <view wx:else></view>
+        </view>
+        <view class="card-kigtts-btn" catchtap="noop">
+          <text class="kigtts-logo-mark card-kigtts-mark">{{logoGlyph}}</text>
+        </view>
+        <text class="card-watermark">{{item.title}}</text>
+      </view>
+    </swiper-item>
+    <swiper-item class="swiper-slide">
+      <view class="add-card-placeholder" style="{{cardFrameStyle}}" data-ripple="1" data-ripple-size="96" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onAddCard">
+        <text class="material-icons" style="font-size:68rpx; color:var(--md1-text-hint);">add_circle</text>
+        <text style="margin-top:16rpx;">点击以新建名片</text>
+      </view>
+    </swiper-item>
+  </swiper>
+
+  <view class="page-dots">
+    <view class="dot {{currentIndex === idx ? 'active' : ''}}" wx:for="{{cards.length + 1}}" wx:key="*this" wx:for-index="idx"></view>
+  </view>
+
+  <view class="sort-bar" wx:if="{{sortMode && cards.length > 0}}">
+    <view class="sort-bar-title">第 {{currentIndex + 1}} / {{cards.length}} 张</view>
+    <view class="sort-bar-actions">
+      <view class="icon-btn-sm {{currentIndex === 0 ? 'disabled' : ''}}" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onMoveCardUp">
+        <text class="material-icons">arrow_upward</text>
+      </view>
+      <view class="icon-btn-sm {{currentIndex >= cards.length - 1 ? 'disabled' : ''}}" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onMoveCardDown">
+        <text class="material-icons">arrow_downward</text>
+      </view>
+      <view class="icon-btn-sm" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onToggleSort">
+        <text class="material-icons">check</text>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- Preview Dialog -->
+<view class="dialog-mask {{themeClass}} nav-{{navMode}}" wx:if="{{showPreview}}" bindtap="onClosePreview"
+      bindtouchmove="onRippleTouchMove" bindtouchend="onRippleTouchEnd" bindtouchcancel="onRippleTouchCancel">
+  <view class="preview-card-dialog" style="background: {{previewCard.imagePath ? 'transparent' : previewCard.themeColor}};" catchtap="noop">
+    <image wx:if="{{previewCard.imagePath}}" class="card-bg-img" src="{{previewCard.imagePath}}" mode="aspectFill" />
+    <view class="card-header">
+      <view class="card-title">{{previewCard.title}}</view>
+      <view class="card-note" wx:if="{{previewCard.note}}">{{previewCard.note}}</view>
+    </view>
+    <view class="card-center">
+      <view class="qr-card" wx:if="{{previewCard.link}}">
+        <canvas id="qrPreviewCanvas" canvas-id="qrPreviewCanvas" class="qr-canvas" />
+      </view>
+      <view wx:else></view>
+    </view>
+    <view class="card-footer">
+      <view class="card-link-row" wx:if="{{previewCard.link}}">
+        <text class="card-link">{{previewCard.link}}</text>
+      </view>
+      <view wx:else></view>
+    </view>
+    <view class="card-kigtts-btn">
+      <text class="kigtts-logo-mark card-kigtts-mark">{{logoGlyph}}</text>
+    </view>
+    <text class="card-watermark">{{previewCard.title}}</text>
+    <view class="preview-actions">
+      <view class="btn-outlined-sm" style="border-color:rgba(255,255,255,0.4);color:#fff;" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onPreviewShareLink" wx:if="{{previewCard.link}}">复制链接</view>
+      <view class="btn-outlined-sm" style="border-color:rgba(255,255,255,0.4);color:#fff;" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onEditTap">编辑</view>
+    </view>
+    <view class="preview-dismiss" bindtap="onClosePreview">点击空白关闭</view>
+  </view>
+</view>
+
+<!-- Editor Sheet -->
+<view class="sheet-mask {{themeClass}} nav-{{navMode}}" wx:if="{{showEditor}}" bindtap="onCloseEditor"
+      bindtouchmove="onRippleTouchMove" bindtouchend="onRippleTouchEnd" bindtouchcancel="onRippleTouchCancel">
+  <view class="editor-sheet" catchtap="noop">
+    <view class="sheet-header">
+      <text class="sheet-title">{{editingId ? '编辑名片' : '新建名片'}}</text>
+      <text class="material-icons lg" bindtap="onCloseEditor" style="padding:8rpx;">close</text>
+    </view>
+    <scroll-view class="sheet-scroll" scroll-y="true" bindscroll="onRippleScroll">
+      <!-- 基础信息 -->
+      <view class="editor-card">
+        <view class="editor-card-title">基础信息</view>
+        <view class="editor-field">
+          <label>标题</label>
+          <view class="md-text-field"><input value="{{title}}" bindinput="onTitleInput" placeholder="名片标题" placeholder-class="input-placeholder" /></view>
+        </view>
+        <view class="editor-field">
+          <label>备注（可空）</label>
+          <textarea class="md-textarea" value="{{note}}" bindinput="onNoteInput" placeholder="备注信息" placeholder-class="textarea-placeholder" maxlength="-1" />
+        </view>
+        <view class="editor-field">
+          <label>链接（可空）</label>
+          <view class="md-text-field"><input value="{{link}}" bindinput="onLinkInput" placeholder="https://..." placeholder-class="input-placeholder" /></view>
+        </view>
+      </view>
+
+      <!-- 主题色 -->
+      <view class="editor-card">
+        <view class="editor-card-title">主题色</view>
+        <view class="color-row" bindtap="onOpenColorPicker">
+          <view class="color-dot-lg" style="background:{{color}};"></view>
+          <view class="flex-1">
+            <view class="color-label">当前主题色</view>
+            <view class="color-hex">{{color}}</view>
+          </view>
+          <text class="material-icons" style="color:var(--md1-text-hint);">palette</text>
+        </view>
+      </view>
+
+      <!-- 背景图片 -->
+      <view class="editor-card">
+        <view class="editor-card-title">背景图片</view>
+        <view class="image-section">
+          <text class="image-section-label">竖屏背景图</text>
+          <view class="image-row">
+            <text class="flex-1 text-ellipsis" style="color:var(--md1-text-hint);">{{imagePath || '未选择图片'}}</text>
+            <view class="icon-btn-sm" wx:if="{{imagePath}}" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onRemoveImage">
+              <text class="material-icons">close</text>
+            </view>
+            <view class="icon-btn-sm" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onChooseImage">
+              <text class="material-icons">folder_open</text>
+            </view>
+          </view>
+        </view>
+        <view class="img-preview" wx:if="{{imagePath}}"><image src="{{imagePath}}" mode="aspectFill" /></view>
+        <view class="editor-hint" wx:else>未设置图片时使用主题色背景，并显示装饰文字。</view>
+      </view>
+    </scroll-view>
+    <view class="sheet-footer">
+      <view class="btn-text-sm" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onCloseEditor">取消</view>
+      <view class="btn-filled-sm" data-ripple="1" data-ripple-color="rgb(255,255,255)" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onSaveCard">保存</view>
+    </view>
+  </view>
+</view>
+<!-- Color Picker Sheet -->
+<view class="sheet-mask {{themeClass}} nav-{{navMode}}" wx:if="{{showColorPicker}}" bindtap="onCloseColorPicker"
+      bindtouchmove="onRippleTouchMove" bindtouchend="onRippleTouchEnd" bindtouchcancel="onRippleTouchCancel">
+  <view class="color-picker-sheet" catchtap="noop">
+    <view class="sheet-header">
+      <text class="sheet-title">名片主题色</text>
+      <text class="material-icons lg" bindtap="onCloseColorPicker" style="padding:8rpx;">close</text>
+    </view>
+    <scroll-view class="sheet-scroll" scroll-y="true" bindscroll="onRippleScroll">
+      <view class="picker-section">
+        <view class="picker-label">候选主题色</view>
+        <view class="preset-grid">
+          <view class="preset-dot {{item === color ? 'selected' : ''}}" wx:for="{{presetColors}}" wx:key="*this"
+                style="background:{{item}};" data-color="{{item}}" bindtap="onPickColor" />
+        </view>
+      </view>
+
+      <view class="picker-section">
+        <view class="picker-label">色相</view>
+        <slider min="0" max="360" value="{{hHue}}" bindchange="onHueChange" activeColor="#038387" block-color="#038387" block-size="20" />
+      </view>
+
+      <view class="picker-section">
+        <view class="picker-label">饱和度</view>
+        <slider min="0" max="100" value="{{hSat * 100}}" bindchange="onSatChange" activeColor="#038387" block-color="#038387" block-size="20" />
+      </view>
+
+      <view class="picker-section">
+        <view class="picker-label">亮度</view>
+        <slider min="0" max="100" value="{{hLight * 100}}" bindchange="onLightChange" activeColor="#038387" block-color="#038387" block-size="20" />
+      </view>
+
+      <view class="picker-section">
+        <view class="picker-preview" style="background:{{hexInput}};"></view>
+      </view>
+
+      <view class="picker-section">
+        <view class="picker-label">HEX</view>
+        <view class="flex-row" style="gap:12rpx;">
+          <view class="md-text-field flex-1">
+            <input value="{{hexInput}}" bindinput="onHexInputChange" placeholder="#RRGGBB" placeholder-class="input-placeholder" />
+          </view>
+          <view class="btn-filled-sm" data-ripple="1" data-ripple-color="rgb(255,255,255)" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onApplyHexColor">应用</view>
+        </view>
+      </view>
+
+      <view class="editor-hint" style="margin-top:16rpx;">拖动滑条设置色相、饱和度和亮度</view>
+    </scroll-view>
+  </view>
+</view>
+
+<!-- Delete Confirm -->
+<view class="dialog-mask {{themeClass}} nav-{{navMode}}" wx:if="{{showDeleteConfirm}}" bindtap="onCancelDelete"
+      bindtouchmove="onRippleTouchMove" bindtouchend="onRippleTouchEnd" bindtouchcancel="onRippleTouchCancel">
+  <view class="dialog-box" catchtap="noop">
+    <view class="dialog-text">确定要删除这张名片吗？此操作不可撤销。</view>
+    <view class="dialog-footer">
+      <view class="btn-text-sm" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onCancelDelete">取消</view>
+      <view class="btn-text-sm" style="color:var(--md1-error);" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onConfirmDelete">删除</view>
+    </view>
+  </view>
+</view>
+
+<view class="ripple-host" wx:if="{{rippleList.length}}">
+  <view class="sc-ripple-clip" wx:for="{{rippleList}}" wx:key="id" style="{{item.clipStyle}}">
+    <view class="sc-ripple {{item.hold ? 'sc-ripple-hold' : ''}}" data-id="{{item.id}}" style="{{item.style}}" bindanimationend="onRippleAnimationEnd"></view>
+  </view>
+</view>

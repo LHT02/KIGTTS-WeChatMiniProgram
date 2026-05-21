@@ -21,7 +21,7 @@ Page({
     setTimeout(function() {
       that.setData({ leaving: true })
       setTimeout(function() {
-        wx.switchTab({ url: '/pages/subtitle/index' })
+        wx.redirectTo({ url: '/pages/main/index' })
       }, 160)
     }, 520)
   }

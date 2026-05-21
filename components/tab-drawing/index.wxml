@@ -1,0 +1,58 @@
+<view class="page tab-component-root route-body drawing-component {{themeClass}} nav-{{navMode}}"
+      bindtouchmove="onRippleTouchMove" bindtouchend="onRippleTouchEnd" bindtouchcancel="onRippleTouchCancel">
+<canvas class="canvas-wrap" canvas-id="drawCanvas" id="drawCanvas"
+          hidden="{{drawerOpen || !active}}"
+          disable-scroll="{{true}}"
+          bindtouchstart="onTouchStart" bindtouchmove="onTouchMove" bindtouchend="onTouchEnd" />
+  <view class="draw-toolbar card {{toolbarCollapsed ? 'mini' : ''}}">
+    <view wx:if="{{!toolbarCollapsed}}">
+      <view class="dt-row">
+        <view class="dt-tools">
+          <view class="tool-toggle {{tool === 'pen' ? 'sel' : ''}}" data-tool="pen" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onSelectTool">
+            <text class="material-icons">edit</text>
+          </view>
+          <view class="tool-toggle {{tool === 'eraser' ? 'sel' : ''}}" data-tool="eraser" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onSelectTool">
+            <text class="material-icons">ink_eraser</text>
+          </view>
+          <view class="tool-toggle" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onClear">
+            <text class="material-icons">delete_sweep</text>
+          </view>
+        </view>
+        <scroll-view class="dt-colors" scroll-x="true" enable-flex bindscroll="onRippleScroll">
+          <view class="color-dot {{c === color ? 'sel' : ''}}"
+                wx:for="{{colorPalette}}" wx:key="*this" wx:for-item="c"
+                style="background:{{c}};" data-color="{{c}}" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onPickColor"></view>
+        </scroll-view>
+      </view>
+      <view class="dt-row">
+        <slider class="flex-1" min="2" max="48" value="{{brushSize}}"
+                bindchange="onBrushSizeChange" activeColor="#038387" block-color="#038387" block-size="20" />
+        <view class="dt-actions">
+          <view class="tool-toggle" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onUndo">
+            <text class="material-icons">undo</text>
+          </view>
+          <view class="tool-toggle" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onRedo">
+            <text class="material-icons">redo</text>
+          </view>
+          <view class="tool-toggle" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onSave">
+            <text class="material-icons">save</text>
+          </view>
+          <view class="tool-toggle" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onToggleToolbar">
+            <text class="material-icons">expand_more</text>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="dt-mini-row" wx:if="{{toolbarCollapsed}}">
+      <view class="tool-toggle" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onToggleToolbar">
+        <text class="material-icons">expand_less</text>
+      </view>
+    </view>
+  </view>
+</view>
+
+<view class="ripple-host" wx:if="{{rippleList.length}}">
+  <view class="sc-ripple-clip" wx:for="{{rippleList}}" wx:key="id" style="{{item.clipStyle}}">
+    <view class="sc-ripple {{item.hold ? 'sc-ripple-hold' : ''}}" data-id="{{item.id}}" style="{{item.style}}" bindanimationend="onRippleAnimationEnd"></view>
+  </view>
+</view>

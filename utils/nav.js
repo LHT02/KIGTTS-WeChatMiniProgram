@@ -6,10 +6,19 @@ var items = [
   { path: 'pages/settings/index', text: '设置', label: '设置', icon: 'tune' }
 ]
 var logoGlyph = '\ue001'
-var routeAnim = require('./route-anim')
+var MAIN_PATH = 'pages/main/index'
 
 function normalize(path) {
   return (path || '').replace(/^\/+/, '')
+}
+
+function goMain(target) {
+  wx.redirectTo({
+    url: '/' + MAIN_PATH + '?tab=' + encodeURIComponent(target),
+    fail: function() {
+      wx.reLaunch({ url: '/' + MAIN_PATH + '?tab=' + encodeURIComponent(target) })
+    }
+  })
 }
 
 function go(path, currentPath) {
@@ -17,26 +26,29 @@ function go(path, currentPath) {
   if (!target) return
   var pages = getCurrentPages()
   var currentPage = pages.length ? pages[pages.length - 1] : null
+  var currentRoute = currentPage && normalize(currentPage.route)
+
+  if (currentRoute === MAIN_PATH && currentPage && typeof currentPage.switchToPath === 'function') {
+    currentPage.switchToPath(target)
+    return
+  }
+
   if (target === normalize(currentPath)) {
     if (currentPage && currentPage.data && currentPage.data.drawerOpen) {
       currentPage.setData({ drawerOpen: false })
     }
     return
   }
-  var run = function() {
-    routeAnim.exit(currentPage, function() {
-      wx.switchTab({
-        url: '/' + target,
-        fail: function() {
-          if (currentPage) routeAnim.enter(currentPage)
-        }
-      })
-    })
+
+  if (!currentRoute || currentRoute !== MAIN_PATH) {
+    goMain(target)
+    return
   }
+
   if (currentPage && currentPage.data && currentPage.data.drawerOpen) {
-    currentPage.setData({ drawerOpen: false }, run)
+    currentPage.setData({ drawerOpen: false }, function() { goMain(target) })
   } else {
-    run()
+    goMain(target)
   }
 }
 

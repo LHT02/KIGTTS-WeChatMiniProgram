@@ -1,0 +1,182 @@
+@import "../../templates/shell.wxss";
+
+.main-page {
+  background: var(--md1-bg);
+  height: 100vh;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.main-nav {
+  position: relative;
+  z-index: 900;
+  background: var(--md1-surface);
+  flex-shrink: 0;
+  box-shadow: var(--md1-shadow-appbar);
+}
+
+.main-nav-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 88rpx;
+  padding: 0 220rpx;
+  box-sizing: border-box;
+  transition: opacity 140ms cubic-bezier(0.4,0,0.2,1);
+}
+
+.nav-title {
+  position: absolute;
+  left: 220rpx;
+  right: 220rpx;
+  top: 0;
+  height: 88rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 36rpx;
+  font-weight: 600;
+  color: var(--md1-text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.nav-actions {
+  position: absolute;
+  left: 20rpx;
+  top: 8rpx;
+  height: 72rpx;
+  display: flex;
+  align-items: center;
+  gap: 4rpx;
+  z-index: 2;
+}
+
+.main-nav-row.chrome-changing {
+  animation: chromeContentFade 160ms cubic-bezier(0.4,0,0.2,1);
+}
+
+@keyframes chromeContentFade {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.main-content {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--md1-bg);
+}
+
+.main-panel {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform: translateY(18rpx);
+  pointer-events: none;
+  transition: opacity 180ms cubic-bezier(0.2,0,0,1), transform 180ms cubic-bezier(0.2,0,0,1);
+  will-change: opacity, transform;
+}
+
+.main-panel.active {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+  z-index: 1;
+}
+
+.main-tab-shell {
+  flex-shrink: 0;
+  z-index: 700;
+  pointer-events: none;
+  font-family: -apple-system-font, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.tabbar {
+  position: relative;
+  min-height: 112rpx;
+  padding: 8rpx 12rpx calc(10rpx + env(safe-area-inset-bottom));
+  background: var(--md1-surface-raised);
+  border-top: 1px solid var(--md1-divider);
+  box-shadow: var(--md1-shadow-bottombar);
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  pointer-events: auto;
+  overflow: hidden;
+}
+
+.main-tab-shell.subtitle-current .tabbar {
+  box-shadow: none;
+}
+
+.tab-item {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  min-width: 0;
+  height: 88rpx;
+  border-radius: 8rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--md1-text-secondary);
+  gap: 2rpx;
+  -webkit-tap-highlight-color: transparent;
+  transition: color 160ms cubic-bezier(0.4,0,0.2,1);
+}
+
+.tab-item.active,
+.tab-item.active .tab-icon,
+.tab-item.active .tab-label {
+  color: var(--md1-primary);
+}
+
+.tab-item:active {
+  background: transparent;
+}
+
+.tab-icon {
+  font-size: 44rpx;
+  line-height: 1;
+  transition: color 160ms cubic-bezier(0.4,0,0.2,1);
+}
+
+.tab-label {
+  font-family: -apple-system-font, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 24rpx;
+  line-height: 1.2;
+  white-space: nowrap;
+  transition: color 160ms cubic-bezier(0.4,0,0.2,1);
+}
+
+.tab-driver {
+  position: absolute;
+  left: 0;
+  bottom: env(safe-area-inset-bottom);
+  height: 4rpx;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+  transition: transform 220ms cubic-bezier(0.4,0,0.2,1);
+  will-change: transform;
+}
+
+.tab-driver-inner {
+  width: 56rpx;
+  height: 4rpx;
+  border-radius: 4rpx 4rpx 0 0;
+  background: var(--md1-primary);
+}
+
+.keyboard-hidden .main-content {
+  flex-basis: 100vh;
+}

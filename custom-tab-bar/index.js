@@ -2,7 +2,6 @@ var storage = require('../utils/storage')
 var nav = require('../utils/nav')
 var theme = require('../utils/theme')
 var ripple = require('../utils/ripple')
-var routeAnim = require('../utils/route-anim')
 
 Component({
   data: {
@@ -60,6 +59,7 @@ Component({
     onTap: function(e) {
       var path = e.currentTarget.dataset.path
       if (!path || path === this.data.selectedPath) return
+      var currentPath = this.data.selectedPath
       this._switchingPath = path
       var activeIndex = 0
       for (var i = 0; i < nav.items.length; i++) {
@@ -69,25 +69,13 @@ Component({
         }
       }
       var count = nav.items.length || 1
-      var that = this
       this.setData({
         selectedPath: path,
         activeIndex: activeIndex,
         tabDriverStyle: 'width:' + (100 / count) + '%;transform:translateX(' + (activeIndex * 100) + '%);'
       })
-      var pages = getCurrentPages()
-      var currentPage = pages.length ? pages[pages.length - 1] : null
-      routeAnim.exit(currentPage, function() {
-        if (that._switchingPath !== path) return
-        that._switchingPath = ''
-        wx.switchTab({
-          url: '/' + path,
-          fail: function() {
-            if (currentPage) routeAnim.enter(currentPage)
-            that.sync()
-          }
-        })
-      })
+      this._switchingPath = ''
+      nav.go(path, currentPath)
     },
 
     setKeyboardHidden: function(hidden) {

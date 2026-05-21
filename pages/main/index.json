@@ -1,0 +1,9 @@
+{
+  "usingComponents": {
+    "tab-subtitle": "../../components/tab-subtitle/index",
+    "tab-card": "../../components/tab-card/index",
+    "tab-drawing": "../../components/tab-drawing/index",
+    "tab-soundboard": "../../components/tab-soundboard/index",
+    "tab-settings": "../../components/tab-settings/index"
+  }
+}
