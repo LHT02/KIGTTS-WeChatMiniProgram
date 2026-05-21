@@ -14,5 +14,5 @@
 }
 
 .tab-component-root.nav-bottom .group-tabs-card {
-  margin-bottom: 20rpx;
+  margin-bottom: 20rpx !important;
 }

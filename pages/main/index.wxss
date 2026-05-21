@@ -82,12 +82,11 @@
   transform: translateY(18rpx);
   pointer-events: none;
   transition: opacity 180ms cubic-bezier(0.2,0,0,1), transform 180ms cubic-bezier(0.2,0,0,1);
-  will-change: opacity, transform;
 }
 
 .main-panel.active {
   opacity: 1;
-  transform: translateY(0);
+  transform: none;
   pointer-events: auto;
   z-index: 1;
 }

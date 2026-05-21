@@ -15,10 +15,10 @@
 
 .tab-component-root.nav-bottom .input-bar,
 .tab-component-root.nav-bottom .input-bar.safe-bottom {
-  padding-bottom: 16rpx;
+  padding-bottom: 16rpx !important;
 }
 
 .tab-component-root.nav-bottom.keyboard-compact .input-bar,
 .tab-component-root.nav-bottom.keyboard-compact .input-bar.safe-bottom {
-  padding-bottom: 16rpx;
+  padding-bottom: 16rpx !important;
 }

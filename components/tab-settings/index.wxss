@@ -14,5 +14,5 @@
 }
 
 .tab-component-root.nav-bottom .settings-scroll-inner {
-  padding-bottom: 40rpx;
+  padding-bottom: 40rpx !important;
 }

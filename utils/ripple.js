@@ -39,11 +39,13 @@ function queryTargets(page, done) {
       size: true,
       rect: true,
       computedStyle: ['backgroundColor']
-    }, function(rects) {
-      done(rects || [])
-    }).exec()
+    })
+    query.select('.ripple-host').boundingClientRect()
+    query.exec(function(res) {
+      done((res && res[0]) || [], (res && res[1]) || null)
+    })
   } catch (e) {
-    done([])
+    done([], null)
   }
 }
 
@@ -138,7 +140,7 @@ function tapSuppressed(page) {
   return !!(page && page._rippleSuppressTapUntil && Date.now() < page._rippleSuppressTapUntil)
 }
 
-function addRipple(page, p, dataset, rect, hold) {
+function addRipple(page, p, dataset, rect, hold, hostRect) {
   rect = rect || fallbackRect(p, parseInt(dataset && dataset.rippleSize, 10) || 48)
   var width = rect.width || 48
   var height = rect.height || 48
@@ -146,12 +148,14 @@ function addRipple(page, p, dataset, rect, hold) {
   var localY = clamp(p.y - rect.top, 0, height)
   var size = rippleSize(rect, dataset)
   var half = size / 2
+  var hostLeft = hostRect && hostRect.left ? hostRect.left : 0
+  var hostTop = hostRect && hostRect.top ? hostRect.top : 0
   var item = {
     id: nextRippleId(page),
     hold: !!hold,
     clipStyle: [
-      'left:' + rect.left + 'px',
-      'top:' + rect.top + 'px',
+      'left:' + (rect.left - hostLeft) + 'px',
+      'top:' + (rect.top - hostTop) + 'px',
       'width:' + width + 'px',
       'height:' + height + 'px',
       'border-radius:' + clipRadius(rect, dataset)
@@ -176,13 +180,13 @@ function addRippleFromEvent(page, e, hold) {
   var p = eventPoint(e)
   if (!p) return
 
-  queryTargets(page, function(rects) {
+  queryTargets(page, function(rects, hostRect) {
     var rect = pickRect(rects, p)
     if (!rect) {
       if (dataset.ripple) rect = fallbackRect(p, parseInt(dataset.rippleSize, 10) || 48)
       else return
     }
-    addRipple(page, p, dataset, rect, hold)
+    addRipple(page, p, dataset, rect, hold, hostRect)
   })
 }
 

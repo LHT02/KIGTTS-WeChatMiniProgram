@@ -123,7 +123,7 @@
     <view class="sheet-footer"><view class="btn-text-sm" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onCloseImportEditor">取消</view><view class="btn-filled-sm" data-ripple="1" data-ripple-color="rgb(255,255,255)" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onDoImport">导入</view></view>
   </view>
 </view>
-<view class="ripple-host" wx:if="{{rippleList.length}}">
+<view class="ripple-host">
   <view class="sc-ripple-clip" wx:for="{{rippleList}}" wx:key="id" style="{{item.clipStyle}}">
     <view class="sc-ripple {{item.hold ? 'sc-ripple-hold' : ''}}" data-id="{{item.id}}" style="{{item.style}}" bindanimationend="onRippleAnimationEnd"></view>
   </view>
