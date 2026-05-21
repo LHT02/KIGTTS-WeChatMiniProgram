@@ -12,3 +12,7 @@
   flex: 1;
   min-height: 0;
 }
+
+.tab-component-root.nav-bottom .group-tabs-card {
+  margin-bottom: 20rpx;
+}

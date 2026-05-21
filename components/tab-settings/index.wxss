@@ -12,3 +12,7 @@
   flex: 1;
   min-height: 0;
 }
+
+.tab-component-root.nav-bottom .settings-scroll-inner {
+  padding-bottom: 40rpx;
+}

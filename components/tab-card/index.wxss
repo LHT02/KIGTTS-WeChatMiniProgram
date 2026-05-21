@@ -12,3 +12,11 @@
   flex: 1;
   min-height: 0;
 }
+
+.tab-component-root.nav-bottom .page-dots {
+  padding-bottom: 12rpx;
+}
+
+.tab-component-root.nav-bottom .sort-bar {
+  padding-bottom: 12rpx;
+}

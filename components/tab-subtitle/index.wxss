@@ -12,3 +12,13 @@
   flex: 1;
   min-height: 0;
 }
+
+.tab-component-root.nav-bottom .input-bar,
+.tab-component-root.nav-bottom .input-bar.safe-bottom {
+  padding-bottom: 16rpx;
+}
+
+.tab-component-root.nav-bottom.keyboard-compact .input-bar,
+.tab-component-root.nav-bottom.keyboard-compact .input-bar.safe-bottom {
+  padding-bottom: 16rpx;
+}
