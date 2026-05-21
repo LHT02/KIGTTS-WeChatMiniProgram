@@ -15,7 +15,7 @@ var RIPPLE_SELECTOR = [
   '.quick-list-item', '.sheet-list-item', '.sound-card',
   '.preview-close-btn',
   '.nav-back', '.tool-toggle', '.item-row', '.icon-cell', '.color-dot',
-  '.md1-switch', '.icon-row', '.add-card-placeholder', '.name-card', '.tab-item'
+  '.md1-switch', '.icon-row', '.add-card-placeholder', '.name-card', '.tab-item', '.tab-bar-item'
 ].join(',')
 
 function eventPoint(e) {

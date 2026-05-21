@@ -102,12 +102,11 @@
 .tabbar {
   position: relative;
   min-height: 112rpx;
-  padding: 8rpx 12rpx calc(10rpx + env(safe-area-inset-bottom));
+  padding: 6rpx 0 calc(6rpx + env(safe-area-inset-bottom));
   background: var(--md1-surface-raised);
   border-top: 1px solid var(--md1-divider);
   box-shadow: var(--md1-shadow-bottombar);
-  display: flex;
-  align-items: center;
+  display: block;
   box-sizing: border-box;
   pointer-events: auto;
   overflow: hidden;
@@ -117,30 +116,75 @@
   box-shadow: none;
 }
 
-.tab-item {
+.layout-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.layout-start-center {
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.main-tab-scroll {
+  width: 100%;
+  height: 100rpx;
+}
+
+.main-tab {
+  min-width: 100%;
+}
+
+.tab-bar {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 100%;
+}
+
+.tab-bar-list {
+  flex: 1 1 auto;
+  height: 96rpx;
+  background: transparent;
+  font-size: 30rpx;
+  overflow-x: scroll;
+}
+
+.tab-bar-item {
   position: relative;
   z-index: 1;
-  flex: 1;
+  flex: 1 0 20%;
+  flex-grow: 1;
   min-width: 0;
-  height: 88rpx;
-  border-radius: 8rpx;
+  height: 96rpx;
+  line-height: 96rpx;
+  text-align: center;
+  color: var(--md1-text-secondary);
+  -webkit-tap-highlight-color: transparent;
+  transition: color 300ms linear;
+}
+
+.sc-tab-btn {
+  height: 96rpx;
+  min-width: 88rpx;
+  padding: 0 8rpx;
+  border-radius: 2px;
+  background-color: transparent;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: var(--md1-text-secondary);
   gap: 2rpx;
-  -webkit-tap-highlight-color: transparent;
-  transition: color 160ms cubic-bezier(0.4,0,0.2,1);
+  box-sizing: border-box;
 }
 
-.tab-item.active,
-.tab-item.active .tab-icon,
-.tab-item.active .tab-label {
+.tab-bar-item.active,
+.tab-bar-item.active .tab-icon,
+.tab-bar-item.active .tab-label {
   color: var(--md1-primary);
 }
 
-.tab-item:active {
+.tab-bar-item:active,
+.sc-tab-btn:active {
   background: transparent;
 }
 
@@ -158,23 +202,20 @@
   transition: color 160ms cubic-bezier(0.4,0,0.2,1);
 }
 
-.tab-driver {
-  position: absolute;
-  left: 0;
-  bottom: env(safe-area-inset-bottom);
+.tab-bar-driver {
   height: 4rpx;
-  display: flex;
-  justify-content: center;
+  background: var(--md1-primary);
   pointer-events: none;
-  transition: transform 220ms cubic-bezier(0.4,0,0.2,1);
-  will-change: transform;
+  transform-origin: 0 0;
 }
 
-.tab-driver-inner {
-  width: 56rpx;
-  height: 4rpx;
-  border-radius: 4rpx 4rpx 0 0;
-  background: var(--md1-primary);
+.tab-bar-driver-transition {
+  transition: transform 300ms linear;
+}
+
+.tab-bar-driver-trans-transition {
+  transition: width 300ms linear, transform 300ms linear;
+  will-change: width;
 }
 
 .keyboard-hidden .main-content {

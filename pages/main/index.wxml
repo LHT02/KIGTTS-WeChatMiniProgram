@@ -45,16 +45,27 @@
 
   <view class="main-tab-shell {{activePath === 'pages/subtitle/index' ? 'subtitle-current' : ''}}" wx:if="{{navMode !== 'drawer' && !keyboardHidden}}">
     <view class="tabbar">
-      <view class="tab-driver" style="{{tabDriverStyle}}">
-        <view class="tab-driver-inner"></view>
-      </view>
-      <view class="tab-item {{activePath === item.path ? 'active' : ''}}"
-            wx:for="{{navItems}}" wx:key="path"
-            data-path="{{item.path}}" data-ripple="1"
-            capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onTabTap">
-        <text class="material-icons tab-icon">{{item.icon}}</text>
-        <text class="tab-label">{{item.text}}</text>
-      </view>
+      <scroll-view class="main-tab-scroll" scroll-x="true" scroll-with-animation="true"
+                   scroll-left="{{tabScrollLeft}}" enhanced="true" show-scrollbar="false"
+                   bindscroll="onTabScroll">
+        <view id="main-tab" class="layout-row layout-start-center main-tab">
+          <view class="tab-bar">
+            <view class="tab-bar-list layout-row layout-start-center">
+              <view class="main-tab-item tab-bar-item {{activeIndex === index ? 'active' : ''}}"
+                    wx:for="{{navItems}}" wx:key="path"
+                    data-idx="{{index}}" data-path="{{item.path}}" data-ripple="1"
+                    capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onTabTap">
+                <view class="sc-tab-btn">
+                  <text class="material-icons tab-icon">{{item.icon}}</text>
+                  <text class="tab-label">{{item.text}}</text>
+                </view>
+              </view>
+            </view>
+            <view class="tab-bar-driver tab-bar-driver-transition {{tabDriverUnequal ? 'tab-bar-driver-trans-transition' : ''}}"
+                  style="{{tabDriverStyle}}"></view>
+          </view>
+        </view>
+      </scroll-view>
     </view>
   </view>
 </view>

@@ -42,7 +42,9 @@ Page(ripple.attach({
     activeTitle: '便捷字幕',
     activeActions: ACTIONS['pages/subtitle/index'],
     activeIndex: 0,
-    tabDriverStyle: 'width:20%;transform:translateX(0%);',
+    tabDriverStyle: 'width:20%;transform:translateX(0%) translateY(-2rpx);',
+    tabDriverUnequal: false,
+    tabScrollLeft: 0,
     navItems: nav.items,
     navMode: theme.navMode(),
     themeClass: theme.themeClass(),
@@ -63,37 +65,109 @@ Page(ripple.attach({
   onReady: function() {
     this._syncChildrenShell()
     this._activateCurrent()
+    this._scheduleTabMeasure()
   },
 
   onShow: function() {
     this._syncShell(true)
     this._activateCurrent()
+    this._scheduleTabMeasure()
   },
 
   _syncShell: function(syncChildren) {
     var settings = storage.getSettings()
     var sys = wx.getSystemInfoSync()
+    var that = this
     this.setData({
       themeClass: (settings.themeMode || 0) === 1 ? 'theme-light' : '',
       navMode: settings.navMode || 'bottom',
       statusBarH: sys.statusBarHeight || 44,
       drawerOpen: (settings.navMode || 'bottom') === 'drawer' ? this.data.drawerOpen : false
-    }, syncChildren ? this._syncChildrenShell.bind(this) : undefined)
+    }, function() {
+      if (syncChildren) that._syncChildrenShell()
+      that._scheduleTabMeasure()
+    })
   },
 
   _setActiveState: function(path, animateChrome) {
     var idx = indexFor(path)
-    var count = nav.items.length || 1
     var data = {
       activePath: path,
       activeTitle: titleFor(path),
       activeActions: this._actionsFor(path),
       activeIndex: idx,
-      tabDriverStyle: 'width:' + (100 / count) + '%;transform:translateX(' + (idx * 100) + '%);',
       keyboardHidden: false
     }
+    Object.assign(data, this._tabDriverState(idx, this.data.activeIndex))
     if (animateChrome) data.chromeAnimClass = 'chrome-changing'
     this.setData(data)
+  },
+
+  _scheduleTabMeasure: function() {
+    if (this.data.navMode === 'drawer' || this.data.keyboardHidden) return
+    if (this._tabMeasureTimer) clearTimeout(this._tabMeasureTimer)
+    var that = this
+    this._tabMeasureTimer = setTimeout(function() {
+      that._tabMeasureTimer = null
+      that._measureTabs()
+    }, 0)
+  },
+
+  _measureTabs: function() {
+    if (this.data.navMode === 'drawer' || this.data.keyboardHidden) return
+    var query = this.createSelectorQuery()
+    query.select('#main-tab').boundingClientRect()
+    query.selectAll('.main-tab-item').boundingClientRect()
+    query.exec(function(res) {
+      var container = res && res[0]
+      var items = res && res[1]
+      if (!container || !items || !items.length) return
+      var start = items[0].left
+      var end = items[items.length - 1].right
+      this._tabMetrics = {
+        scrollViewWidth: container.width || 0,
+        tabStartPosition: start || 0,
+        tabListWidth: (end || 0) - (start || 0),
+        items: items
+      }
+      this.setData(this._tabDriverState(this.data.activeIndex, this.data.activeIndex))
+    }.bind(this))
+  },
+
+  _tabDriverState: function(index, previousIndex) {
+    var count = nav.items.length || 1
+    var metrics = this._tabMetrics
+    if (!metrics || !metrics.items || !metrics.items[index]) {
+      return {
+        tabDriverStyle: 'width:' + (100 / count) + '%;transform:translateX(' + (index * 100) + '%) translateY(-2rpx);',
+        tabDriverUnequal: false
+      }
+    }
+
+    var item = metrics.items[index]
+    var previous = metrics.items[previousIndex]
+    var left = item.left - metrics.tabStartPosition
+    var width = item.width
+    var data = {
+      tabDriverStyle: 'width:' + width + 'px;transform:translateX(' + left + 'px) translateY(-2rpx);',
+      tabDriverUnequal: !!(previous && Math.abs(previous.width - width) > 0.5)
+    }
+
+    if (metrics.scrollViewWidth && metrics.scrollViewWidth < metrics.tabListWidth) {
+      var scrollLeft = this._tabScrollLeft || 0
+      var btnStart = item.left
+      var btnEnd = item.right
+      var start = metrics.tabStartPosition
+      if (!(btnStart >= scrollLeft + start && btnEnd <= Math.ceil(scrollLeft + metrics.scrollViewWidth + start))) {
+        if (btnStart - start <= scrollLeft) {
+          data.tabScrollLeft = index === 0 ? 0 : btnStart - start - (index > 0 ? (metrics.items[index - 1].width / 2) : 0)
+        } else {
+          data.tabScrollLeft = btnEnd - metrics.scrollViewWidth - start + ((index + 1) < count ? (metrics.items[index + 1].width / 2) : 0)
+        }
+      }
+    }
+
+    return data
   },
 
   _componentFor: function(path) {
@@ -157,6 +231,10 @@ Page(ripple.attach({
     this.switchToPath(e.currentTarget.dataset.path)
   },
 
+  onTabScroll: function(e) {
+    this._tabScrollLeft = e && e.detail ? e.detail.scrollLeft : 0
+  },
+
   onTopActionTap: function(e) {
     var action = e.currentTarget.dataset.action
     var child = this._componentFor(this.data.activePath)
@@ -181,7 +259,7 @@ Page(ripple.attach({
   onKeyboardHidden: function(e) {
     var hidden = !!(e && e.detail && e.detail.hidden)
     if (this.data.keyboardHidden === hidden) return
-    this.setData({ keyboardHidden: hidden })
+    this.setData({ keyboardHidden: hidden }, this._scheduleTabMeasure.bind(this))
   },
 
   onShellChange: function() {
