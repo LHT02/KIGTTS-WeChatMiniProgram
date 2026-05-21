@@ -6,6 +6,7 @@ var items = [
   { path: 'pages/settings/index', text: '设置', label: '设置', icon: 'tune' }
 ]
 var logoGlyph = '\ue001'
+var routeAnim = require('./route-anim')
 
 function normalize(path) {
   return (path || '').replace(/^\/+/, '')
@@ -14,8 +15,29 @@ function normalize(path) {
 function go(path, currentPath) {
   var target = normalize(path)
   if (!target) return
-  if (target === normalize(currentPath)) return
-  wx.switchTab({ url: '/' + target })
+  var pages = getCurrentPages()
+  var currentPage = pages.length ? pages[pages.length - 1] : null
+  if (target === normalize(currentPath)) {
+    if (currentPage && currentPage.data && currentPage.data.drawerOpen) {
+      currentPage.setData({ drawerOpen: false })
+    }
+    return
+  }
+  var run = function() {
+    routeAnim.exit(currentPage, function() {
+      wx.switchTab({
+        url: '/' + target,
+        fail: function() {
+          if (currentPage) routeAnim.enter(currentPage)
+        }
+      })
+    })
+  }
+  if (currentPage && currentPage.data && currentPage.data.drawerOpen) {
+    currentPage.setData({ drawerOpen: false }, run)
+  } else {
+    run()
+  }
 }
 
 function syncTabBar(page) {

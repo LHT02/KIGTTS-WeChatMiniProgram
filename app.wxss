@@ -99,8 +99,10 @@ button,
   --color-danger: var(--md1-error);
 }
 
-.page.route-tab.route-enter-a { animation: mdTabEnterA 0.20s cubic-bezier(0.2,0,0,1); }
-.page.route-tab.route-enter-b { animation: mdTabEnterB 0.20s cubic-bezier(0.2,0,0,1); }
+.page.route-tab.route-enter-a { animation: mdTabFloatInA 0.18s cubic-bezier(0.2,0,0,1); }
+.page.route-tab.route-enter-b { animation: mdTabFloatInB 0.18s cubic-bezier(0.2,0,0,1); }
+.page.route-tab.route-exit-a { animation: mdTabFloatOutA 0.16s cubic-bezier(0.4,0,1,1) forwards; pointer-events: none; }
+.page.route-tab.route-exit-b { animation: mdTabFloatOutB 0.16s cubic-bezier(0.4,0,1,1) forwards; pointer-events: none; }
 .page.route-push { animation: mdPushEnter 0.22s cubic-bezier(0.2,0,0,1); }
 .page.route-launch { animation: none; }
 
@@ -396,15 +398,21 @@ button,
 
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-@keyframes mdTabEnterA {
-  from { opacity: 0; transform: scale(0.985); }
-  60% { opacity: 1; }
-  to { opacity: 1; transform: scale(1); }
+@keyframes mdTabFloatInA {
+  from { opacity: 0; transform: translateY(18rpx); }
+  to { opacity: 1; transform: translateY(0); }
 }
-@keyframes mdTabEnterB {
-  from { opacity: 0; transform: scale(0.985); }
-  60% { opacity: 1; }
-  to { opacity: 1; transform: scale(1); }
+@keyframes mdTabFloatInB {
+  from { opacity: 0; transform: translateY(18rpx); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes mdTabFloatOutA {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(-18rpx); }
+}
+@keyframes mdTabFloatOutB {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(-18rpx); }
 }
 @keyframes mdPushEnter {
   from { opacity: 0; transform: translateX(36rpx); }

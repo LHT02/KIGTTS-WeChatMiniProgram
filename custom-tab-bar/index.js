@@ -2,6 +2,7 @@ var storage = require('../utils/storage')
 var nav = require('../utils/nav')
 var theme = require('../utils/theme')
 var ripple = require('../utils/ripple')
+var routeAnim = require('../utils/route-anim')
 
 Component({
   data: {
@@ -20,10 +21,7 @@ Component({
       this.sync()
     },
     detached: function() {
-      if (this._switchTimer) {
-        clearTimeout(this._switchTimer)
-        this._switchTimer = null
-      }
+      this._switchingPath = ''
     }
   },
 
@@ -62,7 +60,7 @@ Component({
     onTap: function(e) {
       var path = e.currentTarget.dataset.path
       if (!path || path === this.data.selectedPath) return
-      if (this._switchTimer) clearTimeout(this._switchTimer)
+      this._switchingPath = path
       var activeIndex = 0
       for (var i = 0; i < nav.items.length; i++) {
         if (nav.items[i].path === path) {
@@ -77,13 +75,19 @@ Component({
         activeIndex: activeIndex,
         tabDriverStyle: 'width:' + (100 / count) + '%;transform:translateX(' + (activeIndex * 100) + '%);'
       })
-      this._switchTimer = setTimeout(function() {
-        that._switchTimer = null
+      var pages = getCurrentPages()
+      var currentPage = pages.length ? pages[pages.length - 1] : null
+      routeAnim.exit(currentPage, function() {
+        if (that._switchingPath !== path) return
+        that._switchingPath = ''
         wx.switchTab({
           url: '/' + path,
-          fail: function() { that.sync() }
+          fail: function() {
+            if (currentPage) routeAnim.enter(currentPage)
+            that.sync()
+          }
         })
-      }, 160)
+      })
     },
 
     setKeyboardHidden: function(hidden) {
