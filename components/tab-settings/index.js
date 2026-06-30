@@ -18,6 +18,7 @@ var componentPage = require('../../utils/component-page')
 Component(componentPage.fromPage(ripple.attach({
   data: {
     settings: initialSettings, showImportEditor: false, showThemeSheet: false, importData: '', themeClass: initialThemeClass,
+    screenClass: system.screenClass(),
     navMode: theme.navMode(initialSettings), statusBarH: 44,
     routeEnterClass: '',
     drawerOpen: false, currentPath: 'pages/settings/index', navItems: nav.items,
@@ -34,6 +35,7 @@ Component(componentPage.fromPage(ripple.attach({
     var themeClass = theme.themeClass(settings)
     this.setData({
       themeClass: themeClass,
+      screenClass: system.screenClass(),
       statusBarH: system.statusBarHeight(),
       navMode: settings.navMode || 'bottom',
       drawerOpen: (settings.navMode || 'bottom') === 'drawer' ? this.data.drawerOpen : false,
@@ -50,6 +52,10 @@ Component(componentPage.fromPage(ripple.attach({
     }
   },
 
+  onResize: function() {
+    this.setData({ screenClass: system.screenClass(), statusBarH: system.statusBarHeight() })
+  },
+
   loadSettings: function() {
     var settings = storage.getSettings()
     var navMode = settings.navMode || 'bottom'
@@ -57,6 +63,7 @@ Component(componentPage.fromPage(ripple.attach({
     this.setData({
       settings: settings,
       themeClass: themeClass,
+      screenClass: system.screenClass(),
       navMode: navMode,
       drawerOpen: navMode === 'drawer' ? this.data.drawerOpen : false,
       themeModeLabel: theme.themeModeLabel(settings),

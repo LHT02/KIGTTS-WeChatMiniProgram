@@ -6,17 +6,31 @@ var theme = require('../../utils/theme')
 var ripple = require('../../utils/ripple')
 var routeAnim = require('../../utils/route-anim')
 var system = require('../../utils/system')
+var share = require('../../utils/share')
 
-Page(ripple.attach({
+var GRID_MIN_WIDTH_PX = 156
+var GRID_GAP_PX = 8
+
+function layoutColumns(mode) {
+  if (!mode || mode === 'list') return 1
+  var sidePadding = system.rpxToPx(56)
+  var width = system.effectiveWindowWidth ? system.effectiveWindowWidth() : system.windowWidth()
+  var available = Math.max(GRID_MIN_WIDTH_PX, width - sidePadding)
+  return Math.max(2, Math.floor((available + GRID_GAP_PX) / (GRID_MIN_WIDTH_PX + GRID_GAP_PX)))
+}
+
+Page(share.attach(ripple.attach({
   data: {
     config: { groups: [], selectedGroupId: 1, layoutMode: 'list' },
     currentGroup: { items: [] },
     layoutCols: 1,
+    layoutAnimClass: '',
     showEditor: false, showGroupEditor: false,
     editingItem: null, editingGroup: null,
     editingTitle: '', editingWakeWord: '', editingFilePath: '', editingFileName: '', editingFileSize: 0,
     editingGroupTitle: '', editingGroupIcon: 'music_note',
-    playingId: null, themeClass: theme.themeClass(), statusBarH: 44,
+    editingTitleFocused: false, editingWakeWordFocused: false, editingGroupTitleFocused: false,
+    playingId: null, themeClass: theme.themeClass(), screenClass: system.screenClass(), statusBarH: 44,
     routeEnterClass: '',
     navMode: theme.navMode(),
     drawerOpen: false, currentPath: 'pages/soundboard/index', navItems: nav.items,
@@ -29,6 +43,7 @@ Page(ripple.attach({
     var settings = storage.getSettings()
     this.setData({
       themeClass: theme.themeClass(settings),
+      screenClass: system.screenClass(),
       statusBarH: system.statusBarHeight(),
       navMode: settings.navMode || 'bottom',
       drawerOpen: (settings.navMode || 'bottom') === 'drawer' ? this.data.drawerOpen : false
@@ -46,8 +61,8 @@ Page(ripple.attach({
     var config = storage.getSoundboardConfig()
     var currentGroup = config.groups
     for (var i = 0; i < config.groups.length; i++) { if (config.groups[i].id === config.selectedGroupId) { currentGroup = config.groups[i]; break } }
-    var cols = config.layoutMode === 'grid' ? 3 : 1
-    this.setData({ config: config, currentGroup: currentGroup, layoutCols: cols }, function() {
+    var cols = layoutColumns(config.layoutMode)
+    this.setData({ config: config, currentGroup: currentGroup, layoutCols: cols, layoutAnimClass: '' }, function() {
       if (callback) callback()
     })
   },
@@ -76,7 +91,7 @@ Page(ripple.attach({
     storage.saveSoundboardConfig(config)
     var currentGroup = { items: [] }
     for (var i = 0; i < config.groups.length; i++) { if (config.groups[i].id === gid) { currentGroup = config.groups[i]; break } }
-    var cols = config.layoutMode === 'grid' ? 3 : 1
+    var cols = layoutColumns(config.layoutMode)
     var that = this
     this.setData({ config: config, currentGroup: currentGroup, layoutCols: cols }, function() {
       that._syncPlayingState()
@@ -90,7 +105,7 @@ Page(ripple.attach({
     if (!group) return
     wx.showActionSheet({ itemList: ['编辑分组', '删除分组'],
       success: function(r) {
-        if (r.tapIndex === 0) { that.setData({ showGroupEditor: true, editingGroup: group, editingGroupTitle: group.title, editingGroupIcon: group.icon || 'music_note' }) }
+        if (r.tapIndex === 0) { that.setData({ showGroupEditor: true, editingGroup: group, editingGroupTitle: group.title, editingGroupIcon: group.icon || 'music_note', editingGroupTitleFocused: false }) }
         else if (r.tapIndex === 1) {
           wx.showModal({ title: '删除分组', content: '删除"' + group.title + '"及其所有音效？', confirmColor: '#cf6679',
             success: function(rr) {
@@ -108,10 +123,40 @@ Page(ripple.attach({
     })
   },
 
-  onAddGroup() { this.setData({ showGroupEditor: true, editingGroup: null, editingGroupTitle: '', editingGroupIcon: 'music_note' }) },
-  onCloseGroupEditor() { this.setData({ showGroupEditor: false }) },
+  onAddGroup() { this.setData({ showGroupEditor: true, editingGroup: null, editingGroupTitle: '', editingGroupIcon: 'music_note', editingGroupTitleFocused: false }) },
+  onCloseGroupEditor() { this.setData({ showGroupEditor: false, editingGroupTitleFocused: false }) },
   onEditorGroupTitleChange(e) { this.setData({ editingGroupTitle: e.detail.value }) },
   onPickGroupIcon(e) { this.setData({ editingGroupIcon: e.currentTarget.dataset.icon }) },
+
+  onFieldFocus: function(e) {
+    var field = e.currentTarget.dataset.field
+    if (!field) return
+    if (this._fieldBlurTimers && this._fieldBlurTimers[field]) clearTimeout(this._fieldBlurTimers[field])
+    var patch = {}
+    patch[field + 'Focused'] = true
+    this.setData(patch)
+  },
+
+  onFieldBlur: function(e) {
+    var field = e.currentTarget.dataset.field
+    if (!field) return
+    var that = this
+    this._fieldBlurTimers = this._fieldBlurTimers || {}
+    if (this._fieldBlurTimers[field]) clearTimeout(this._fieldBlurTimers[field])
+    this._fieldBlurTimers[field] = setTimeout(function() {
+      var patch = {}
+      patch[field + 'Focused'] = false
+      that.setData(patch)
+    }, 120)
+  },
+
+  onClearField: function(e) {
+    var field = e.currentTarget.dataset.field
+    if (!field) return
+    var patch = {}
+    patch[field] = ''
+    this.setData(patch)
+  },
 
   onSaveGroup() {
     var title = this.data.editingGroupTitle.trim()
@@ -125,12 +170,25 @@ Page(ripple.attach({
   },
 
   onToggleLayout() {
-    var config = this.data.config
-    config.layoutMode = config.layoutMode === 'grid' ? 'list' : 'grid'
-    storage.saveSoundboardConfig(config)
-    var cols = config.layoutMode === 'grid' ? 3 : 1
-    this.setData({ config: config, layoutCols: cols })
-    wx.showToast({ title: config.layoutMode === 'grid' ? '网格模式' : '列表模式', icon: 'none' })
+    if (this._layoutSwitching) return
+    var that = this
+    this._layoutSwitching = true
+    clearTimeout(this._layoutSwitchTimer)
+    clearTimeout(this._layoutAnimTimer)
+    this.setData({ layoutAnimClass: 'layout-fade-out' })
+    this._layoutSwitchTimer = setTimeout(function() {
+      var config = that.data.config
+      config.layoutMode = config.layoutMode === 'grid' ? 'list' : 'grid'
+      storage.saveSoundboardConfig(config)
+      var cols = layoutColumns(config.layoutMode)
+      that.setData({ config: config, layoutCols: cols, layoutAnimClass: 'layout-fade-in' }, function() {
+        that._syncPlayingState()
+      })
+      that._layoutAnimTimer = setTimeout(function() {
+        that._layoutSwitching = false
+        if (that.data.layoutAnimClass === 'layout-fade-in') that.setData({ layoutAnimClass: '' })
+      }, 180)
+    }, 90)
   },
 
   onTogglePlayback(e) {
@@ -155,7 +213,7 @@ Page(ripple.attach({
     var that = this
     wx.showActionSheet({ itemList: ['编辑', '删除', '上移', '下移'],
       success: function(r) {
-        if (r.tapIndex === 0) { that.setData({ showEditor: true, editingItem: item, editingTitle: item.title, editingWakeWord: item.wakeWord || '', editingFilePath: item.filePath || '', editingFileName: item.fileName || '', editingFileSize: item.fileSize || 0 }) }
+        if (r.tapIndex === 0) { that.setData({ showEditor: true, editingItem: item, editingTitle: item.title, editingWakeWord: item.wakeWord || '', editingFilePath: item.filePath || '', editingFileName: item.fileName || '', editingFileSize: item.fileSize || 0, editingTitleFocused: false, editingWakeWordFocused: false }) }
         else if (r.tapIndex === 1) {
           wx.showModal({ title: '确认删除', content: '删除"' + item.title + '"？', confirmColor: '#cf6679',
             success: function(rr) { if (!rr.confirm) return; that._doDeleteItem(idx); }
@@ -181,8 +239,8 @@ Page(ripple.attach({
     storage.saveSoundboardConfig(config); this.loadData()
   },
 
-  onAddItem() { this.setData({ showEditor: true, editingItem: null, editingTitle: '', editingWakeWord: '', editingFilePath: '', editingFileName: '', editingFileSize: 0 }) },
-  onCloseEditor() { this.setData({ showEditor: false }) },
+  onAddItem() { this.setData({ showEditor: true, editingItem: null, editingTitle: '', editingWakeWord: '', editingFilePath: '', editingFileName: '', editingFileSize: 0, editingTitleFocused: false, editingWakeWordFocused: false }) },
+  onCloseEditor() { this.setData({ showEditor: false, editingTitleFocused: false, editingWakeWordFocused: false }) },
   onEditorTitleChange(e) { this.setData({ editingTitle: e.detail.value }) },
   onEditorWakeWordChange(e) { this.setData({ editingWakeWord: e.detail.value }) },
   onChooseAudioFile() {
@@ -221,15 +279,27 @@ Page(ripple.attach({
     var group = null
     for (var i = 0; i < this.data.config.groups.length; i++) { if (this.data.config.groups[i].id === gid) { group = this.data.config.groups[i]; break } }
     if (!group) return
-    this.setData({ showGroupEditor: true, editingGroup: group, editingGroupTitle: group.title, editingGroupIcon: group.icon || 'music_note' })
+    this.setData({ showGroupEditor: true, editingGroup: group, editingGroupTitle: group.title, editingGroupIcon: group.icon || 'music_note', editingGroupTitleFocused: false })
   },
 
   onOpenEditor: function() {
     wx.navigateTo({ url: '/pages/soundboard/editor' })
   },
 
+  onResize: function() {
+    var cols = layoutColumns(this.data.config && this.data.config.layoutMode)
+    var data = { screenClass: system.screenClass(), statusBarH: system.statusBarHeight() }
+    if (cols !== this.data.layoutCols) data.layoutCols = cols
+    this.setData(data)
+  },
+
+  onUnload: function() {
+    clearTimeout(this._layoutSwitchTimer)
+    clearTimeout(this._layoutAnimTimer)
+  },
+
   onOpenDrawer: function() { this.setData({ drawerOpen: true }) },
   onCloseDrawer: function() { this.setData({ drawerOpen: false }) },
   onDrawerNavTap: function(e) { nav.go(e.currentTarget.dataset.path, this.data.currentPath) },
   noop: function() {}
-}))
+})))

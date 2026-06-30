@@ -230,3 +230,73 @@
 .keyboard-hidden .main-content {
   flex-basis: 100vh;
 }
+
+.main-page.large-screen .main-nav-row {
+  height: 49px;
+  padding: 0 122px;
+}
+
+.main-page.large-screen .nav-title {
+  left: 122px;
+  right: 122px;
+  height: 49px;
+  font-size: 20px;
+}
+
+.main-page.large-screen .nav-actions {
+  left: 11px;
+  top: 4px;
+  height: 40px;
+  gap: 2px;
+}
+
+.main-page.large-screen .icon-btn-sm {
+  width: 40px;
+  height: 40px;
+}
+
+.main-page.large-screen .icon-btn-sm .material-icons {
+  font-size: 24px;
+}
+
+.main-page.large-screen .main-panel {
+  transform: translateY(10px);
+}
+
+.main-page.large-screen .main-panel.active {
+  transform: none;
+}
+
+.main-page.large-screen .tabbar {
+  min-height: 64px;
+  padding: 3px 0 calc(3px + env(safe-area-inset-bottom));
+}
+
+.main-page.large-screen .main-tab-scroll {
+  height: 56px;
+}
+
+.main-page.large-screen .tab-bar-list,
+.main-page.large-screen .tab-bar-item,
+.main-page.large-screen .sc-tab-btn {
+  height: 54px;
+  line-height: 54px;
+}
+
+.main-page.large-screen .sc-tab-btn {
+  min-width: 49px;
+  padding: 0 4px;
+  gap: 1px;
+}
+
+.main-page.large-screen .tab-icon {
+  font-size: 24px;
+}
+
+.main-page.large-screen .tab-label {
+  font-size: 13px;
+}
+
+.main-page.large-screen .tab-bar-driver {
+  height: 2px;
+}

@@ -1,7 +1,8 @@
 var theme = require('../../utils/theme')
 var logoData = require('../../utils/logo-data')
+var share = require('../../utils/share')
 
-Page({
+Page(share.attach({
   data: {
     themeClass: theme.themeClass(),
     logoSrc: logoData.getLogoSrc(theme.themeClass()),
@@ -25,4 +26,4 @@ Page({
       }, 160)
     }, 520)
   }
-})
+}))

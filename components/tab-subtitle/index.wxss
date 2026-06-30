@@ -22,3 +22,13 @@
 .tab-component-root.nav-bottom.keyboard-compact .input-bar.safe-bottom {
   padding-bottom: 16rpx !important;
 }
+
+.tab-component-root.large-screen.nav-bottom .input-bar,
+.tab-component-root.large-screen.nav-bottom .input-bar.safe-bottom {
+  padding-bottom: 9px !important;
+}
+
+.tab-component-root.large-screen.nav-bottom.keyboard-compact .input-bar,
+.tab-component-root.large-screen.nav-bottom.keyboard-compact .input-bar.safe-bottom {
+  padding-bottom: 9px !important;
+}

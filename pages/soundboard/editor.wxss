@@ -32,6 +32,31 @@
 
 .ec-field { margin:12rpx 0; }
 .ec-field label { display:block; font-size:22rpx; color:var(--md1-text-secondary); margin-bottom:8rpx; }
+.md-text-field {
+  display:flex; align-items:center; height:88rpx;
+  border-bottom:2px solid rgba(255,255,255,0.12);
+  background:transparent;
+}
+.md-input,
+.md-text-field .md-input,
+.input-placeholder {
+  font-family:-apple-system-font, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+.md-input,
+.md-text-field .md-input {
+  flex:1; height:100%; min-width:0; padding:0 8rpx;
+  background:transparent; color:var(--md1-text-primary);
+  font-size:32rpx; border:none; outline:none;
+  caret-color:var(--md1-primary);
+}
+.input-placeholder { color:var(--md1-text-hint); }
+.md-field-clear {
+  width:64rpx; height:64rpx; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  color:var(--md1-text-secondary); flex-shrink:0;
+}
+.md-field-clear:active { background:transparent; }
+.md-field-clear .material-icons { font-size:44rpx; color:currentColor; }
 
 .ec-btn-row { display:flex; gap:8rpx; padding-top:8rpx; }
 .icon-btn-sm.disabled { opacity:0.3; pointer-events:none; }

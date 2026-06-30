@@ -1,4 +1,4 @@
-<view class="page route-push {{themeClass}}"
+<view class="page route-push {{themeClass}} {{screenClass}}"
       bindtouchmove="onRippleTouchMove" bindtouchend="onRippleTouchEnd" bindtouchcancel="onRippleTouchCancel">
   <view class="nav-bar" style="padding-top:{{statusBarH}}px;">
     <view class="nav-row">
@@ -38,7 +38,12 @@
       <view wx:if="{{selectedGroup}}" class="group-detail">
         <view class="ec-field">
           <label>分组名称</label>
-          <view class="md-text-field"><input value="{{editingGroupTitle}}" bindinput="onGroupTitleInput" placeholder="分组名称" placeholder-class="input-placeholder" /></view>
+          <view class="md-text-field">
+            <input class="md-input" data-field="editingGroupTitle" value="{{editingGroupTitle}}" bindinput="onGroupTitleInput" bindfocus="onFieldFocus" bindblur="onFieldBlur" placeholder="分组名称" placeholder-class="input-placeholder" />
+            <view wx:if="{{editingGroupTitleFocused && editingGroupTitle}}" class="md-field-clear" data-field="editingGroupTitle" data-ripple="1" data-ripple-size="48" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" catchtap="onClearField">
+              <text class="material-icons">close</text>
+            </view>
+          </view>
         </view>
 
         <view class="ec-field">
@@ -57,7 +62,7 @@
             <text class="material-icons">arrow_forward</text>
           </view>
           <view class="icon-btn-sm" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onDeleteGroup" wx:if="{{groups.length > 1}}">
-            <text class="material-icons" style="color:var(--md1-error);">delete</text>
+            <text class="material-icons">delete</text>
           </view>
         </view>
       </view>
@@ -102,7 +107,7 @@
             <view class="btn-micro drag-handle" data-index="{{idx}}" catchtouchstart="onItemDragStart" catchtouchmove="onItemDragMove" catchtouchend="onItemDragEnd" catchtouchcancel="onItemDragEnd" catchlongpress="noop">
               <text class="material-icons" style="font-size:44rpx;">drag_indicator</text>
             </view>
-            <view class="btn-micro" data-index="{{idx}}" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" catchtap="onDeleteItem" style="color:var(--md1-error);">
+            <view class="btn-micro" data-index="{{idx}}" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" catchtap="onDeleteItem">
               <text class="material-icons" style="font-size:44rpx;">delete</text>
             </view>
           </view>
@@ -116,7 +121,7 @@
 </view>
 
 <!-- Icon Picker -->
-<view class="sheet-mask {{themeClass}}" wx:if="{{showIconPicker}}" bindtap="onCloseIconPicker"
+<view class="sheet-mask {{themeClass}} {{screenClass}}" wx:if="{{showIconPicker}}" bindtap="onCloseIconPicker"
       bindtouchmove="onRippleTouchMove" bindtouchend="onRippleTouchEnd" bindtouchcancel="onRippleTouchCancel">
   <view class="picker-panel" catchtap="noop">
     <view class="picker-header">
@@ -133,17 +138,22 @@
 </view>
 
 <!-- Add Item Dialog -->
-<view class="dialog-mask {{themeClass}}" wx:if="{{showAddDialog}}" bindtap="onCloseAddDialog"
+<view class="dialog-mask {{themeClass}} {{screenClass}}" wx:if="{{showAddDialog}}" bindtap="onCloseAddDialog"
       bindtouchmove="onRippleTouchMove" bindtouchend="onRippleTouchEnd" bindtouchcancel="onRippleTouchCancel">
   <view class="dialog-box" catchtap="noop">
     <view class="dialog-title">新增音效条目</view>
     <view class="ec-field">
       <label>条目名</label>
-      <view class="md-text-field"><input value="{{addTitle}}" bindinput="onAddTitleInput" placeholder="条目名" placeholder-class="input-placeholder" /></view>
+      <view class="md-text-field">
+        <input class="md-input" data-field="addTitle" value="{{addTitle}}" bindinput="onAddTitleInput" bindfocus="onFieldFocus" bindblur="onFieldBlur" placeholder="条目名" placeholder-class="input-placeholder" />
+        <view wx:if="{{addTitleFocused && addTitle}}" class="md-field-clear" data-field="addTitle" data-ripple="1" data-ripple-size="48" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" catchtap="onClearField">
+          <text class="material-icons">close</text>
+        </view>
+      </view>
     </view>
     <view class="ec-field">
       <label>标签</label>
-      <view class="md-text-field"><input value="{{addWakeWord}}" bindinput="onAddWakeInput" placeholder="标签（可选）" placeholder-class="input-placeholder" /></view>
+      <view class="md-text-field"><input class="md-input" value="{{addWakeWord}}" bindinput="onAddWakeInput" placeholder="标签（可选）" placeholder-class="input-placeholder" /></view>
     </view>
     <view class="ec-field">
       <label>音频文件</label>
@@ -157,17 +167,27 @@
 </view>
 
 <!-- Edit Item Dialog -->
-<view class="dialog-mask {{themeClass}}" wx:if="{{showEditDialog}}" bindtap="onCloseEditDialog"
+<view class="dialog-mask {{themeClass}} {{screenClass}}" wx:if="{{showEditDialog}}" bindtap="onCloseEditDialog"
       bindtouchmove="onRippleTouchMove" bindtouchend="onRippleTouchEnd" bindtouchcancel="onRippleTouchCancel">
   <view class="dialog-box" catchtap="noop">
     <view class="dialog-title">编辑音效条目</view>
     <view class="ec-field">
       <label>条目名</label>
-      <view class="md-text-field"><input value="{{editTitle}}" bindinput="onEditTitleInput" placeholder="条目名" placeholder-class="input-placeholder" /></view>
+      <view class="md-text-field">
+        <input class="md-input" data-field="editTitle" value="{{editTitle}}" bindinput="onEditTitleInput" bindfocus="onFieldFocus" bindblur="onFieldBlur" placeholder="条目名" placeholder-class="input-placeholder" />
+        <view wx:if="{{editTitleFocused && editTitle}}" class="md-field-clear" data-field="editTitle" data-ripple="1" data-ripple-size="48" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" catchtap="onClearField">
+          <text class="material-icons">close</text>
+        </view>
+      </view>
     </view>
     <view class="ec-field">
       <label>标签</label>
-      <view class="md-text-field"><input value="{{editWakeWord}}" bindinput="onEditWakeInput" placeholder="标签（可选）" placeholder-class="input-placeholder" /></view>
+      <view class="md-text-field">
+        <input class="md-input" data-field="editWakeWord" value="{{editWakeWord}}" bindinput="onEditWakeInput" bindfocus="onFieldFocus" bindblur="onFieldBlur" placeholder="标签（可选）" placeholder-class="input-placeholder" />
+        <view wx:if="{{editWakeWordFocused && editWakeWord}}" class="md-field-clear" data-field="editWakeWord" data-ripple="1" data-ripple-size="48" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" catchtap="onClearField">
+          <text class="material-icons">close</text>
+        </view>
+      </view>
     </view>
     <view class="ec-field">
       <label>音频文件</label>
@@ -181,7 +201,7 @@
 </view>
 
 <!-- Delete Confirm -->
-<view class="dialog-mask {{themeClass}}" wx:if="{{showDeleteConfirm}}" bindtap="onCancelDeleteItem"
+<view class="dialog-mask {{themeClass}} {{screenClass}}" wx:if="{{showDeleteConfirm}}" bindtap="onCancelDeleteItem"
       bindtouchmove="onRippleTouchMove" bindtouchend="onRippleTouchEnd" bindtouchcancel="onRippleTouchCancel">
   <view class="dialog-box" catchtap="noop">
     <view class="dialog-text">确定删除此音效条目？</view>

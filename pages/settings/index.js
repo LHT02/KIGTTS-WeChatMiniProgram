@@ -6,6 +6,7 @@ var logoData = require('../../utils/logo-data')
 var ripple = require('../../utils/ripple')
 var routeAnim = require('../../utils/route-anim')
 var system = require('../../utils/system')
+var share = require('../../utils/share')
 var initialSettings = storage.getSettings()
 var initialThemeClass = theme.themeClass(initialSettings)
 var THEME_OPTIONS = [
@@ -14,9 +15,10 @@ var THEME_OPTIONS = [
   { value: 2, label: '深色', support: '始终使用深色界面', icon: 'dark_mode' }
 ]
 
-Page(ripple.attach({
+Page(share.attach(ripple.attach({
   data: {
     settings: initialSettings, showImportEditor: false, showThemeSheet: false, importData: '', themeClass: initialThemeClass,
+    screenClass: system.screenClass(),
     navMode: theme.navMode(initialSettings), statusBarH: 44,
     routeEnterClass: '',
     drawerOpen: false, currentPath: 'pages/settings/index', navItems: nav.items,
@@ -33,6 +35,7 @@ Page(ripple.attach({
     var themeClass = theme.themeClass(settings)
     this.setData({
       themeClass: themeClass,
+      screenClass: system.screenClass(),
       statusBarH: system.statusBarHeight(),
       navMode: settings.navMode || 'bottom',
       drawerOpen: (settings.navMode || 'bottom') === 'drawer' ? this.data.drawerOpen : false,
@@ -49,6 +52,10 @@ Page(ripple.attach({
     }
   },
 
+  onResize: function() {
+    this.setData({ screenClass: system.screenClass(), statusBarH: system.statusBarHeight() })
+  },
+
   loadSettings: function() {
     var settings = storage.getSettings()
     var navMode = settings.navMode || 'bottom'
@@ -56,6 +63,7 @@ Page(ripple.attach({
     this.setData({
       settings: settings,
       themeClass: themeClass,
+      screenClass: system.screenClass(),
       navMode: navMode,
       drawerOpen: navMode === 'drawer' ? this.data.drawerOpen : false,
       themeModeLabel: theme.themeModeLabel(settings),
@@ -193,4 +201,4 @@ Page(ripple.attach({
   onCloseDrawer: function() { this.setData({ drawerOpen: false }) },
   onDrawerNavTap: function(e) { nav.go(e.currentTarget.dataset.path, this.data.currentPath) },
   noop: function() {}
-}))
+})))

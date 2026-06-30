@@ -19,6 +19,31 @@
 
 .form-field { margin-bottom:20rpx; }
 .form-field label { display:block; font-size:24rpx; color:var(--md1-text-secondary); margin-bottom:8rpx; }
+.md-text-field {
+  display:flex; align-items:center; height:88rpx;
+  border-bottom:2px solid rgba(255,255,255,0.12);
+  background:transparent;
+}
+.md-input,
+.md-text-field .md-input,
+.input-placeholder {
+  font-family:-apple-system-font, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+.md-input,
+.md-text-field .md-input {
+  flex:1; height:100%; min-width:0; padding:0 8rpx;
+  background:transparent; color:var(--md1-text-primary);
+  font-size:32rpx; border:none; outline:none;
+  caret-color:var(--md1-primary);
+}
+.input-placeholder { color:var(--md1-text-hint); }
+.md-field-clear {
+  width:64rpx; height:64rpx; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  color:var(--md1-text-secondary); flex-shrink:0;
+}
+.md-field-clear:active { background:transparent; }
+.md-field-clear .material-icons { font-size:44rpx; color:currentColor; }
 
 .icon-row { display:flex; align-items:center; justify-content:space-between; padding:12rpx 0; }
 .cur-icon { width:68rpx; height:68rpx; border-radius:50%; background:var(--md1-field); color:var(--md1-text-primary); display:flex; align-items:center; justify-content:center; }

@@ -129,6 +129,27 @@
 .editor-field { margin-bottom:20rpx; }
 .editor-field:last-child { margin-bottom:0; }
 .editor-label { display:block; font-size:22rpx; color:var(--md1-text-secondary); margin-bottom:8rpx; }
+.md-text-field {
+  display:flex; align-items:center; height:88rpx;
+  border-bottom:2px solid rgba(255,255,255,0.12);
+  background:transparent;
+}
+.md-text-field.flex-1 { flex:1; }
+.md-input,
+.md-text-field .md-input {
+  flex:1; height:100%; min-width:0; padding:0 8rpx;
+  background:transparent; color:var(--md1-text-primary);
+  font-size:32rpx; border:none; outline:none;
+  font-family:-apple-system-font, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  caret-color:var(--md1-primary);
+}
+.md-textarea,
+.input-placeholder,
+.textarea-placeholder {
+  font-family:-apple-system-font, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+.input-placeholder,
+.textarea-placeholder { color:var(--md1-text-hint); }
 .md-textarea { width:100%; min-height:120rpx; padding:14rpx 16rpx; background:var(--md1-field); border-radius:var(--md1-radius); color:var(--md1-text-primary); font-size:28rpx; line-height:1.5; border:1px solid var(--md1-divider); box-sizing:border-box; }
 
 .color-row {

@@ -3,6 +3,7 @@ var theme = require('../../utils/theme')
 var storage = require('../../utils/storage')
 var ripple = require('../../utils/ripple')
 var system = require('../../utils/system')
+var share = require('../../utils/share')
 
 var PATH_TO_ID = {
   'pages/subtitle/index': 'tab-subtitle',
@@ -43,6 +44,12 @@ function indexFor(path) {
 
 function fallbackTabDriverStyle(index) {
   var count = nav.items.length || 1
+  if (system.isLargeScreen && system.isLargeScreen()) {
+    var slotPx = system.windowWidth() / count
+    var widthPx = rpxToPx(TAB_DRIVER_RPX)
+    var leftPx = slotPx * index + Math.max(0, (slotPx - widthPx) / 2)
+    return 'width:' + widthPx + 'px;transform:translateX(' + leftPx + 'px) translateY(-1px);'
+  }
   var slot = 750 / count
   var left = slot * index + Math.max(0, (slot - TAB_DRIVER_RPX) / 2)
   return 'width:' + TAB_DRIVER_RPX + 'rpx;transform:translateX(' + left + 'rpx) translateY(-2rpx);'
@@ -58,7 +65,7 @@ function tabDriverWidth(itemWidth) {
   return Math.max(TAB_DRIVER_MIN_PX, Math.min(defaultWidth, maxWidth))
 }
 
-Page(ripple.attach({
+Page(share.attach(ripple.attach({
   data: {
     activePath: 'pages/subtitle/index',
     activeTitle: '便捷字幕',
@@ -70,6 +77,7 @@ Page(ripple.attach({
     navItems: nav.items,
     navMode: theme.navMode(),
     themeClass: theme.themeClass(),
+    screenClass: system.screenClass(),
     statusBarH: 44,
     drawerOpen: false,
     keyboardHidden: false,
@@ -97,6 +105,10 @@ Page(ripple.attach({
     this._scheduleTabMeasure()
   },
 
+  onResize: function() {
+    this._syncShell(true)
+  },
+
   refreshThemeFromSystem: function() {
     this._syncShell(true)
   },
@@ -106,6 +118,7 @@ Page(ripple.attach({
     var that = this
     this.setData({
       themeClass: theme.themeClass(settings),
+      screenClass: system.screenClass(),
       navMode: settings.navMode || 'bottom',
       statusBarH: system.statusBarHeight(),
       drawerOpen: (settings.navMode || 'bottom') === 'drawer' ? this.data.drawerOpen : false
@@ -203,6 +216,12 @@ Page(ripple.attach({
     return id ? this.selectComponent('#' + id) : null
   },
 
+  _hasBlockingOverlay: function() {
+    if (this.data.shellOverlayOpen) return true
+    var child = this._componentFor(this.data.activePath)
+    return !!(child && child.data && child.data.showPreview)
+  },
+
   _actionsFor: function(path) {
     if (path === 'pages/soundboard/index') {
       var child = this._componentFor(path)
@@ -224,6 +243,7 @@ Page(ripple.attach({
       themeClass: this.data.themeClass,
       navMode: this.data.navMode,
       statusBarH: this.data.statusBarH,
+      screenClass: this.data.screenClass,
       drawerOpen: this.data.drawerOpen
     }
     Object.keys(PATH_TO_ID).forEach(function(path) {
@@ -235,6 +255,7 @@ Page(ripple.attach({
   switchToPath: function(path) {
     path = normalize(path)
     if (!PATH_TO_ID[path]) return
+    if (this._hasBlockingOverlay()) return
     if (path === this.data.activePath) {
       if (this.data.drawerOpen) this.onCloseDrawer()
       return
@@ -301,4 +322,4 @@ Page(ripple.attach({
   },
 
   noop: function() {}
-}))
+})))

@@ -1,6 +1,6 @@
 <import src="../../templates/shell.wxml" />
 
-<view class="page route-tab {{routeEnterClass}} {{themeClass}} nav-{{navMode}}"
+<view class="page route-tab {{routeEnterClass}} {{themeClass}} {{screenClass}} nav-{{navMode}}"
       bindtouchmove="onRippleTouchMove" bindtouchend="onRippleTouchEnd" bindtouchcancel="onRippleTouchCancel">
   <view class="nav-bar" style="padding-top:{{statusBarH}}px;">
     <view class="nav-row">
@@ -17,17 +17,17 @@
   </view>
   <view class="route-body route-motion">
   <scroll-view class="sound-list" scroll-y="true" enable-flex bindscroll="onRippleScroll">
-    <view class="sound-list-inner {{layoutCols > 1 ? 'grid' : ''}}">
+    <view class="sound-list-inner {{layoutCols > 1 ? 'grid' : ''}} {{layoutAnimClass}}">
     <block wx:for="{{currentGroup.items}}" wx:key="id" wx:for-item="item" wx:for-index="idx">
       <!-- List mode -->
-      <view class="sound-card slist {{playingId === item.id ? 'playing' : ''}}" wx:if="{{layoutCols === 1}}"
+      <view class="sound-card slist" wx:if="{{layoutCols === 1}}"
             data-item="{{item}}" data-index="{{idx}}" data-ripple="1" data-ripple-size="72" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onTogglePlayback">
         <view class="slist-row">
           <view class="slist-info">
             <view class="slist-name">{{item.title || '未命名音效'}}</view>
             <view class="slist-word" wx:if="{{item.wakeWord}}">{{item.wakeWord}}</view>
           </view>
-          <view class="slist-play {{playingId === item.id ? 'stop' : ''}}">
+          <view class="slist-play">
             <text class="material-icons">{{playingId === item.id ? 'stop' : 'play_arrow'}}</text>
           </view>
         </view>
@@ -36,14 +36,14 @@
 
       <!-- Grid mode -->
       <view class="grid-cell" wx:if="{{layoutCols > 1}}" style="width: {{100 / layoutCols}}%;">
-        <view class="sound-card sgrid {{playingId === item.id ? 'playing' : ''}}"
+        <view class="sound-card sgrid"
               data-item="{{item}}" data-index="{{idx}}" data-ripple="1" data-ripple-size="72" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onTogglePlayback">
           <view class="sgrid-top">
             <view class="sgrid-info">
               <view class="sgrid-name">{{item.title || '未命名音效'}}</view>
               <view class="sgrid-word" wx:if="{{item.wakeWord}}">{{item.wakeWord}}</view>
             </view>
-            <view class="sgrid-play {{playingId === item.id ? 'stop' : ''}}">
+            <view class="sgrid-play">
               <text class="material-icons">{{playingId === item.id ? 'stop' : 'play_arrow'}}</text>
             </view>
           </view>
@@ -75,7 +75,7 @@
   </view>
 </view>
 
-<view class="sheet-mask {{themeClass}} nav-{{navMode}}" wx:if="{{showEditor}}" bindtap="onCloseEditor"
+<view class="sheet-mask {{themeClass}} {{screenClass}} nav-{{navMode}}" wx:if="{{showEditor}}" bindtap="onCloseEditor"
       bindtouchmove="onRippleTouchMove" bindtouchend="onRippleTouchEnd" bindtouchcancel="onRippleTouchCancel">
   <view class="sheet-panel" catchtap="noop">
     <view class="sheet-header">
@@ -85,11 +85,21 @@
     <view class="sheet-body">
       <view class="sheet-editor-field">
         <label class="sheet-editor-label">音效名称</label>
-        <view class="md-text-field"><input value="{{editingTitle}}" bindinput="onEditorTitleChange" placeholder="音效名称" placeholder-class="input-placeholder" /></view>
+        <view class="md-text-field">
+          <input class="md-input" data-field="editingTitle" value="{{editingTitle}}" bindinput="onEditorTitleChange" bindfocus="onFieldFocus" bindblur="onFieldBlur" placeholder="音效名称" placeholder-class="input-placeholder" />
+          <view wx:if="{{editingTitleFocused && editingTitle}}" class="md-field-clear" data-field="editingTitle" data-ripple="1" data-ripple-size="48" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" catchtap="onClearField">
+            <text class="material-icons">close</text>
+          </view>
+        </view>
       </view>
       <view class="sheet-editor-field">
         <label class="sheet-editor-label">标签（可选）</label>
-        <view class="md-text-field"><input value="{{editingWakeWord}}" bindinput="onEditorWakeWordChange" placeholder="标签" placeholder-class="input-placeholder" /></view>
+        <view class="md-text-field">
+          <input class="md-input" data-field="editingWakeWord" value="{{editingWakeWord}}" bindinput="onEditorWakeWordChange" bindfocus="onFieldFocus" bindblur="onFieldBlur" placeholder="标签" placeholder-class="input-placeholder" />
+          <view wx:if="{{editingItem && editingWakeWordFocused && editingWakeWord}}" class="md-field-clear" data-field="editingWakeWord" data-ripple="1" data-ripple-size="48" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" catchtap="onClearField">
+            <text class="material-icons">close</text>
+          </view>
+        </view>
       </view>
       <view class="sheet-editor-field">
         <label class="sheet-editor-label">音频文件</label>
@@ -106,9 +116,9 @@
   </view>
 </view>
 
-<template is="appDrawer" data="{{drawerOpen: drawerOpen, navItems: navItems, currentPath: currentPath, themeClass: themeClass, logoGlyph: logoGlyph, statusBarH: statusBarH}}" />
+<template is="appDrawer" data="{{drawerOpen: drawerOpen, navItems: navItems, currentPath: currentPath, themeClass: themeClass, screenClass: screenClass, logoGlyph: logoGlyph, statusBarH: statusBarH}}" />
 
-<view class="sheet-mask {{themeClass}} nav-{{navMode}}" wx:if="{{showGroupEditor}}" bindtap="onCloseGroupEditor"
+<view class="sheet-mask {{themeClass}} {{screenClass}} nav-{{navMode}}" wx:if="{{showGroupEditor}}" bindtap="onCloseGroupEditor"
       bindtouchmove="onRippleTouchMove" bindtouchend="onRippleTouchEnd" bindtouchcancel="onRippleTouchCancel">
   <view class="sheet-panel" catchtap="noop">
     <view class="sheet-header">
@@ -118,7 +128,12 @@
     <view class="sheet-body">
       <view class="sheet-editor-field">
         <label class="sheet-editor-label">分组名称</label>
-        <view class="md-text-field"><input value="{{editingGroupTitle}}" bindinput="onEditorGroupTitleChange" placeholder="分组名称" placeholder-class="input-placeholder" /></view>
+        <view class="md-text-field">
+          <input class="md-input" data-field="editingGroupTitle" value="{{editingGroupTitle}}" bindinput="onEditorGroupTitleChange" bindfocus="onFieldFocus" bindblur="onFieldBlur" placeholder="分组名称" placeholder-class="input-placeholder" />
+          <view wx:if="{{editingGroupTitleFocused && editingGroupTitle}}" class="md-field-clear" data-field="editingGroupTitle" data-ripple="1" data-ripple-size="48" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" catchtap="onClearField">
+            <text class="material-icons">close</text>
+          </view>
+        </view>
       </view>
       <view class="sheet-editor-field">
         <label class="sheet-editor-label">图标</label>

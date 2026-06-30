@@ -1,8 +1,10 @@
+var DEFAULT_SUBTITLE_FONT_SIZE = 90
+
 var DEFAULT_SETTINGS = {
-  subtitleFontSize: 72,
+  subtitleFontSize: DEFAULT_SUBTITLE_FONT_SIZE,
   subtitleBold: true,
   subtitleAutoFit: true,
-  subtitleCenter: true,
+  subtitleCenter: false,
   subtitleRotated180: false,
   ttsEnabled: true,
   subtitlePlayOnSend: false,
@@ -70,25 +72,82 @@ function getSubtitleConfig() {
   } catch (e) { return getDefaultSubtitleConfig() }
 }
 
+function makeQuickItems(baseId, texts) {
+  var items = []
+  for (var i = 0; i < texts.length; i++) {
+    items.push({ id: baseId + i, text: texts[i] })
+  }
+  return items
+}
+
 function getDefaultSubtitleConfig() {
   return {
     groups: [{
-      id: 1, title: '常用语', icon: 'sentiment_satisfied',
-      items: [
-        { id: 1, text: '可以合影吗？' }, { id: 2, text: '稍等一下，我马上回复你' },
-        { id: 3, text: '谢谢你，辛苦了' }, { id: 4, text: '你好，很高兴见到你' },
-        { id: 5, text: '再见，下次再聊' }, { id: 6, text: '这个角色好可爱' }
-      ]
+      id: 1, title: '通用', icon: 'sentiment_satisfied',
+      items: makeQuickItems(1000, [
+        '你好呀~',
+        '谢谢！太感谢了！',
+        '不好意思，我不太方便说话',
+        '稍等一下哈',
+        '没事没事，不用客气',
+        '对对对，就是这个意思',
+        '哈哈哈哈哈哈',
+        '好的好的',
+        '没问题',
+        '抱歉抱歉',
+        '太可爱了！',
+        '好棒！',
+        '嗯嗯'
+      ])
     }, {
-      id: 2, title: '漫展', icon: 'celebration',
-      items: [
-        { id: 101, text: '请问这个摊位在哪里？' }, { id: 102, text: '可以交换联系方式吗？' },
-        { id: 103, text: '这个角色的coser是谁？' }, { id: 104, text: '现场太吵了，我用字幕交流' }
-      ]
+      id: 2, title: '扩列', icon: 'group_add',
+      items: makeQuickItems(2000, [
+        '扩列吗？加个联系方式~',
+        '你出的是XX吗？好还原！太好看了！',
+        '刚刚是你出的XX吗？太好看了！',
+        '求个关注，这是我的账号',
+        '可以集个邮吗？',
+        '这个迷你~小小心意',
+        '交换一下无料吗？',
+        '加个好友吧，我拉你进同好群',
+        '你有出过XX吗？我超喜欢那个角色',
+        '你这个道具做得好精致啊！',
+        '我们之前是不是在哪个展子见过？'
+      ])
     }, {
-      id: 3, title: '游戏', icon: 'sports_esports', items: []
+      id: 3, title: '拍照', icon: 'photo_camera',
+      items: makeQuickItems(3000, [
+        '可以合影嘛~',
+        '麻烦等一下，我摆个姿势',
+        '拍好了吗？',
+        '可以再拍一张吗？',
+        '手机给我，我帮你们拍',
+        '可以帮我拍个全身吗？',
+        '你站那边就好，我OK的',
+        '等一下我整理一下衣服/头壳',
+        '麻烦开个闪光灯可以吗？',
+        '可以比个心吗？',
+        '谢谢！拍得真好',
+        '大家一起看镜头~',
+        '麻烦让一下，挡住后面的人了'
+      ])
     }, {
-      id: 4, title: '自定义', icon: 'edit', items: []
+      id: 4, title: '后勤', icon: 'support_agent',
+      items: makeQuickItems(4000, [
+        '后勤！！！速来！！！',
+        '我要中暑了！快带我去休息！',
+        '快帮我摘头壳！喘不过气了！',
+        '带我去厕所！快憋不住了！',
+        '我渴了，帮我拿一下水',
+        '头壳歪了没？帮我看一下',
+        '太热了，帮我拿一下小风扇',
+        '帮我整理一下后面的衣服/假发',
+        '帮我把包拿过来一下',
+        '帮我递张纸巾',
+        '我走不动了，歇一下吧',
+        '帮我看看假发乱了没',
+        '帮我擦擦汗'
+      ])
     }],
     selectedGroupId: 1
   }

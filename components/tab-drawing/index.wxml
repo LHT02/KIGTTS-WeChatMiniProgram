@@ -1,9 +1,11 @@
-<view class="page tab-component-root route-body drawing-component {{themeClass}} nav-{{navMode}}"
+<view class="page tab-component-root route-body drawing-component {{themeClass}} {{screenClass}} nav-{{navMode}}"
       bindtouchmove="onRippleTouchMove" bindtouchend="onRippleTouchEnd" bindtouchcancel="onRippleTouchCancel">
-<canvas class="canvas-wrap" type="2d" id="drawCanvas"
-          hidden="{{drawerOpen || !active}}"
-          disable-scroll="{{true}}"
-          bindtouchstart="onTouchStart" bindtouchmove="onTouchMove" bindtouchend="onTouchEnd" />
+<view class="draw-canvas-host">
+  <canvas class="canvas-wrap" type="2d" id="drawCanvas"
+            hidden="{{drawerOpen || !active}}"
+            disable-scroll="{{true}}"
+            bindtouchstart="onTouchStart" bindtouchmove="onTouchMove" bindtouchend="onTouchEnd" />
+</view>
   <view class="draw-toolbar card {{toolbarCollapsed ? 'mini' : ''}}">
     <view wx:if="{{!toolbarCollapsed}}">
       <view class="dt-row">

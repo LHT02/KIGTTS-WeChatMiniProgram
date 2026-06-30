@@ -35,7 +35,7 @@
 .quick-spacer.end { width:16rpx; }
 .quick-chip { display:inline-flex; align-items:center; justify-content:flex-start; background:var(--md1-surface-raised); width:296rpx; height:188rpx; border-radius:var(--md1-radius); color:var(--md1-text-primary); font-size:32rpx; white-space:normal; vertical-align:top; flex-shrink:0; padding:16rpx 20rpx; margin-right:16rpx; box-sizing:border-box; line-height:1.4; overflow:hidden; box-shadow:var(--md1-shadow-card); }
 .quick-chip:active { background:var(--md1-surface-raised); }
-.quick-chip.add { width:172rpx; border:1px solid var(--md1-divider); color:var(--md1-text-primary); background:var(--md1-surface-raised); justify-content:center; align-items:center; padding:0; box-shadow:var(--md1-shadow-card); }
+.quick-chip.add { width:172rpx; border:0; color:var(--md1-text-primary); background:var(--md1-surface-raised); justify-content:center; align-items:center; padding:0; box-shadow:var(--md1-shadow-card); }
 
 .group-tabs-card { height:96rpx; margin:5rpx 32rpx 16rpx; display:flex; flex-shrink:0; overflow:hidden; background:var(--md1-surface-raised); border-radius:var(--md1-radius); box-shadow:var(--md1-shadow-card); }
 .group-scroll { flex:1; min-width:0; white-space:nowrap; height:96rpx; display:flex; }
@@ -48,6 +48,34 @@
 .page.nav-bottom.keyboard-compact .input-bar { padding-bottom:calc(16rpx + env(safe-area-inset-bottom)); }
 .input-actions-row { display:flex; gap:4rpx; margin-bottom:16rpx; }
 .input-row { display:flex; gap:16rpx; align-items:center; }
+.md-text-field {
+  display:flex; align-items:center; height:88rpx;
+  border-bottom:2px solid rgba(255,255,255,0.12);
+  background:transparent;
+}
+.md-text-field.flex-1 { flex:1; min-width:0; }
+.input-row .md-input {
+  flex:1; min-width:0; height:100%; padding:0 8rpx;
+  background:transparent; border:none; outline:none;
+  color:var(--md1-text-primary); font-size:30rpx;
+  font-family:-apple-system-font, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  caret-color:var(--md1-primary);
+}
+.input-clear-btn {
+  width:72rpx;
+  height:72rpx;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--md1-text-secondary);
+  flex-shrink:0;
+}
+.input-clear-btn:active { background:transparent; }
+.input-placeholder {
+  color:var(--md1-text-hint);
+  font-family:-apple-system-font, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
 .send-btn { width:96rpx; height:96rpx; border-radius:50%; background:transparent; color:var(--md1-text-primary); display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:48rpx; }
 .send-btn.enabled { color:var(--md1-primary); }
 .send-btn.disabled { color:var(--md1-text-disabled); }
@@ -93,4 +121,193 @@
 @keyframes previewCardIn {
   from { opacity:0; transform:scale(0.96); }
   to { opacity:1; transform:scale(1); }
+}
+
+.page.large-screen.keyboard-compact {
+  padding-top:calc(var(--status-bar-h, 44px) + 49px);
+}
+
+.page.large-screen .nav-row {
+  height:49px;
+  padding:0 122px;
+}
+
+.page.large-screen .nav-title {
+  left:122px;
+  right:122px;
+  height:49px;
+  font-size:20px;
+}
+
+.page.large-screen .nav-actions {
+  left:11px;
+  top:4px;
+  height:40px;
+  gap:2px;
+}
+
+.page.large-screen .icon-btn-sm {
+  width:40px;
+  height:40px;
+}
+
+.page.large-screen .icon-btn-sm .material-icons,
+.page.large-screen .material-icons.sm {
+  font-size:24px;
+}
+
+.page.large-screen .subtitle-card {
+  margin:9px 18px 0;
+  padding:7px;
+}
+
+.page.large-screen.keyboard-compact .subtitle-card {
+  margin:0;
+  padding:7px;
+}
+
+.page.large-screen .subtitle-text {
+  padding:0 15px 7px;
+}
+
+.page.large-screen .card-toolbar {
+  height:49px;
+  margin-top:4px;
+  padding:4px;
+}
+
+.page.large-screen .card-toolbar-inner.slider {
+  gap:4px;
+}
+
+.page.large-screen .card-toolbar-toggle,
+.page.large-screen .toolbar-icon {
+  width:40px;
+  height:40px;
+}
+
+.page.large-screen .quick-text-scroll {
+  height:120px;
+  padding:9px 0 2px;
+}
+
+.page.large-screen .quick-spacer {
+  width:9px;
+}
+
+.page.large-screen .quick-spacer.start {
+  width:18px;
+}
+
+.page.large-screen .quick-chip {
+  width:164px;
+  height:104px;
+  padding:9px 11px;
+  margin-right:9px;
+  font-size:18px;
+}
+
+.page.large-screen .quick-chip.add {
+  width:95px;
+}
+
+.page.large-screen .quick-chip.add .material-icons {
+  font-size:29px !important;
+}
+
+.page.large-screen .group-tabs-card {
+  height:53px;
+  margin:3px 18px 8px;
+}
+
+.page.large-screen .group-scroll {
+  height:53px;
+}
+
+.page.large-screen .group-chip {
+  height:53px;
+  padding:0 11px;
+  gap:7px;
+  margin-right:2px;
+  font-size:16px;
+}
+
+.page.large-screen .group-chip .material-icons {
+  font-size:22px !important;
+}
+
+.page.large-screen .group-edit-segment {
+  width:57px;
+  height:53px;
+}
+
+.page.large-screen .group-edit-segment .material-icons {
+  font-size:24px !important;
+}
+
+.page.large-screen .input-bar {
+  padding:9px 11px;
+}
+
+.page.large-screen.nav-bottom .input-bar {
+  padding-bottom:calc(64px + env(safe-area-inset-bottom));
+}
+
+.page.large-screen.nav-bottom.keyboard-compact .input-bar {
+  padding-bottom:calc(9px + env(safe-area-inset-bottom));
+}
+
+.page.large-screen .input-actions-row {
+  gap:2px;
+  margin-bottom:8px;
+}
+
+.page.large-screen .input-row {
+  gap:9px;
+}
+
+.page.large-screen .md-text-field {
+  height:49px;
+  border-bottom-width:1px;
+}
+
+.page.large-screen .input-row .md-input {
+  padding:0 4px;
+  font-size:16px;
+}
+
+.page.large-screen .input-clear-btn {
+  width:40px;
+  height:40px;
+}
+
+.page.large-screen .send-btn {
+  width:53px;
+  height:53px;
+  font-size:26px;
+}
+
+.preview-mask.large-screen {
+  padding:calc(var(--status-bar-h, 44px) + 53px) 0 calc(13px + env(safe-area-inset-bottom));
+}
+
+.preview-mask.large-screen .preview-card {
+  padding:0 18px;
+}
+
+.preview-mask.large-screen .preview-close-btn {
+  top:calc(var(--status-bar-h, 44px) + 4px);
+  left:11px;
+  width:44px;
+  height:44px;
+  font-size:24px;
+}
+
+.preview-mask.large-screen .preview-text {
+  padding:0 13px;
+}
+
+.preview-mask.large-screen .preview-hint {
+  padding-top:11px;
+  font-size:12px;
 }

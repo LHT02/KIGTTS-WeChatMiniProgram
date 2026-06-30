@@ -16,7 +16,7 @@ Component(componentPage.fromPage(ripple.attach({
     showEditor: false, editingId: null,
     title: '', note: '', color: '#038387', link: '', imagePath: '',
     showColorPicker: false, hexInput: '', hHue: 0, hSat: 1, hLight: 0.5,
-    showDeleteConfirm: false, themeClass: theme.themeClass(), statusBarH: 44,
+    showDeleteConfirm: false, themeClass: theme.themeClass(), screenClass: system.screenClass(), statusBarH: 44,
     routeEnterClass: '',
     navMode: theme.navMode(),
     drawerOpen: false, currentPath: 'pages/card/index', navItems: nav.items,
@@ -32,6 +32,7 @@ Component(componentPage.fromPage(ripple.attach({
     var navMode = settings.navMode || 'bottom'
     this.setData({
       themeClass: theme.themeClass(settings),
+      screenClass: system.screenClass(),
       statusBarH: system.statusBarHeight(),
       navMode: navMode,
       drawerOpen: navMode === 'drawer' ? this.data.drawerOpen : false,
@@ -44,7 +45,10 @@ Component(componentPage.fromPage(ripple.attach({
 
   onReady: function() { this._syncCardFrameSize() },
 
-  onResize: function() { this._syncCardFrameSize() },
+  onResize: function() {
+    this.setData({ screenClass: system.screenClass(), statusBarH: system.statusBarHeight() })
+    this._syncCardFrameSize()
+  },
 
   _syncCardFrameSize: function(navMode, sortMode) {
     var sys = system.windowInfo()
@@ -61,7 +65,7 @@ Component(componentPage.fromPage(ripple.attach({
     sys = sys || system.windowInfo()
     var ww = sys.windowWidth || sys.screenWidth || 375
     var wh = sys.windowHeight || sys.screenHeight || 667
-    var rpx = ww / 750
+    var rpx = system.rpxRatio()
     var status = sys.statusBarHeight || 0
     var safeBottom = system.safeAreaBottom(sys)
 

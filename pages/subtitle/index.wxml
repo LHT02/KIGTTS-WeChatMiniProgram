@@ -1,6 +1,6 @@
 <import src="../../templates/shell.wxml" />
 
-<view class="page route-tab {{routeEnterClass}} {{themeClass}} nav-{{navMode}} {{keyboardCompact ? 'keyboard-compact' : ''}}" style="padding-bottom:{{keyboardCompact ? keyboardHeight : 0}}px; --status-bar-h:{{statusBarH}}px;"
+<view class="page route-tab {{routeEnterClass}} {{themeClass}} {{screenClass}} nav-{{navMode}} {{keyboardCompact ? 'keyboard-compact' : ''}}" style="padding-bottom:{{keyboardCompact ? keyboardHeight : 0}}px; --status-bar-h:{{statusBarH}}px;"
       bindtouchmove="onRippleTouchMove" bindtouchend="onRippleTouchEnd" bindtouchcancel="onRippleTouchCancel">
   <view class="nav-bar" style="padding-top:{{statusBarH}}px;" wx:if="{{!keyboardCompact}}">
     <view class="nav-row">
@@ -21,7 +21,7 @@
                  scroll-y="{{subtitleNeedsScroll}}" enhanced="true" show-scrollbar="false"
                  bindscroll="onRippleScroll" bindtap="onSubtitleTap" bindlongpress="onSubtitleLongPress">
       <view class="subtitle-text-viewport">
-        <text class="subtitle-text {{subtitlePlaceholder && !keyboardCompact ? 'placeholder' : ''}} {{settings.subtitleBold ? 'bold' : ''}} {{settings.subtitleCenter ? 'center' : ''}} {{settings.subtitleRotated180 ? 'rotated' : ''}}" style="font-size: {{autoFontSize || settings.subtitleFontSize || 72}}rpx;">{{keyboardCompact ? inputText : displayText}}</text>
+        <text class="subtitle-text {{subtitlePlaceholder && !keyboardCompact ? 'placeholder' : ''}} {{settings.subtitleBold ? 'bold' : ''}} {{settings.subtitleCenter ? 'center' : ''}} {{settings.subtitleRotated180 ? 'rotated' : ''}}" style="font-size: {{autoFontSize || settings.subtitleFontSize || 90}}rpx;">{{keyboardCompact ? inputText : displayText}}</text>
       </view>
     </scroll-view>
 
@@ -45,7 +45,7 @@
       </view>
       <view class="card-toolbar-inner slider" wx:else>
         <text class="material-icons sm toolbar-icon">search</text>
-        <slider class="flex-1" min="24" max="200" value="{{settings.subtitleFontSize || 72}}"
+        <slider class="flex-1" min="24" max="200" value="{{settings.subtitleFontSize || 90}}"
                 bindchanging="onFontSizeChanging" bindchange="onFontSizeChange" activeColor="#038387" block-color="#038387" block-size="20" />
       </view>
       <view class="card-toolbar-toggle" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" catchtap="onTogglePanel">
@@ -62,7 +62,7 @@
           data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onQuickTextTap" bindlongpress="onQuickTextLongPress">
       {{item.text}}
     </view>
-    <view class="quick-chip add" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onManageEditor">
+    <view class="quick-chip add" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onAddCurrentSubtitleToQuick">
       <text class="material-icons" style="font-size:52rpx; color:var(--md1-text-secondary);">add</text>
     </view>
     <view class="quick-spacer end"></view>
@@ -96,7 +96,10 @@
     </view>
     <view class="input-row">
       <view class="md-text-field flex-1">
-        <input placeholder="请输入文本" placeholder-class="input-placeholder" value="{{inputText}}" bindinput="onInputChange" bindfocus="onInputFocus" bindblur="onInputBlur" bindkeyboardheightchange="onKeyboardHeightChange" bindconfirm="onInputConfirm" confirm-type="send" adjust-position="{{false}}" cursor-spacing="{{keyboardCompact ? 32 : (navMode === 'bottom' ? 160 : 32)}}" />
+        <input class="md-input" placeholder="请输入文本" placeholder-class="input-placeholder" value="{{inputText}}" bindinput="onInputChange" bindfocus="onInputFocus" bindblur="onInputBlur" bindkeyboardheightchange="onKeyboardHeightChange" bindconfirm="onInputConfirm" confirm-type="send" adjust-position="{{false}}" cursor-spacing="{{keyboardCompact ? 32 : (navMode === 'bottom' ? 160 : 32)}}" />
+        <view class="input-clear-btn" wx:if="{{inputText}}" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" catchtap="onClearInput">
+          <text class="material-icons sm">close</text>
+        </view>
       </view>
       <view class="send-btn {{inputText ? 'enabled' : 'disabled'}}" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onSendText">
         <text class="material-icons">send</text>
@@ -106,9 +109,9 @@
   </view>
 </view>
 
-<template is="appDrawer" data="{{drawerOpen: drawerOpen, navItems: navItems, currentPath: currentPath, themeClass: themeClass, logoGlyph: logoGlyph, statusBarH: statusBarH}}" />
+<template is="appDrawer" data="{{drawerOpen: drawerOpen, navItems: navItems, currentPath: currentPath, themeClass: themeClass, screenClass: screenClass, logoGlyph: logoGlyph, statusBarH: statusBarH}}" />
 
-<view class="sheet-mask {{themeClass}} nav-{{navMode}}" wx:if="{{showQuickList}}" bindtap="onCloseQuickList"
+<view class="sheet-mask {{themeClass}} {{screenClass}} nav-{{navMode}}" wx:if="{{showQuickList}}" bindtap="onCloseQuickList"
       bindtouchmove="onRippleTouchMove" bindtouchend="onRippleTouchEnd" bindtouchcancel="onRippleTouchCancel">
   <view class="sheet-panel quick-list-sheet" catchtap="noop">
     <view class="sheet-header">
@@ -127,12 +130,12 @@
   </view>
 </view>
 
-<view class="preview-mask {{themeClass}} nav-{{navMode}}" wx:if="{{showPreview}}" style="--status-bar-h:{{statusBarH}}px;" bindtap="onClosePreview"
+<view class="preview-mask {{themeClass}} {{screenClass}} nav-{{navMode}}" wx:if="{{showPreview}}" style="--status-bar-h:{{statusBarH}}px;" catchtap="onClosePreview"
       bindtouchmove="onRippleTouchMove" bindtouchend="onRippleTouchEnd" bindtouchcancel="onRippleTouchCancel">
   <view class="preview-close-btn" data-ripple="1" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" catchtap="onClosePreview">
     <text class="material-icons">close</text>
   </view>
-  <view class="preview-card" catchtap="noop">
+  <view class="preview-card" catchtap="onClosePreview">
     <scroll-view class="preview-text-wrap {{previewNeedsScroll ? 'scrollable' : ''}}" scroll-y="{{previewNeedsScroll}}" enhanced="true" show-scrollbar="false" bindscroll="onRippleScroll">
       <view class="preview-text-viewport">
         <text class="preview-text {{previewPlaceholder ? 'placeholder' : ''}} {{settings.subtitleBold ? 'bold' : ''}} {{settings.subtitleCenter ? 'center' : ''}} {{settings.subtitleRotated180 ? 'rotated' : ''}}" style="font-size: {{previewFontSize || 90}}rpx;" bindlongpress="onPreviewTextLongPress">{{previewText}}</text>
@@ -142,7 +145,7 @@
   </view>
 </view>
 
-<view class="sheet-mask {{themeClass}} nav-{{navMode}}" wx:if="{{showHistory}}" bindtap="onCloseHistory"
+<view class="sheet-mask {{themeClass}} {{screenClass}} nav-{{navMode}}" wx:if="{{showHistory}}" bindtap="onCloseHistory"
       bindtouchmove="onRippleTouchMove" bindtouchend="onRippleTouchEnd" bindtouchcancel="onRippleTouchCancel">
   <view class="sheet-panel" catchtap="noop">
     <view class="sheet-header">

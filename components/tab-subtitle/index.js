@@ -9,6 +9,7 @@ var routeAnim = require('../../utils/route-anim')
 var system = require('../../utils/system')
 var initialSettings = storage.getSettings()
 var PLACEHOLDER_TEXT = '我不太方便说话，请等我一下……'
+var DEFAULT_SUBTITLE_FONT_SIZE = 90
 
 var componentPage = require('../../utils/component-page')
 Component(componentPage.fromPage(ripple.attach({
@@ -16,13 +17,14 @@ Component(componentPage.fromPage(ripple.attach({
     displayText: '',
     settings: initialSettings, config: {}, currentGroup: {},
     showActionButtons: true, showPreview: false, showHistory: false, showQuickList: false,
-    inputText: '', autoFontSize: 72, subtitleNeedsScroll: false, textAnim: false,
-    previewText: '', previewFontSize: 90, previewNeedsScroll: false, previewPlaceholder: false,
+    inputText: '', autoFontSize: DEFAULT_SUBTITLE_FONT_SIZE, subtitleNeedsScroll: false, textAnim: false,
+    previewText: '', previewFontSize: Math.round(DEFAULT_SUBTITLE_FONT_SIZE * 1.25), previewNeedsScroll: false, previewPlaceholder: false,
     quickInputCollapsed: !!initialSettings.quickInputCollapsed,
     keyboardActive: false, keyboardCompact: false, keyboardHeight: 0,
     ttsBusy: false,
     subtitlePlaceholder: true,
     themeClass: theme.themeClass(initialSettings),
+    screenClass: system.screenClass(),
     routeEnterClass: '',
     statusBarH: 44, navTitle: '便捷字幕',
     navMode: theme.navMode(initialSettings),
@@ -35,6 +37,7 @@ Component(componentPage.fromPage(ripple.attach({
     var settings = storage.getSettings()
     this.setData({
       themeClass: theme.themeClass(settings),
+      screenClass: system.screenClass(),
       statusBarH: system.statusBarHeight(),
       navMode: settings.navMode || 'bottom',
       drawerOpen: (settings.navMode || 'bottom') === 'drawer' ? this.data.drawerOpen : false
@@ -52,8 +55,25 @@ Component(componentPage.fromPage(ripple.attach({
     routeAnim.enter(this)
   },
 
+  onResize: function() {
+    this.setData({
+      screenClass: system.screenClass(),
+      statusBarH: system.statusBarHeight()
+    })
+    this._scheduleFit(80)
+    if (this.data.showPreview) this._schedulePreviewFit(80)
+  },
+
   onHide: function() {
-    this.setData({ keyboardActive: false, keyboardCompact: false, keyboardHeight: 0 })
+    this._previewFitToken = ''
+    this.setData({
+      keyboardActive: false,
+      keyboardCompact: false,
+      keyboardHeight: 0,
+      showPreview: false,
+      previewText: '',
+      previewPlaceholder: false
+    })
     this._setShellOverlay(false)
     this._setTabBarKeyboardHidden(false)
   },
@@ -75,7 +95,7 @@ Component(componentPage.fromPage(ripple.attach({
       showPreview: true,
       previewText: t,
       previewPlaceholder: this._isPlaceholderText(t),
-      previewFontSize: Math.round((this.data.settings.subtitleFontSize || 72) * 1.25),
+      previewFontSize: Math.round((this.data.settings.subtitleFontSize || DEFAULT_SUBTITLE_FONT_SIZE) * 1.25),
       previewNeedsScroll: false
     }, function() {
       that._schedulePreviewFit(40)
@@ -109,7 +129,7 @@ Component(componentPage.fromPage(ripple.attach({
   onFontSizeChanging: function(e) { this._setSubtitleFontSize(e.detail.value, false) },
   onFontSizeChange: function(e) { this._setSubtitleFontSize(e.detail.value, true) },
   _setSubtitleFontSize: function(value, persist) {
-    var v = parseInt(value) || 72
+    var v = parseInt(value) || DEFAULT_SUBTITLE_FONT_SIZE
     if (persist) storage.updateSetting('subtitleFontSize', v)
     this.data.settings.subtitleFontSize = v
     this.setData({ settings: this.data.settings, autoFontSize: v })
@@ -154,7 +174,7 @@ Component(componentPage.fromPage(ripple.attach({
         that._animateSubtitleText({
           displayText: PLACEHOLDER_TEXT,
           subtitlePlaceholder: true,
-          autoFontSize: that.data.settings.subtitleFontSize || 72,
+          autoFontSize: that.data.settings.subtitleFontSize || DEFAULT_SUBTITLE_FONT_SIZE,
           subtitleNeedsScroll: false
         }, function() {
           that._scheduleFit(0)
@@ -246,6 +266,44 @@ Component(componentPage.fromPage(ripple.attach({
 
   onAddGroup: function() { wx.navigateTo({ url: '/pages/subtitle/editor?gid=0' }) },
 
+  onAddCurrentSubtitleToQuick: function() {
+    var t = (this.data.displayText || '').trim()
+    if (!t || this._isPlaceholderText(t)) {
+      wx.showToast({ title: '没有可添加的上屏文本', icon: 'none' })
+      return
+    }
+    var c2 = this.data.config || storage.getSubtitleConfig()
+    var target = null
+    for (var i = 0; i < c2.groups.length; i++) {
+      if (c2.groups[i].id === c2.selectedGroupId) {
+        target = c2.groups[i]
+        break
+      }
+    }
+    if (!target) {
+      wx.showToast({ title: '没有可用分组', icon: 'none' })
+      return
+    }
+    if (!target.items) target.items = []
+    for (var j = 0; j < target.items.length; j++) {
+      if ((target.items[j].text || '').trim() === t) {
+        wx.showToast({ title: '已在当前分组中', icon: 'none' })
+        return
+      }
+    }
+    var nextId = Date.now()
+    for (var gi = 0; gi < c2.groups.length; gi++) {
+      var items = c2.groups[gi].items || []
+      for (var ii = 0; ii < items.length; ii++) {
+        if (items[ii].id >= nextId) nextId = items[ii].id + 1
+      }
+    }
+    target.items.push({ id: nextId, text: t })
+    storage.saveSubtitleConfig(c2)
+    this.setData({ config: c2, currentGroup: target })
+    wx.showToast({ title: '已添加到快捷文本', icon: 'success' })
+  },
+
   onQuickTextTap: function(e) {
     var t = e.currentTarget.dataset.text
     if (!t) return
@@ -304,6 +362,13 @@ Component(componentPage.fromPage(ripple.attach({
 
   onInputChange: function(e) {
     this.setData({ inputText: e.detail.value })
+    if (this.data.keyboardCompact) {
+      this._pulseSubtitleText()
+      this._scheduleFit(0)
+    }
+  },
+  onClearInput: function() {
+    this.setData({ inputText: '' })
     if (this.data.keyboardCompact) {
       this._pulseSubtitleText()
       this._scheduleFit(0)
@@ -548,7 +613,7 @@ Component(componentPage.fromPage(ripple.attach({
     var padH = options.padH == null ? 12 : options.padH
     var availW = Math.max(rectW - padW, 40)
     var availH = Math.max(rectH - padH, 40)
-    var requestedMax = Math.max(28, baseSize || 72)
+    var requestedMax = Math.max(28, baseSize || DEFAULT_SUBTITLE_FONT_SIZE)
     var minSize = Math.min(options.minSize || 28, requestedMax)
     var lineHeight = options.lineHeight || 1.15
     var bold = !!(this.data.settings && this.data.settings.subtitleBold)
@@ -586,7 +651,7 @@ Component(componentPage.fromPage(ripple.attach({
   _fitFont: function() {
     var that = this
     var text = this._visibleDisplayText()
-    var baseSize = this.data.settings.subtitleFontSize || 72
+    var baseSize = this.data.settings.subtitleFontSize || DEFAULT_SUBTITLE_FONT_SIZE
     if (!text) {
       this.setData({ autoFontSize: baseSize, subtitleNeedsScroll: false }); return
     }
@@ -614,7 +679,7 @@ Component(componentPage.fromPage(ripple.attach({
   _fitPreviewFont: function() {
     var that = this
     var text = (this.data.previewText || '').trim()
-    var baseSize = Math.round((this.data.settings.subtitleFontSize || 72) * 1.25)
+    var baseSize = Math.round((this.data.settings.subtitleFontSize || DEFAULT_SUBTITLE_FONT_SIZE) * 1.25)
     if (!text) {
       this.setData({ previewFontSize: baseSize, previewNeedsScroll: false })
       return

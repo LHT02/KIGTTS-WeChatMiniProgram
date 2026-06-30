@@ -107,6 +107,835 @@ button,
   --color-danger: var(--md1-error);
 }
 
+.page.large-screen,
+.sheet-mask.large-screen,
+.dialog-mask.large-screen,
+.preview-mask.large-screen,
+.drawer-mask.large-screen {
+  --md1-radius-sm: 4px;
+  --md1-radius-md: 4px;
+  --md1-radius-lg: 4px;
+  --md1-radius: 4px;
+  --md1-shadow-card: 0 3px 1px -2px rgba(0,0,0,0.14), 0 2px 2px 0 rgba(0,0,0,0.098), 0 1px 5px 0 rgba(0,0,0,0.084);
+  --md1-shadow-card-tight: 0 3px 1px -2px rgba(0,0,0,0.14), 0 2px 1px 0 rgba(0,0,0,0.098), 0 1px 5px 0 rgba(0,0,0,0.084);
+  --md1-shadow-card-up: 0 -3px 1px -2px rgba(0,0,0,0.14), 0 -2px 2px 0 rgba(0,0,0,0.098), 0 -1px 5px 0 rgba(0,0,0,0.084);
+  --md1-shadow-appbar: 0 2px 2px -1px rgba(0,0,0,0.18), 0 4px 5px 0 rgba(0,0,0,0.11), 0 1px 7px 0 rgba(0,0,0,0.09);
+  --md1-shadow-appbar-up: 0 -2px 2px -1px rgba(0,0,0,0.18), 0 -4px 5px 0 rgba(0,0,0,0.11), 0 -1px 7px 0 rgba(0,0,0,0.09);
+  --md1-shadow-bottombar: 0 -2px 2px -1px rgba(0,0,0,0.16), 0 -3px 5px 0 rgba(0,0,0,0.10), 0 -1px 6px 0 rgba(0,0,0,0.08);
+  --md1-shadow-fab: 0 3px 5px -1px rgba(0,0,0,0.14), 0 6px 11px 0 rgba(0,0,0,0.098), 0 1px 20px 0 rgba(0,0,0,0.084);
+  --md1-shadow-drag: 0 7px 11px -2px rgba(0,0,0,0.20), 0 11px 15px 1px rgba(0,0,0,0.14), 0 3px 20px 2px rgba(0,0,0,0.12);
+  --md1-shadow-switch-thumb: 0 1px 1px 0 rgba(0,0,0,0.20), 0 1px 2px 0 rgba(0,0,0,0.14), 0 2px 1px -1px rgba(0,0,0,0.12);
+  --md1-shadow-switch-thumb-pressed: 0 2px 2px 0 rgba(0,0,0,0.22), 0 1px 4px 0 rgba(0,0,0,0.16);
+}
+
+.page.large-screen {
+  font-size: 15px;
+}
+
+.page.large-screen .nav-row {
+  height: 49px;
+  padding: 0 122px;
+}
+
+.page.large-screen .nav-title {
+  left: 122px;
+  right: 122px;
+  height: 49px;
+  font-size: 20px;
+}
+
+.page.large-screen .nav-actions {
+  left: 11px;
+  top: 4px;
+  height: 40px;
+  gap: 2px;
+}
+
+.page.large-screen .btn-filled,
+.page.large-screen .btn-outlined,
+.page.large-screen .btn-text,
+.sheet-mask.large-screen .btn-filled,
+.sheet-mask.large-screen .btn-outlined,
+.sheet-mask.large-screen .btn-text,
+.dialog-mask.large-screen .btn-filled,
+.dialog-mask.large-screen .btn-outlined,
+.dialog-mask.large-screen .btn-text {
+  height: 40px;
+  padding: 0 18px;
+  font-size: 15px;
+}
+
+.page.large-screen .btn-text,
+.sheet-mask.large-screen .btn-text,
+.dialog-mask.large-screen .btn-text {
+  padding: 0 13px;
+}
+
+.page.large-screen .btn-filled-sm,
+.page.large-screen .btn-outlined-sm,
+.page.large-screen .btn-text-sm,
+.sheet-mask.large-screen .btn-filled-sm,
+.sheet-mask.large-screen .btn-outlined-sm,
+.sheet-mask.large-screen .btn-text-sm,
+.dialog-mask.large-screen .btn-filled-sm,
+.dialog-mask.large-screen .btn-outlined-sm,
+.dialog-mask.large-screen .btn-text-sm {
+  height: 31px;
+  padding: 0 11px;
+  font-size: 13px;
+}
+
+.page.large-screen .btn-text-sm,
+.sheet-mask.large-screen .btn-text-sm,
+.dialog-mask.large-screen .btn-text-sm {
+  padding: 0 9px;
+}
+
+.page.large-screen .icon-btn,
+.page.large-screen .nav-back {
+  width: 44px;
+  height: 44px;
+}
+
+.page.large-screen .icon-btn-sm,
+.page.large-screen .tool-toggle,
+.page.large-screen .card-toolbar-toggle,
+.page.large-screen .input-clear-btn,
+.sheet-mask.large-screen .icon-btn-sm,
+.dialog-mask.large-screen .icon-btn-sm {
+  width: 40px;
+  height: 40px;
+}
+
+.page.large-screen .material-icons {
+  font-size: 29px;
+}
+
+.page.large-screen .material-icons.sm,
+.page.large-screen .icon-btn-sm .material-icons,
+.page.large-screen .nav-back .material-icons,
+.page.large-screen .btn-micro .material-icons,
+.sheet-mask.large-screen .material-icons.sm,
+.sheet-mask.large-screen .icon-btn-sm .material-icons,
+.dialog-mask.large-screen .material-icons.sm,
+.dialog-mask.large-screen .icon-btn-sm .material-icons {
+  font-size: 24px !important;
+}
+
+.page.large-screen .material-icons.lg,
+.sheet-mask.large-screen .material-icons.lg,
+.dialog-mask.large-screen .material-icons.lg {
+  font-size: 33px !important;
+}
+
+.page.large-screen .md-text-field,
+.sheet-mask.large-screen .md-text-field,
+.dialog-mask.large-screen .md-text-field {
+  height: 49px;
+  border-bottom-width: 1px;
+}
+
+.page.large-screen .md-input,
+.page.large-screen .md-text-field .md-input,
+.sheet-mask.large-screen .md-input,
+.sheet-mask.large-screen .md-text-field .md-input,
+.dialog-mask.large-screen .md-input,
+.dialog-mask.large-screen .md-text-field .md-input {
+  padding: 0 4px;
+  font-size: 18px;
+}
+
+.page.large-screen .md-field-clear,
+.sheet-mask.large-screen .md-field-clear,
+.dialog-mask.large-screen .md-field-clear {
+  width: 35px;
+  height: 35px;
+}
+
+.page.large-screen .md-field-clear .material-icons,
+.sheet-mask.large-screen .md-field-clear .material-icons,
+.dialog-mask.large-screen .md-field-clear .material-icons {
+  font-size: 24px !important;
+}
+
+.page.large-screen .md-chip,
+.sheet-mask.large-screen .md-chip,
+.dialog-mask.large-screen .md-chip {
+  height: 31px;
+  padding: 0 11px;
+  font-size: 13px;
+}
+
+.page.large-screen .md-card,
+.page.large-screen .md-card-filled,
+.page.large-screen .about-card,
+.page.large-screen .settings-card,
+.page.large-screen .editor-card,
+.page.large-screen .card,
+.page.large-screen .sound-card {
+  border-radius: 4px;
+  box-shadow: var(--md1-shadow-card);
+}
+
+.page.large-screen .sheet-panel,
+.sheet-mask.large-screen .sheet-panel,
+.sheet-mask.large-screen .editor-sheet,
+.sheet-mask.large-screen .color-picker-sheet,
+.sheet-mask.large-screen .picker-panel,
+.dialog-mask.large-screen .dialog-box {
+  border-radius: 4px 4px 0 0;
+}
+
+.sheet-mask.large-screen.nav-bottom {
+  padding-bottom: calc(62px + env(safe-area-inset-bottom));
+}
+
+.sheet-mask.large-screen.nav-bottom .sheet-panel,
+.sheet-mask.large-screen.nav-bottom .editor-sheet,
+.sheet-mask.large-screen.nav-bottom .color-picker-sheet {
+  max-height: calc(80vh - 62px - env(safe-area-inset-bottom));
+}
+
+.sheet-mask.large-screen .sheet-panel .sheet-header,
+.sheet-mask.large-screen .editor-sheet .sheet-header,
+.sheet-mask.large-screen .color-picker-sheet .sheet-header,
+.sheet-mask.large-screen .picker-header {
+  padding: 15px 18px;
+}
+
+.sheet-mask.large-screen .sheet-panel .sheet-title,
+.sheet-mask.large-screen .editor-sheet .sheet-title,
+.sheet-mask.large-screen .color-picker-sheet .sheet-title,
+.sheet-mask.large-screen .picker-title,
+.dialog-mask.large-screen .dialog-title {
+  font-size: 18px;
+}
+
+.sheet-mask.large-screen .sheet-panel .sheet-body,
+.sheet-mask.large-screen .editor-sheet .sheet-scroll,
+.sheet-mask.large-screen .color-picker-sheet .sheet-scroll {
+  padding: 13px 18px;
+}
+
+.sheet-mask.large-screen .sheet-panel .sheet-body.scrollable {
+  padding: 0 18px;
+}
+
+.sheet-mask.large-screen .quick-list-body {
+  padding: 4px 18px 9px;
+}
+
+.sheet-mask.large-screen .quick-list-item {
+  min-height: 49px;
+  font-size: 16px;
+}
+
+.sheet-mask.large-screen .sheet-list-item {
+  padding: 11px 0;
+}
+
+.sheet-mask.large-screen .sheet-list-item .time {
+  font-size: 12px;
+  margin-left: 9px;
+}
+
+.sheet-mask.large-screen .sheet-panel .sheet-footer,
+.sheet-mask.large-screen .editor-sheet .sheet-footer {
+  gap: 9px;
+  padding: 11px 18px;
+  padding-bottom: calc(11px + env(safe-area-inset-bottom));
+}
+
+.page.large-screen .section {
+  margin: 13px 11px;
+}
+
+.page.large-screen .section-label,
+.page.large-screen .sc-title,
+.page.large-screen .editor-label,
+.page.large-screen .form-field label,
+.page.large-screen .ec-field label,
+.page.large-screen .sheet-editor-label,
+.sheet-mask.large-screen .sheet-editor-label,
+.dialog-mask.large-screen .ec-field label,
+.sheet-mask.large-screen .form-field label {
+  font-size: 12px;
+}
+
+.page.large-screen .list-item {
+  min-height: 44px;
+  padding: 9px 15px;
+}
+
+.page.large-screen .list-item .item-left {
+  gap: 18px;
+}
+
+.page.large-screen .list-item .item-icon,
+.page.large-screen .item-icon,
+.page.large-screen .item-right,
+.page.large-screen .theme-mode-icon,
+.page.large-screen .theme-mode-check {
+  width: 31px;
+  font-size: 24px;
+}
+
+.page.large-screen .list-item .item-title,
+.page.large-screen .item-title,
+.page.large-screen .theme-mode-title,
+.page.large-screen .ec-row-label,
+.page.large-screen .editor-card-title,
+.page.large-screen .section-title,
+.page.large-screen .ec-title {
+  font-size: 16px;
+}
+
+.page.large-screen .list-item .item-support,
+.page.large-screen .item-support,
+.page.large-screen .theme-mode-support,
+.page.large-screen .about-desc,
+.page.large-screen .about-links,
+.page.large-screen .about-version,
+.page.large-screen .ec-hint,
+.page.large-screen .editor-hint,
+.page.large-screen .item-sub,
+.page.large-screen .slist-word,
+.page.large-screen .sgrid-word,
+.page.large-screen .color-hex,
+.page.large-screen .image-section-label {
+  font-size: 13px;
+}
+
+.page.large-screen .empty-state {
+  padding: 88px 0;
+  font-size: 14px;
+}
+
+.dialog-mask.large-screen {
+  padding: 31px;
+}
+
+.dialog-mask.large-screen.nav-bottom {
+  padding-bottom: calc(31px + 62px + env(safe-area-inset-bottom));
+}
+
+.dialog-mask.large-screen .dialog-box {
+  border-radius: 4px;
+  width: 276px;
+  padding: 22px;
+}
+
+.dialog-mask.large-screen .dialog-box .dialog-text {
+  font-size: 15px;
+  margin-bottom: 22px;
+}
+
+.dialog-mask.large-screen .dialog-box .dialog-footer {
+  gap: 9px;
+}
+
+.page.large-screen .scui-radio {
+  height: 40px;
+  line-height: 40px;
+}
+
+.page.large-screen .scui-radio-control,
+.page.large-screen .scui-radio-border,
+.page.large-screen .scui-radio-dot {
+  width: 22px;
+  height: 22px;
+}
+
+.page.large-screen .scui-radio-border {
+  border-width: 2px;
+}
+
+.page.large-screen .scui-radio-ripple {
+  width: 53px;
+  height: 53px;
+  transform: translate(-26px, -26px);
+}
+
+.page.large-screen .scui-radio-label {
+  font-size: 15px;
+}
+
+.page.large-screen .md1-switch {
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  margin-left: 11px;
+}
+
+.page.large-screen .md1-switch-track {
+  top: 12px;
+  width: 40px;
+  height: 15px;
+  border-radius: 15px;
+}
+
+.page.large-screen .md1-switch-ripple,
+.page.large-screen .md1-switch-thumb {
+  left: -3px;
+  top: 9px;
+  width: 22px;
+  height: 22px;
+}
+
+.page.large-screen .md1-switch.checked .md1-switch-ripple,
+.page.large-screen .md1-switch.checked .md1-switch-thumb {
+  transform: translateX(22px);
+}
+
+.page.large-screen .md1-switch.animating .md1-switch-ripple {
+  animation: md1-switch-ripple-left-large 300ms cubic-bezier(0.4,0,0.2,1);
+}
+
+.page.large-screen .md1-switch.checked.animating .md1-switch-ripple {
+  animation: md1-switch-ripple-right-large 300ms cubic-bezier(0.4,0,0.2,1);
+}
+
+.page.large-screen .about-card {
+  padding: 18px 13px 17px;
+  margin-top: 9px;
+  margin-bottom: 9px;
+  gap: 11px;
+}
+
+.page.large-screen .about-logo-img {
+  width: 232px;
+  height: 58px;
+}
+
+.page.large-screen .settings-scroll-inner {
+  padding: 0 18px 22px;
+}
+
+.page.large-screen.nav-bottom .settings-scroll-inner {
+  padding-bottom: calc(70px + env(safe-area-inset-bottom));
+}
+
+.page.large-screen .settings-card,
+.page.large-screen .editor-card,
+.page.large-screen .card {
+  padding: 11px 13px 9px;
+  margin-bottom: 9px;
+}
+
+.page.large-screen .editor-content,
+.page.large-screen .editor-scroll {
+  padding: 13px;
+}
+
+.page.large-screen .section-header,
+.page.large-screen .ec-row-header {
+  gap: 7px;
+  margin-bottom: 7px;
+}
+
+.page.large-screen .form-field {
+  margin-bottom: 11px;
+}
+
+.page.large-screen .ec-field {
+  margin: 7px 0;
+}
+
+.page.large-screen .group-detail {
+  margin-top: 6px;
+  padding-top: 6px;
+}
+
+.page.large-screen .icon-row {
+  gap: 9px;
+  padding: 6px 0;
+}
+
+.page.large-screen .theme-mode-item {
+  min-height: 57px;
+  gap: 11px;
+  padding: 6px 7px;
+}
+
+.page.large-screen .import-textarea,
+.page.large-screen .md-textarea {
+  min-height: 66px;
+  padding: 8px 9px;
+  font-size: 15px;
+}
+
+.page.large-screen .group-tabs-card {
+  height: 53px;
+  margin: 4px 18px 11px;
+}
+
+.page.large-screen.nav-bottom .group-tabs-card {
+  margin-bottom: calc(70px + env(safe-area-inset-bottom));
+}
+
+.page.large-screen .group-scroll,
+.page.large-screen .chip-scroll,
+.page.large-screen .group-chips {
+  height: 53px;
+}
+
+.page.large-screen .group-chip {
+  height: 53px;
+  padding: 0 11px;
+  gap: 7px;
+  margin-right: 2px;
+  font-size: 16px;
+}
+
+.page.large-screen .group-chip .material-icons {
+  font-size: 22px !important;
+}
+
+.page.large-screen .group-edit-segment {
+  width: 57px;
+  height: 53px;
+}
+
+.page.large-screen .group-edit-segment .material-icons {
+  font-size: 24px !important;
+}
+
+.page.large-screen .sound-list-inner {
+  padding-top: 9px;
+}
+
+.page.large-screen .sound-list-inner.grid {
+  padding: 9px 15px 0;
+}
+
+.page.large-screen .grid-cell {
+  padding: 4px;
+}
+
+.page.large-screen .slist {
+  margin: 0 18px 4px;
+  padding: 11px 13px;
+}
+
+.page.large-screen .slist-row {
+  gap: 7px;
+}
+
+.page.large-screen .slist-name,
+.page.large-screen .sgrid-name,
+.page.large-screen .item-name {
+  font-size: 15px;
+}
+
+.page.large-screen .slist-play,
+.page.large-screen .sgrid-play,
+.page.large-screen .send-btn {
+  width: 53px;
+  height: 53px;
+  font-size: 26px;
+}
+
+.page.large-screen .slist-progress,
+.page.large-screen .sgrid-progress {
+  height: 3px;
+  border-radius: 2px;
+  margin-top: 7px;
+}
+
+.page.large-screen .sgrid {
+  height: 130px;
+  padding: 11px;
+}
+
+.page.large-screen .icon-picker {
+  height: 44px;
+}
+
+.page.large-screen .icon-chip {
+  width: 31px;
+  height: 31px;
+  margin-right: 4px;
+}
+
+.page.large-screen .draw-toolbar.card {
+  margin: 0 18px 11px;
+  padding: 9px 11px;
+}
+
+.page.large-screen.nav-bottom .draw-toolbar.card {
+  margin-bottom: calc(70px + env(safe-area-inset-bottom));
+}
+
+.page.large-screen .draw-toolbar.mini {
+  width: 57px;
+  padding: 4px;
+}
+
+.page.large-screen .dt-row {
+  gap: 11px;
+  margin-bottom: 7px;
+}
+
+.page.large-screen .dt-tools,
+.page.large-screen .dt-actions {
+  gap: 9px;
+}
+
+.page.large-screen .dt-colors {
+  height: 31px;
+}
+
+.page.large-screen .color-dot {
+  width: 24px;
+  height: 24px;
+  border-width: 2px;
+  margin-right: 9px;
+}
+
+.page.large-screen .dt-mini-row {
+  height: 40px;
+}
+
+.page.large-screen .name-card,
+.page.large-screen .preview-card-dialog,
+.page.large-screen .add-card-placeholder {
+  border-radius: 4px;
+}
+
+.page.large-screen .name-card,
+.page.large-screen .preview-card-dialog {
+  padding: 20px 15px 15px;
+}
+
+.page.large-screen .card-watermark {
+  top: 11px;
+  right: 11px;
+  font-size: 97px;
+}
+
+.page.large-screen .card-header,
+.page.large-screen .card-footer {
+  margin-bottom: 13px;
+}
+
+.page.large-screen .card-title {
+  font-size: 22px;
+  margin-bottom: 4px;
+}
+
+.page.large-screen .card-note,
+.page.large-screen .card-link {
+  font-size: 14px;
+}
+
+.page.large-screen .card-edit-btn {
+  top: 4px;
+  right: 4px;
+  width: 38px;
+  height: 38px;
+}
+
+.page.large-screen .card-edit-btn .material-icons {
+  font-size: 24px !important;
+}
+
+.page.large-screen .link-icon-btn {
+  width: 35px;
+  height: 35px;
+}
+
+.page.large-screen .link-icon-btn .material-icons {
+  font-size: 29px !important;
+}
+
+.page.large-screen .card-kigtts-btn {
+  right: 9px;
+  bottom: 9px;
+  width: 73px;
+  height: 29px;
+}
+
+.page.large-screen .card-kigtts-mark {
+  width: 68px;
+  height: 21px;
+  font-size: 19px;
+}
+
+.page.large-screen .page-dots {
+  gap: 4px;
+  padding: 7px 0;
+}
+
+.page.large-screen.nav-bottom .page-dots,
+.page.large-screen.nav-bottom .sort-bar {
+  padding-bottom: calc(68px + env(safe-area-inset-bottom));
+}
+
+.page.large-screen .dot {
+  width: 4px;
+  height: 4px;
+}
+
+.page.large-screen .dot.active {
+  width: 13px;
+  border-radius: 2px;
+}
+
+.page.large-screen .sort-bar {
+  padding: 7px 18px;
+}
+
+.page.large-screen .sort-bar-title,
+.page.large-screen .preview-dismiss {
+  font-size: 13px;
+}
+
+.page.large-screen .preview-actions {
+  margin-top: 11px;
+  gap: 7px;
+}
+
+.page.large-screen .color-row {
+  gap: 13px;
+  padding: 7px 4px;
+}
+
+.page.large-screen .color-dot-lg {
+  width: 38px;
+  height: 38px;
+}
+
+.page.large-screen .img-preview {
+  width: 66px;
+  height: 66px;
+  margin-top: 7px;
+}
+
+.page.large-screen .preset-grid {
+  gap: 6px;
+}
+
+.page.large-screen .preset-dot {
+  width: 26px;
+  height: 26px;
+  border-width: 1px;
+}
+
+.page.large-screen .picker-preview {
+  height: 53px;
+}
+
+.page.large-screen .item-row {
+  min-height: 79px;
+  padding: 9px;
+  margin: 4px 0;
+}
+
+.page.large-screen .item-check {
+  width: 40px;
+  height: 40px;
+}
+
+.page.large-screen .native-checkbox {
+  width: 20px;
+  height: 20px;
+  border-radius: 2px;
+  border-width: 2px;
+}
+
+.page.large-screen .native-checkbox-ripple {
+  width: 53px;
+  height: 53px;
+}
+
+.page.large-screen .native-checkbox-mark {
+  left: 3px;
+  bottom: 3px;
+  width: 9px;
+  height: 14px;
+  border-right-width: 2px;
+  border-bottom-width: 2px;
+}
+
+.page.large-screen .native-checkbox.checked .native-checkbox-mark {
+  animation: native-checkbox-mark-large 120ms cubic-bezier(0.4,0,0.2,1) forwards;
+}
+
+.page.large-screen .btn-micro {
+  width: 32px;
+  height: 32px;
+  font-size: 22px;
+}
+
+.page.large-screen .icon-cell {
+  width: 40px;
+  height: 40px;
+}
+
+.sheet-mask.large-screen .icon-cell {
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+}
+
+.page.large-screen .icon-cell .material-icons,
+.sheet-mask.large-screen .icon-cell .material-icons {
+  font-size: 26px !important;
+}
+
+.page.large-screen .cur-icon {
+  width: 38px;
+  height: 38px;
+}
+
+.page.large-screen .cur-icon .material-icons {
+  font-size: 24px !important;
+}
+
+.page.large-screen .arrow {
+  font-size: 22px;
+  padding: 0 4px;
+}
+
+.page.large-screen .ec-btn-row,
+.page.large-screen .batch-actions,
+.page.large-screen .item-actions {
+  gap: 4px;
+}
+
+.page.large-screen .audio-pick-row {
+  gap: 7px;
+  min-height: 35px;
+}
+
+.page.large-screen .audio-name {
+  font-size: 13px;
+}
+
+.sheet-mask.large-screen .icon-grid {
+  gap: 4px;
+  padding: 13px;
+}
+
+@keyframes md1-switch-ripple-left-large {
+  0% { transform:translateX(22px) scale(2.4); opacity:0; }
+  30% { transform:translateX(0) scale(2.4); opacity:0.16; }
+  100% { transform:translateX(0) scale(2.4); opacity:0; }
+}
+
+@keyframes md1-switch-ripple-right-large {
+  0% { transform:translateX(0) scale(2.4); opacity:0; }
+  30% { transform:translateX(22px) scale(2.4); opacity:0.16; }
+  100% { transform:translateX(22px) scale(2.4); opacity:0; }
+}
+
+@keyframes native-checkbox-mark-large {
+  0% { opacity:0; width:9px; height:0; }
+  33% { height:0; }
+  66% { height:8px; }
+  100% { opacity:1; width:9px; height:14px; }
+}
+
 .route-body {
   flex: 1;
   min-height: 0;
@@ -245,13 +1074,22 @@ button,
   border-bottom: 2px solid rgba(255,255,255,0.12);
   background: transparent;
 }
-.md-text-field input {
-  flex: 1; height: 100%; padding: 0 8rpx;
+.md-text-field.flex-1 { flex: 1; min-width: 0; }
+.md-input,
+.md-text-field .md-input {
+  flex: 1; height: 100%; min-width: 0; padding: 0 8rpx;
   background: transparent; color: var(--md1-text-primary);
   font-size: 32rpx; border: none; outline: none;
   font-family: -apple-system-font, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   caret-color: var(--md1-primary);
 }
+.md-field-clear {
+  width: 64rpx; height: 64rpx; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--md1-text-secondary); flex-shrink: 0;
+}
+.md-field-clear:active { background: transparent; }
+.md-field-clear .material-icons { font-size: 44rpx; color: currentColor; }
 
 /* ═══════ Chip ═══════ */
 
@@ -569,9 +1407,8 @@ button,
   to { opacity: 0; transform: translateY(-18rpx); }
 }
 @keyframes mdPushEnter {
-  from { opacity: 0; transform: translateX(36rpx); }
-  70% { opacity: 1; }
-  to { opacity: 1; transform: translateX(0); }
+  from { transform: translateX(36rpx); }
+  to { transform: translateX(0); }
 }
 @keyframes scRipple {
   from { transform: scale(0.1); opacity: 0.3; }

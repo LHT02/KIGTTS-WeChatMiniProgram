@@ -2,8 +2,9 @@ var storage = require('../../utils/storage')
 var theme = require('../../utils/theme')
 var ripple = require('../../utils/ripple')
 var system = require('../../utils/system')
+var share = require('../../utils/share')
 
-Page(ripple.attach({
+Page(share.attach(ripple.attach({
   data: {
     config: null, configGroups: [],
     groupId: 0, title: '', icon: 'sentiment_satisfied', items: [],
@@ -18,14 +19,16 @@ Page(ripple.attach({
       "handshake","celebration","pets","info","warning"
     ],
     showItemEditor: false, editingIndex: -1, editingText: '',
+    titleFocused: false, editingTextFocused: false,
     batchMode: false, selectedItems: {}, batchCount: 0,
     draggingIndex: -1,
-    themeClass: theme.themeClass()
+    themeClass: theme.themeClass(),
+    screenClass: system.screenClass()
   },
 
   onLoad: function(opt) {
     var settings = storage.getSettings()
-    this.setData({ themeClass: theme.themeClass(settings), statusBarH: system.statusBarHeight() })
+    this.setData({ themeClass: theme.themeClass(settings), screenClass: system.screenClass(), statusBarH: system.statusBarHeight() })
     var gid = parseInt(opt.gid) || 0
     var config = storage.getSubtitleConfig()
     var groupsCopy = this._cloneGroups(config.groups || [])
@@ -41,7 +44,38 @@ Page(ripple.attach({
     }
   },
 
+  onResize: function() {
+    this.setData({ screenClass: system.screenClass(), statusBarH: system.statusBarHeight() })
+  },
+
   onTitleInput: function(e) { this.setData({ title: e.detail.value }) },
+  onFieldFocus: function(e) {
+    var field = e.currentTarget.dataset.field
+    if (!field) return
+    if (this._fieldBlurTimers && this._fieldBlurTimers[field]) clearTimeout(this._fieldBlurTimers[field])
+    var patch = {}
+    patch[field + 'Focused'] = true
+    this.setData(patch)
+  },
+  onFieldBlur: function(e) {
+    var field = e.currentTarget.dataset.field
+    if (!field) return
+    var that = this
+    this._fieldBlurTimers = this._fieldBlurTimers || {}
+    if (this._fieldBlurTimers[field]) clearTimeout(this._fieldBlurTimers[field])
+    this._fieldBlurTimers[field] = setTimeout(function() {
+      var patch = {}
+      patch[field + 'Focused'] = false
+      that.setData(patch)
+    }, 120)
+  },
+  onClearField: function(e) {
+    var field = e.currentTarget.dataset.field
+    if (!field) return
+    var patch = {}
+    patch[field] = ''
+    this.setData(patch)
+  },
   onPickIcon: function(e) { this.setData({ icon: e.currentTarget.dataset.icon, showIconPicker: false }) },
   onOpenIconPicker: function() { this.setData({ showIconPicker: true }) },
   onCloseIconPicker: function() { this.setData({ showIconPicker: false }) },
@@ -107,7 +141,7 @@ Page(ripple.attach({
 
   onItemTap: function(e) {
     var idx = e.currentTarget.dataset.index
-    this.setData({ showItemEditor: true, editingIndex: idx, editingText: this.data.items[idx].text })
+    this.setData({ showItemEditor: true, editingIndex: idx, editingText: this.data.items[idx].text, editingTextFocused: false })
   },
   onItemRowTap: function(e) {
     if (!this.data.batchMode) return
@@ -121,8 +155,8 @@ Page(ripple.attach({
     this.setData({ batchMode: true, selectedItems: selected, batchCount: 1 })
     this._vibrate()
   },
-  onAddItem: function() { this.setData({ showItemEditor: true, editingIndex: -1, editingText: '' }) },
-  onCloseItemEditor: function() { this.setData({ showItemEditor: false }) },
+  onAddItem: function() { this.setData({ showItemEditor: true, editingIndex: -1, editingText: '', editingTextFocused: false }) },
+  onCloseItemEditor: function() { this.setData({ showItemEditor: false, editingTextFocused: false }) },
   onItemTextInput: function(e) { this.setData({ editingText: e.detail.value }) },
 
   onSaveItem: function() {
@@ -269,4 +303,4 @@ Page(ripple.attach({
   onNavBack: function() { wx.navigateBack() },
 
   noop: function() {}
-}))
+})))

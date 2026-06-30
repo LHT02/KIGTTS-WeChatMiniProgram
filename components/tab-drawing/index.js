@@ -14,7 +14,7 @@ Component(componentPage.fromPage(ripple.attach({
     lightColors: ['#038387','#1E88E5','#E53935','#43A047','#FFA000','#212121','#5E35B1'],
     colorPalette: [],
     hasDrawn: false,
-    themeClass: theme.themeClass(), statusBarH: 44,
+    themeClass: theme.themeClass(), screenClass: system.screenClass(), statusBarH: 44,
     routeEnterClass: '',
     navMode: theme.navMode(),
     drawerOpen: false,
@@ -31,6 +31,7 @@ Component(componentPage.fromPage(ripple.attach({
     var isLight = theme.isLight(settings)
     this.setData({
       themeClass: theme.themeClass(settings),
+      screenClass: system.screenClass(),
       statusBarH: system.statusBarHeight(),
       colorPalette: isLight ? this.data.lightColors : this.data.darkColors,
       color: isLight ? '#038387' : '#7DE8EA',
@@ -51,7 +52,10 @@ Component(componentPage.fromPage(ripple.attach({
   },
 
   onReady: function() { this._scheduleCanvasInit() },
-  onResize: function() { this._resetCanvas() },
+  onResize: function() {
+    this.setData({ screenClass: system.screenClass(), statusBarH: system.statusBarHeight() })
+    this._resetCanvas()
+  },
 
   _boardBg: function() { return this.data.themeClass === 'theme-light' ? '#FCFDFE' : '#242424' },
   _getCurrentSize: function() { return this._currentTool === 'eraser' ? this.data.eraserSize : this.data.brushSize },

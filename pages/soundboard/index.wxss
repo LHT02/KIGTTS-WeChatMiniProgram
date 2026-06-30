@@ -17,11 +17,12 @@
 .sound-list { flex:1; width:100%; box-sizing:border-box; }
 .sound-list-inner { width:100%; box-sizing:border-box; padding-top:16rpx; }
 .sound-list-inner.grid { display:flex; flex-wrap:wrap; padding:16rpx 28rpx 0; box-sizing:border-box; }
-.grid-cell { padding:4rpx; box-sizing:border-box; }
+.sound-list-inner.layout-fade-out { animation:soundLayoutFadeOut 90ms cubic-bezier(0.4,0,1,1) forwards; }
+.sound-list-inner.layout-fade-in { animation:soundLayoutFadeIn 180ms cubic-bezier(0.2,0,0,1); }
+.grid-cell { padding:8rpx; box-sizing:border-box; }
 
 /* ===== LIST ITEM ===== Match Android SoundboardListItem exactly */
-.sound-card { background:var(--md1-surface-raised); border-radius:var(--md1-radius-sm); box-shadow:var(--md1-shadow-card); }
-.sound-card.playing { background:rgba(3,131,135,0.1); border:1px solid rgba(3,131,135,0.25); box-sizing:border-box; }
+.sound-card { background:var(--md1-surface-raised); border-radius:var(--md1-radius-sm); box-shadow:var(--md1-shadow-card); box-sizing:border-box; }
 
 .slist { margin:0 32rpx 8rpx; padding:20rpx 24rpx; box-sizing:border-box; }
 .slist-row { display:flex; align-items:center; gap:12rpx; }
@@ -29,30 +30,58 @@
 .slist-name { font-size:28rpx; color:var(--md1-text-primary); font-weight:500; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .slist-word { font-size:24rpx; color:var(--md1-text-secondary); margin-top:4rpx; }
 .slist-play { width:96rpx; height:96rpx; border-radius:50%; background:transparent; color:var(--md1-text-primary); display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:48rpx; }
-.slist-play.stop { background:transparent; color:var(--md1-error); }
 .slist-play:active { background:transparent; }
-.slist-progress { height:6rpx; background:rgba(255,255,255,0.06); border-radius:3rpx; margin-top:12rpx; }
+.slist-progress { height:6rpx; background:rgba(255,255,255,0.12); border-radius:3rpx; margin-top:12rpx; overflow:hidden; }
+.theme-light .slist-progress { background:rgba(0,0,0,0.12); }
 .slist-progress-fill { height:100%; background:var(--md1-primary); width:0%; border-radius:3rpx; animation:none; }
 .slist-progress-fill.running { animation:progressAnim 8s linear forwards; }
 .slist-empty { text-align:center; color:var(--md1-text-hint); padding:40rpx; }
 
 /* ===== GRID ITEM ===== Match Android SoundboardGridItem exactly */
-.sgrid { height:236rpx; padding:20rpx; display:flex; flex-direction:column; }
+.sgrid { height:236rpx; padding:20rpx; display:flex; flex-direction:column; box-sizing:border-box; }
 .sgrid-top { display:flex; justify-content:space-between; align-items:flex-start; }
 .sgrid-info { flex:1; min-width:0; }
 .sgrid-name { font-size:28rpx; color:var(--md1-text-primary); font-weight:500; overflow:hidden; text-overflow:ellipsis; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; }
 .sgrid-word { font-size:24rpx; color:var(--md1-text-secondary); margin-top:4rpx; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .sgrid-play { width:96rpx; height:96rpx; border-radius:50%; background:transparent; color:var(--md1-text-primary); display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:48rpx; }
-.sgrid-play.stop { background:transparent; color:var(--md1-error); }
 .sgrid-play:active { background:transparent; }
 .sgrid-spacer { flex:1; }
-.sgrid-progress { height:6rpx; background:rgba(255,255,255,0.06); border-radius:3rpx; }
+.sgrid-progress { height:6rpx; background:rgba(255,255,255,0.12); border-radius:3rpx; overflow:hidden; }
+.theme-light .sgrid-progress { background:rgba(0,0,0,0.12); }
 .sgrid-progress-fill { height:100%; background:var(--md1-primary); width:0%; border-radius:3rpx; animation:none; }
 .sgrid-progress-fill.running { animation:progressAnim 8s linear forwards; }
 
 @keyframes progressAnim { from { width:0%; } to { width:100%; } }
+@keyframes soundLayoutFadeOut { from { opacity:1; } to { opacity:0; } }
+@keyframes soundLayoutFadeIn { from { opacity:0; } to { opacity:1; } }
 
 /* ---- inline sheets ---- */
+.md-text-field {
+  display:flex; align-items:center; height:88rpx;
+  border-bottom:2px solid rgba(255,255,255,0.12);
+  background:transparent;
+}
+.md-input,
+.md-text-field .md-input,
+.input-placeholder {
+  font-family:-apple-system-font, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+.md-input,
+.md-text-field .md-input {
+  flex:1; height:100%; min-width:0; padding:0 8rpx;
+  background:transparent; color:var(--md1-text-primary);
+  font-size:32rpx; border:none; outline:none;
+  caret-color:var(--md1-primary);
+}
+.input-placeholder { color:var(--md1-text-hint); }
+.md-field-clear {
+  width:64rpx; height:64rpx; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  color:var(--md1-text-secondary); flex-shrink:0;
+}
+.md-field-clear:active { background:transparent; }
+.md-field-clear .material-icons { font-size:44rpx; color:currentColor; }
+
 .icon-picker { white-space:nowrap; height:80rpx; display:flex; }
 .icon-chip { display:inline-flex; align-items:center; justify-content:center; width:56rpx; height:56rpx; border-radius:50%; margin-right:8rpx; color:var(--md1-text-primary); flex-shrink:0; }
 .icon-chip.active { background:rgba(3,131,135,0.18); color:var(--md1-primary); }

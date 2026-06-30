@@ -1,4 +1,4 @@
-<view class="page tab-component-root route-body settings-component theme-animated {{themeClass}} nav-{{navMode}}"
+<view class="page tab-component-root route-body settings-component theme-animated {{themeClass}} {{screenClass}} nav-{{navMode}}"
       bindtouchmove="onRippleTouchMove" bindtouchend="onRippleTouchEnd" bindtouchcancel="onRippleTouchCancel">
 <scroll-view class="settings-scroll" scroll-y="true" enhanced="true" show-scrollbar="false" bindscroll="onRippleScroll">
     <view class="settings-scroll-inner">
@@ -113,7 +113,7 @@
   </scroll-view>
 </view>
 
-<view class="sheet-mask theme-animated {{themeClass}} nav-{{navMode}}" wx:if="{{showThemeSheet}}" bindtap="onCloseThemeSheet"
+<view class="sheet-mask theme-animated {{themeClass}} {{screenClass}} nav-{{navMode}}" wx:if="{{showThemeSheet}}" bindtap="onCloseThemeSheet"
       bindtouchmove="onRippleTouchMove" bindtouchend="onRippleTouchEnd" bindtouchcancel="onRippleTouchCancel">
   <view class="sheet-panel theme-mode-sheet" catchtap="noop">
     <view class="sheet-header">
@@ -136,7 +136,7 @@
   </view>
 </view>
 
-<view class="sheet-mask theme-animated {{themeClass}} nav-{{navMode}}" wx:if="{{showImportEditor}}" bindtap="onCloseImportEditor"
+<view class="sheet-mask theme-animated {{themeClass}} {{screenClass}} nav-{{navMode}}" wx:if="{{showImportEditor}}" bindtap="onCloseImportEditor"
       bindtouchmove="onRippleTouchMove" bindtouchend="onRippleTouchEnd" bindtouchcancel="onRippleTouchCancel">
   <view class="sheet-panel" catchtap="noop">
     <view class="sheet-header"><text class="sheet-title">导入预设</text><text class="material-icons lg" bindtap="onCloseImportEditor" style="padding:8rpx;">close</text></view>

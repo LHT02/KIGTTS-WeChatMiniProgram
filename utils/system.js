@@ -43,6 +43,24 @@ function windowHeight() {
   return info.windowHeight || info.screenHeight || 667
 }
 
+var LARGE_SCREEN_MIN_EDGE = 600
+var LARGE_SCREEN_RPX_BASE = 414
+
+function isLargeScreen() {
+  var w = windowWidth()
+  var h = windowHeight()
+  return Math.min(w, h) >= LARGE_SCREEN_MIN_EDGE
+}
+
+function effectiveWindowWidth() {
+  var w = windowWidth()
+  return isLargeScreen() ? Math.min(w, LARGE_SCREEN_RPX_BASE) : w
+}
+
+function screenClass() {
+  return isLargeScreen() ? 'large-screen' : ''
+}
+
 function pixelRatio() {
   var info = windowInfo()
   return info.pixelRatio || 1
@@ -69,7 +87,7 @@ function safeAreaBottom(info) {
 }
 
 function rpxRatio() {
-  return windowWidth() / 750
+  return effectiveWindowWidth() / 750
 }
 
 function rpxToPx(rpx) {
@@ -82,6 +100,9 @@ module.exports = {
   windowInfo: windowInfo,
   windowWidth: windowWidth,
   windowHeight: windowHeight,
+  effectiveWindowWidth: effectiveWindowWidth,
+  isLargeScreen: isLargeScreen,
+  screenClass: screenClass,
   pixelRatio: pixelRatio,
   screenHeight: screenHeight,
   statusBarHeight: statusBarHeight,

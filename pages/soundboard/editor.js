@@ -4,22 +4,26 @@ var theme = require('../../utils/theme')
 var ripple = require('../../utils/ripple')
 var soundFile = require('../../utils/sound-file')
 var system = require('../../utils/system')
+var share = require('../../utils/share')
 
-Page(ripple.attach({
+Page(share.attach(ripple.attach({
   data: {
     config: null, groups: [], selectedGroupIdx: 0, selectedGroup: null,
     themeClass: theme.themeClass(),
+    screenClass: system.screenClass(),
 
     // Settings
     portraitLayout: 'list', landscapeLayout: 'grid',
 
     // Group editor
     editingGroupTitle: '', editingGroupIcon: 'music_note',
+    editingGroupTitleFocused: false,
     showIconPicker: false,
 
     // Item editor
     showAddDialog: false, addTitle: '', addWakeWord: '', addFilePath: '', addFileName: '', addFileSize: 0,
     showEditDialog: false, editItemIdx: -1, editTitle: '', editWakeWord: '', editFilePath: '', editFileName: '', editFileSize: 0,
+    addTitleFocused: false, editTitleFocused: false, editWakeWordFocused: false,
     showDeleteConfirm: false, deleteItemIdx: -1,
 
     // Batch operations
@@ -48,8 +52,12 @@ Page(ripple.attach({
 
   onShow: function() {
     var settings = storage.getSettings()
-    this.setData({ themeClass: theme.themeClass(settings), statusBarH: system.statusBarHeight() })
+    this.setData({ themeClass: theme.themeClass(settings), screenClass: system.screenClass(), statusBarH: system.statusBarHeight() })
     this._refresh()
+  },
+
+  onResize: function() {
+    this.setData({ screenClass: system.screenClass(), statusBarH: system.statusBarHeight() })
   },
 
   _refresh: function() {
@@ -88,6 +96,7 @@ Page(ripple.attach({
     var sel = this.data.groups[idx]
     this.setData({
       selectedGroupIdx: idx, selectedGroup: sel, batchMode: false, selectedItems: {}, batchCount: 0,
+      editingGroupTitleFocused: false,
       editingGroupTitle: sel.title, editingGroupIcon: sel.icon || 'music_note'
     })
     var sc = this.data.config; sc.selectedGroupId = sel.id; storage.saveSoundboardConfig(sc)
@@ -98,16 +107,51 @@ Page(ripple.attach({
     var groups = this.data.groups.slice()
     groups.push(newGroup)
     this.setData({ groups: groups, selectedGroup: newGroup, selectedGroupIdx: groups.length - 1,
-      editingGroupTitle: '新分组', editingGroupIcon: 'music_note' })
+      editingGroupTitle: '新分组', editingGroupIcon: 'music_note', editingGroupTitleFocused: false })
     this._save()
   },
 
-  onGroupTitleInput: function(e) {
-    this.setData({ editingGroupTitle: e.detail.value })
+  _setGroupTitle: function(value) {
+    this.setData({ editingGroupTitle: value })
     var g = this.data.selectedGroup; if (!g) return
-    g.title = e.detail.value
+    g.title = value
     for (var i = 0; i < this.data.groups.length; i++) { if (this.data.groups[i].id === g.id) { this.data.groups[i] = g; break } }
     this._save()
+  },
+  onGroupTitleInput: function(e) { this._setGroupTitle(e.detail.value) },
+
+  onFieldFocus: function(e) {
+    var field = e.currentTarget.dataset.field
+    if (!field) return
+    if (this._fieldBlurTimers && this._fieldBlurTimers[field]) clearTimeout(this._fieldBlurTimers[field])
+    var patch = {}
+    patch[field + 'Focused'] = true
+    this.setData(patch)
+  },
+
+  onFieldBlur: function(e) {
+    var field = e.currentTarget.dataset.field
+    if (!field) return
+    var that = this
+    this._fieldBlurTimers = this._fieldBlurTimers || {}
+    if (this._fieldBlurTimers[field]) clearTimeout(this._fieldBlurTimers[field])
+    this._fieldBlurTimers[field] = setTimeout(function() {
+      var patch = {}
+      patch[field + 'Focused'] = false
+      that.setData(patch)
+    }, 120)
+  },
+
+  onClearField: function(e) {
+    var field = e.currentTarget.dataset.field
+    if (!field) return
+    if (field === 'editingGroupTitle') {
+      this._setGroupTitle('')
+      return
+    }
+    var patch = {}
+    patch[field] = ''
+    this.setData(patch)
   },
 
   onOpenIconPicker: function() { this.setData({ showIconPicker: true }) },
@@ -155,10 +199,10 @@ Page(ripple.attach({
 
   // === Items ===
   onAddItem: function() {
-    this.setData({ showAddDialog: true, addTitle: '', addWakeWord: '', addFilePath: '', addFileName: '', addFileSize: 0 })
+    this.setData({ showAddDialog: true, addTitle: '', addWakeWord: '', addFilePath: '', addFileName: '', addFileSize: 0, addTitleFocused: false })
   },
 
-  onCloseAddDialog: function() { this.setData({ showAddDialog: false }) },
+  onCloseAddDialog: function() { this.setData({ showAddDialog: false, addTitleFocused: false }) },
 
   onAddTitleInput: function(e) { this.setData({ addTitle: e.detail.value }) },
   onAddWakeInput: function(e) { this.setData({ addWakeWord: e.detail.value }) },
@@ -178,10 +222,10 @@ Page(ripple.attach({
     var idx = parseInt(e.currentTarget.dataset.index)
     var item = this.data.selectedGroup.items[idx]
     if (!item) return
-    this.setData({ showEditDialog: true, editItemIdx: idx, editTitle: item.title || '', editWakeWord: item.wakeWord || '', editFilePath: item.filePath || '', editFileName: item.fileName || '', editFileSize: item.fileSize || 0 })
+    this.setData({ showEditDialog: true, editItemIdx: idx, editTitle: item.title || '', editWakeWord: item.wakeWord || '', editFilePath: item.filePath || '', editFileName: item.fileName || '', editFileSize: item.fileSize || 0, editTitleFocused: false, editWakeWordFocused: false })
   },
 
-  onCloseEditDialog: function() { this.setData({ showEditDialog: false }) },
+  onCloseEditDialog: function() { this.setData({ showEditDialog: false, editTitleFocused: false, editWakeWordFocused: false }) },
   onEditTitleInput: function(e) { this.setData({ editTitle: e.detail.value }) },
   onEditWakeInput: function(e) { this.setData({ editWakeWord: e.detail.value }) },
 
@@ -404,4 +448,4 @@ Page(ripple.attach({
   onNavBack: function() { wx.navigateBack() },
 
   noop: function() {}
-}))
+})))

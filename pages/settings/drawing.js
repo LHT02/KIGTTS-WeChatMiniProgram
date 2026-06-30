@@ -4,8 +4,9 @@ var theme = require('../../utils/theme')
 var ripple = require('../../utils/ripple')
 var routeAnim = require('../../utils/route-anim')
 var system = require('../../utils/system')
+var share = require('../../utils/share')
 
-Page(ripple.attach({
+Page(share.attach(ripple.attach({
   data: {
     tool: 'pen', color: '#7DE8EA', brushSize: 4, eraserSize: 16,
     toolbarCollapsed: false,
@@ -13,7 +14,7 @@ Page(ripple.attach({
     lightColors: ['#038387','#1E88E5','#E53935','#43A047','#FFA000','#212121','#5E35B1'],
     colorPalette: [],
     hasDrawn: false,
-    themeClass: theme.themeClass(), statusBarH: 44,
+    themeClass: theme.themeClass(), screenClass: system.screenClass(), statusBarH: 44,
     routeEnterClass: '',
     navMode: theme.navMode(),
     drawerOpen: false,
@@ -30,6 +31,7 @@ Page(ripple.attach({
     var isLight = theme.isLight(settings)
     this.setData({
       themeClass: theme.themeClass(settings),
+      screenClass: system.screenClass(),
       statusBarH: system.statusBarHeight(),
       colorPalette: isLight ? this.data.lightColors : this.data.darkColors,
       color: isLight ? '#038387' : '#7DE8EA',
@@ -50,7 +52,10 @@ Page(ripple.attach({
   },
 
   onReady: function() { this._scheduleCanvasInit() },
-  onResize: function() { this._resetCanvas() },
+  onResize: function() {
+    this.setData({ screenClass: system.screenClass(), statusBarH: system.statusBarHeight() })
+    this._resetCanvas()
+  },
 
   _boardBg: function() { return this.data.themeClass === 'theme-light' ? '#FCFDFE' : '#242424' },
   _getCurrentSize: function() { return this._currentTool === 'eraser' ? this.data.eraserSize : this.data.brushSize },
@@ -227,4 +232,4 @@ Page(ripple.attach({
   },
   onDrawerNavTap: function(e) { nav.go(e.currentTarget.dataset.path, this.data.currentPath) },
   noop: function() {}
-}))
+})))

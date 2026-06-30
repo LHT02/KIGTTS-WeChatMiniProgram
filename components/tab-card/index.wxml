@@ -1,4 +1,4 @@
-<view class="page tab-component-root route-body card-component {{themeClass}} nav-{{navMode}} {{sortMode ? 'sort-open' : ''}}"
+<view class="page tab-component-root route-body card-component {{themeClass}} {{screenClass}} nav-{{navMode}} {{sortMode ? 'sort-open' : ''}}"
       bindtouchmove="onRippleTouchMove" bindtouchend="onRippleTouchEnd" bindtouchcancel="onRippleTouchCancel">
 <swiper class="card-swiper" current="{{currentIndex}}" bindchange="onSwiperChange" indicator-dots="{{false}}" circular="{{false}}" previous-margin="28rpx" next-margin="28rpx">
     <swiper-item class="swiper-slide" wx:for="{{cards}}" wx:key="id">
@@ -66,7 +66,7 @@
 </view>
 
 <!-- Preview Dialog -->
-<view class="dialog-mask {{themeClass}} nav-{{navMode}}" wx:if="{{showPreview}}" bindtap="onClosePreview"
+<view class="dialog-mask {{themeClass}} {{screenClass}} nav-{{navMode}}" wx:if="{{showPreview}}" bindtap="onClosePreview"
       bindtouchmove="onRippleTouchMove" bindtouchend="onRippleTouchEnd" bindtouchcancel="onRippleTouchCancel">
   <view class="preview-card-dialog" style="background: {{previewCard.imagePath ? 'transparent' : previewCard.themeColor}};" catchtap="noop">
     <image wx:if="{{previewCard.imagePath}}" class="card-bg-img" src="{{previewCard.imagePath}}" mode="aspectFill" />
@@ -99,7 +99,7 @@
 </view>
 
 <!-- Editor Sheet -->
-<view class="sheet-mask {{themeClass}} nav-{{navMode}}" wx:if="{{showEditor}}" bindtap="onCloseEditor"
+<view class="sheet-mask {{themeClass}} {{screenClass}} nav-{{navMode}}" wx:if="{{showEditor}}" bindtap="onCloseEditor"
       bindtouchmove="onRippleTouchMove" bindtouchend="onRippleTouchEnd" bindtouchcancel="onRippleTouchCancel">
   <view class="editor-sheet" catchtap="noop">
     <view class="sheet-header">
@@ -112,7 +112,7 @@
         <view class="editor-card-title">基础信息</view>
         <view class="editor-field">
           <label class="editor-label">标题</label>
-          <view class="md-text-field"><input value="{{title}}" bindinput="onTitleInput" placeholder="名片标题" placeholder-class="input-placeholder" /></view>
+          <view class="md-text-field"><input class="md-input" value="{{title}}" bindinput="onTitleInput" placeholder="名片标题" placeholder-class="input-placeholder" /></view>
         </view>
         <view class="editor-field">
           <label class="editor-label">备注（可空）</label>
@@ -120,7 +120,7 @@
         </view>
         <view class="editor-field">
           <label class="editor-label">链接（可空）</label>
-          <view class="md-text-field"><input value="{{link}}" bindinput="onLinkInput" placeholder="https://..." placeholder-class="input-placeholder" /></view>
+          <view class="md-text-field"><input class="md-input" value="{{link}}" bindinput="onLinkInput" placeholder="https://..." placeholder-class="input-placeholder" /></view>
         </view>
       </view>
 
@@ -163,7 +163,7 @@
   </view>
 </view>
 <!-- Color Picker Sheet -->
-<view class="sheet-mask {{themeClass}} nav-{{navMode}}" wx:if="{{showColorPicker}}" bindtap="onCloseColorPicker"
+<view class="sheet-mask {{themeClass}} {{screenClass}} nav-{{navMode}}" wx:if="{{showColorPicker}}" bindtap="onCloseColorPicker"
       bindtouchmove="onRippleTouchMove" bindtouchend="onRippleTouchEnd" bindtouchcancel="onRippleTouchCancel">
   <view class="color-picker-sheet" catchtap="noop">
     <view class="sheet-header">
@@ -202,7 +202,7 @@
         <view class="picker-label">HEX</view>
         <view class="flex-row" style="gap:12rpx;">
           <view class="md-text-field flex-1">
-            <input value="{{hexInput}}" bindinput="onHexInputChange" placeholder="#RRGGBB" placeholder-class="input-placeholder" />
+            <input class="md-input" value="{{hexInput}}" bindinput="onHexInputChange" placeholder="#RRGGBB" placeholder-class="input-placeholder" />
           </view>
           <view class="btn-filled-sm" data-ripple="1" data-ripple-color="rgb(255,255,255)" capture-bind:tap="onRippleTap" capture-bind:longpress="onRippleLongPress" bindtap="onApplyHexColor">应用</view>
         </view>
@@ -214,7 +214,7 @@
 </view>
 
 <!-- Delete Confirm -->
-<view class="dialog-mask {{themeClass}} nav-{{navMode}}" wx:if="{{showDeleteConfirm}}" bindtap="onCancelDelete"
+<view class="dialog-mask {{themeClass}} {{screenClass}} nav-{{navMode}}" wx:if="{{showDeleteConfirm}}" bindtap="onCancelDelete"
       bindtouchmove="onRippleTouchMove" bindtouchend="onRippleTouchEnd" bindtouchcancel="onRippleTouchCancel">
   <view class="dialog-box" catchtap="noop">
     <view class="dialog-text">确定要删除这张名片吗？此操作不可撤销。</view>

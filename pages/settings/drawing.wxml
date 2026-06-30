@@ -1,6 +1,6 @@
 <import src="../../templates/shell.wxml" />
 
-<view class="page route-tab {{routeEnterClass}} {{themeClass}} nav-{{navMode}}"
+<view class="page route-tab {{routeEnterClass}} {{themeClass}} {{screenClass}} nav-{{navMode}}"
       bindtouchmove="onRippleTouchMove" bindtouchend="onRippleTouchEnd" bindtouchcancel="onRippleTouchCancel">
   <view class="nav-bar" style="padding-top:{{statusBarH}}px;">
     <view class="nav-row">
@@ -16,10 +16,12 @@
     </view>
   </view>
   <view class="route-body route-motion">
-  <canvas class="canvas-wrap" type="2d" id="drawCanvas"
-          hidden="{{drawerOpen}}"
-          disable-scroll="{{true}}"
-          bindtouchstart="onTouchStart" bindtouchmove="onTouchMove" bindtouchend="onTouchEnd" />
+  <view class="draw-canvas-host">
+    <canvas class="canvas-wrap" type="2d" id="drawCanvas"
+            hidden="{{drawerOpen}}"
+            disable-scroll="{{true}}"
+            bindtouchstart="onTouchStart" bindtouchmove="onTouchMove" bindtouchend="onTouchEnd" />
+  </view>
   <view class="draw-toolbar card {{toolbarCollapsed ? 'mini' : ''}}">
     <view wx:if="{{!toolbarCollapsed}}">
       <view class="dt-row">
@@ -68,7 +70,7 @@
   </view>
 </view>
 
-<template is="appDrawer" data="{{drawerOpen: drawerOpen, navItems: navItems, currentPath: currentPath, themeClass: themeClass, logoGlyph: logoGlyph, statusBarH: statusBarH}}" />
+<template is="appDrawer" data="{{drawerOpen: drawerOpen, navItems: navItems, currentPath: currentPath, themeClass: themeClass, screenClass: screenClass, logoGlyph: logoGlyph, statusBarH: statusBarH}}" />
 
 <view class="ripple-host">
   <view class="sc-ripple-clip" wx:for="{{rippleList}}" wx:key="id" style="{{item.clipStyle}}">

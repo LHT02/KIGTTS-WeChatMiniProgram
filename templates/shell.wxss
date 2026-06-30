@@ -91,6 +91,44 @@
   font-weight: 400;
 }
 
+.drawer-mask.large-screen {
+  --md1-shadow-drawer: 7px 0 11px -2px rgba(0, 0, 0, 0.20), 11px 0 15px 1px rgba(0, 0, 0, 0.14), 3px 0 20px 2px rgba(0, 0, 0, 0.12);
+}
+
+.drawer-mask.large-screen .drawer-panel {
+  width: 238px;
+}
+
+.drawer-mask.large-screen .drawer-brand {
+  height: 62px;
+  padding: 13px 22px 7px;
+}
+
+.drawer-mask.large-screen .drawer-logo-mark {
+  width: 141px;
+  height: 35px;
+  font-size: 35px;
+}
+
+.drawer-mask.large-screen .drawer-list {
+  padding: 4px 0 9px;
+}
+
+.drawer-mask.large-screen .drawer-item {
+  height: 57px;
+  gap: 13px;
+  padding: 0 18px;
+}
+
+.drawer-mask.large-screen .drawer-icon {
+  font-size: 24px;
+  width: 27px;
+}
+
+.drawer-mask.large-screen .drawer-label {
+  font-size: 15px;
+}
+
 .nav-menu {
   margin-right: 0;
 }

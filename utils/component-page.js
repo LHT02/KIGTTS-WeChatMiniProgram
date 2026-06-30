@@ -31,6 +31,7 @@ function fromPage(pageOptions) {
     if (state.navMode != null) data.navMode = state.navMode
     if (state.statusBarH != null) data.statusBarH = state.statusBarH
     if (state.drawerOpen != null) data.drawerOpen = state.drawerOpen
+    if (state.screenClass != null) data.screenClass = state.screenClass
     if (Object.keys(data).length) this.setData(data)
   }
   methods.onOpenDrawer = function() {

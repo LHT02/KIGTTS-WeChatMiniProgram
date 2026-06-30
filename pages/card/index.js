@@ -5,17 +5,18 @@ var theme = require('../../utils/theme')
 var ripple = require('../../utils/ripple')
 var routeAnim = require('../../utils/route-anim')
 var system = require('../../utils/system')
+var share = require('../../utils/share')
 
 var PRESET_COLORS = ['#f44336','#e91e63','#9c27b0','#673ab7','#3f51b5','#2196f3','#03a9f4','#00bcd4','#009688','#4caf50','#8bc34a','#cddc39','#ffeb3b','#ffc107','#ff9800','#ff5722','#795548','#9e9e9e','#607d8b','#038387']
 
-Page(ripple.attach({
+Page(share.attach(ripple.attach({
   data: {
     cards: [], currentIndex: 0, sortMode: false,
     showPreview: false, previewCard: null,
     showEditor: false, editingId: null,
     title: '', note: '', color: '#038387', link: '', imagePath: '',
     showColorPicker: false, hexInput: '', hHue: 0, hSat: 1, hLight: 0.5,
-    showDeleteConfirm: false, themeClass: theme.themeClass(), statusBarH: 44,
+    showDeleteConfirm: false, themeClass: theme.themeClass(), screenClass: system.screenClass(), statusBarH: 44,
     routeEnterClass: '',
     navMode: theme.navMode(),
     drawerOpen: false, currentPath: 'pages/card/index', navItems: nav.items,
@@ -31,6 +32,7 @@ Page(ripple.attach({
     var navMode = settings.navMode || 'bottom'
     this.setData({
       themeClass: theme.themeClass(settings),
+      screenClass: system.screenClass(),
       statusBarH: system.statusBarHeight(),
       navMode: navMode,
       drawerOpen: navMode === 'drawer' ? this.data.drawerOpen : false,
@@ -43,7 +45,10 @@ Page(ripple.attach({
 
   onReady: function() { this._syncCardFrameSize() },
 
-  onResize: function() { this._syncCardFrameSize() },
+  onResize: function() {
+    this.setData({ screenClass: system.screenClass(), statusBarH: system.statusBarHeight() })
+    this._syncCardFrameSize()
+  },
 
   _syncCardFrameSize: function(navMode, sortMode) {
     var sys = system.windowInfo()
@@ -60,7 +65,7 @@ Page(ripple.attach({
     sys = sys || system.windowInfo()
     var ww = sys.windowWidth || sys.screenWidth || 375
     var wh = sys.windowHeight || sys.screenHeight || 667
-    var rpx = ww / 750
+    var rpx = system.rpxRatio()
     var status = sys.statusBarHeight || 0
     var safeBottom = system.safeAreaBottom(sys)
 
@@ -356,4 +361,4 @@ Page(ripple.attach({
   onDrawerNavTap: function(e) { nav.go(e.currentTarget.dataset.path, this.data.currentPath) },
 
   noop: function() {}
-}))
+})))
